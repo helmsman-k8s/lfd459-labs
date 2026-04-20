@@ -15,7 +15,7 @@ While application developers don't configure cluster networking, understanding t
 1. Connect to the **controller** node. Verify the CNI plugin is active by reading the controller manager startup logs. Use Tab completion for the pod name.
 
     ```bash
-    guru@controller:~$ kubectl -n kube-system logs kube-controller-manager-controller
+    kubectl -n kube-system logs kube-controller-manager-controller
     ```
 
     Look for lines referencing the network plugin initialization.
@@ -23,7 +23,7 @@ While application developers don't configure cluster networking, understanding t
 2. Check the kube-proxy logs to see which proxy mode is active.
 
     ```bash
-    guru@controller:~$ kubectl -n kube-system logs kube-proxy-<TAB>
+    kubectl -n kube-system logs kube-proxy-<TAB>
     ```
 
     !!! note "Our CNI: Calico"
@@ -31,20 +31,20 @@ While application developers don't configure cluster networking, understanding t
 
 3. Review the properties of common CNI plugins using the links below, then answer the questions that follow.
 
-    - **Flannel**: [https://github.com/coreos/flannel](https://github.com/coreos/flannel)
-    - **Calico**: [https://docs.projectcalico.org/](https://docs.projectcalico.org/)
-    - **Cilium**: [https://cilium.io/](https://cilium.io/)
-    - **Kube Router**: [https://www.kube-router.io](https://www.kube-router.io)
+    - **Flannel**: <https://github.com/coreos/flannel>
+    - **Calico**: <https://docs.projectcalico.org/>
+    - **Cilium**: <https://cilium.io/>
+    - **Kube Router**: <https://www.kube-router.io>
 
     Answer the following questions:
 
-    - Which plugins support vxlans-
-    - Which are layer 2 plugins-
-    - Which are layer 3-
-    - Which support network policies-
-    - Which can encrypt all TCP and UDP traffic-
+    - Which plugins support vxlans?
+    - Which are layer 2 plugins?
+    - Which are layer 3?
+    - Which support network policies?
+    - Which can encrypt all TCP and UDP traffic?
 
---- success "Plugin Answers"
+??? success "Plugin Answers"
     - **vxlans**: Canal, Calico, Flannel, Weave Net, Cilium
     - **Layer 2**: Canal, Weave Net
     - **Layer 3**: Calico, Romana, Kube Router
@@ -58,14 +58,14 @@ While application developers don't configure cluster networking, understanding t
 
 Consider the following questions based on what you learned in this chapter:
 
-1. Which deployment method allows the most flexibility - one app per pod or multiple-
-2. Which allows the most granular scalability-
-3. Which has the best inter-container performance-
-4. How many IP addresses are assigned per pod-
-5. What are some ways containers can communicate within the same pod-
-6. What are some reasons to use multiple containers per pod-
+1. Which deployment method allows the most flexibility - one app per pod or multiple?
+2. Which allows the most granular scalability?
+3. Which has the best inter-container performance?
+4. How many IP addresses are assigned per pod?
+5. What are some ways containers can communicate within the same pod?
+6. What are some reasons to use multiple containers per pod?
 
---- success "Multi-Pod Answers"
+??? success "Multi-Pod Answers"
     1. One per pod - most flexible
     2. One per pod - most granular scalability
     3. Multiple per pod - best inter-container performance
@@ -79,16 +79,17 @@ Consider the following questions based on what you learned in this chapter:
 
 Jobs run a container a set number of times to completion, rather than keeping it running continuously.
 
-1. Copy the chapter lab files to your home directory.
+1. Move into the chapter lab directory.
 
     ```bash
-    guru@controller:~$ cp ~/lfd459/ch04-design/* .
+    cd ~/lfd459/ch04-design
+    ls
     ```
 
 2. Review and create the basic job definition.
 
     ```bash
-    guru@controller:~$ cat job.yaml
+    cat job.yaml
     ```
 
     ```yaml
@@ -108,18 +109,18 @@ Jobs run a container a set number of times to completion, rather than keeping it
     ```
 
     ```bash
-    guru@controller:~$ kubectl create -f job.yaml
+    kubectl create -f job.yaml
     job.batch/sleepy created
     ```
 
 3. Verify the job completes successfully. Check while it is running, then again after it finishes.
 
     ```bash
-    guru@controller:~$ kubectl get job
+    kubectl get job
     NAME     COMPLETIONS   DURATION   AGE
     sleepy   0/1           3s         3s
 
-    guru@controller:~$ kubectl get job
+    kubectl get job
     NAME     COMPLETIONS   DURATION   AGE
     sleepy   1/1           7s         11s
     ```
@@ -127,26 +128,26 @@ Jobs run a container a set number of times to completion, rather than keeping it
 4. Describe the job to see its full details including parallelism, completions, and pod statuses.
 
     ```bash
-    guru@controller:~$ kubectl describe jobs.batch sleepy
+    kubectl describe jobs.batch sleepy
     ```
 
 5. Inspect the default job parameters in YAML output. Note `backoffLimit: 6`, `completions: 1`, `parallelism: 1`.
 
     ```bash
-    guru@controller:~$ kubectl get jobs.batch sleepy -o yaml | grep -A5 "^spec:"
+    kubectl get jobs.batch sleepy -o yaml | grep -A5 "^spec:"
     ```
 
 6. Delete the job.
 
     ```bash
-    guru@controller:~$ kubectl delete jobs.batch sleepy
+    kubectl delete jobs.batch sleepy
     job.batch "sleepy" deleted
     ```
 
 7. Edit `job.yaml` and add `completions: 5` to run the job five times sequentially.
 
     ```bash
-    guru@controller:~$ vim job.yaml
+    vim job.yaml
     ```
 
     ```yaml
@@ -158,8 +159,8 @@ Jobs run a container a set number of times to completion, rather than keeping it
 8. Create the job again and watch the completions count up.
 
     ```bash
-    guru@controller:~$ kubectl create -f job.yaml
-    guru@controller:~$ kubectl get jobs.batch
+    kubectl create -f job.yaml
+    kubectl get jobs.batch
     NAME     COMPLETIONS   DURATION   AGE
     sleepy   0/5           5s         5s
     ```
@@ -167,17 +168,17 @@ Jobs run a container a set number of times to completion, rather than keeping it
 9. Once all 5 complete, delete the job.
 
     ```bash
-    guru@controller:~$ kubectl get jobs.batch
+    kubectl get jobs.batch
     NAME     COMPLETIONS   DURATION   AGE
     sleepy   5/5           26s        10m
 
-    guru@controller:~$ kubectl delete jobs.batch sleepy
+    kubectl delete jobs.batch sleepy
     ```
 
 10. Edit `job.yaml` and add `parallelism: 2` so two pods run at the same time.
 
     ```bash
-    guru@controller:~$ vim job.yaml
+    vim job.yaml
     ```
 
     ```yaml
@@ -190,8 +191,8 @@ Jobs run a container a set number of times to completion, rather than keeping it
 11. Create the job and verify two pods run simultaneously.
 
     ```bash
-    guru@controller:~$ kubectl create -f job.yaml
-    guru@controller:~$ kubectl get pods
+    kubectl create -f job.yaml
+    kubectl get pods
     NAME             READY   STATUS    RESTARTS   AGE
     sleepy-8xwpc     1/1     Running   0          5s
     sleepy-xjqnf     1/1     Running   0          5s
@@ -201,7 +202,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
 12. Edit `job.yaml` again and add `activeDeadlineSeconds: 15` to forcibly stop the job after 15 seconds.
 
     ```bash
-    guru@controller:~$ vim job.yaml
+    vim job.yaml
     ```
 
     ```yaml
@@ -215,14 +216,14 @@ Jobs run a container a set number of times to completion, rather than keeping it
 13. Delete and recreate the job. It will stop after 15 seconds regardless of how many completions remain.
 
     ```bash
-    guru@controller:~$ kubectl delete jobs.batch sleepy
-    guru@controller:~$ kubectl create -f job.yaml
+    kubectl delete jobs.batch sleepy
+    kubectl create -f job.yaml
     ```
 
     Wait ~20 seconds, then verify the job stopped early.
 
     ```bash
-    guru@controller:~$ kubectl get jobs
+    kubectl get jobs
     NAME     COMPLETIONS   DURATION   AGE
     sleepy   4/5           16s        16s
     ```
@@ -230,7 +231,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
 14. Check the status message in the job YAML - it should show `DeadlineExceeded`.
 
     ```bash
-    guru@controller:~$ kubectl get job sleepy -o yaml | grep -A8 "^status:"
+    kubectl get job sleepy -o yaml | grep -A8 "^status:"
     status:
       conditions:
       - message: Job was active longer than specified deadline
@@ -243,7 +244,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
 15. Delete the job.
 
     ```bash
-    guru@controller:~$ kubectl delete jobs.batch sleepy
+    kubectl delete jobs.batch sleepy
     ```
 
 ---
@@ -255,7 +256,7 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
 1. Review the provided `cronjob.yaml` file. It runs the sleep container every 2 minutes.
 
     ```bash
-    guru@controller:~$ cat cronjob.yaml
+    cat cronjob.yaml
     ```
 
     ```yaml
@@ -283,10 +284,10 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
 2. Create the CronJob and monitor it. The first job will not run for up to 2 minutes.
 
     ```bash
-    guru@controller:~$ kubectl create -f cronjob.yaml
+    kubectl create -f cronjob.yaml
     cronjob.batch/sleepy created
 
-    guru@controller:~$ kubectl get cronjobs.batch
+    kubectl get cronjobs.batch
     NAME     SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
     sleepy   */2 * * * *   False     0        <none>          8s
     ```
@@ -294,11 +295,11 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
 3. After 2 minutes, verify a Job was created by the CronJob.
 
     ```bash
-    guru@controller:~$ kubectl get cronjobs.batch
+    kubectl get cronjobs.batch
     NAME     SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
     sleepy   */2 * * * *   False     0        21s             2m1s
 
-    guru@controller:~$ kubectl get jobs.batch
+    kubectl get jobs.batch
     NAME                COMPLETIONS   DURATION   AGE
     sleepy-1539722040   1/1           5s         18s
     ```
@@ -308,7 +309,7 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
 4. Edit `cronjob.yaml` to make the sleep command run for 30 seconds and add `activeDeadlineSeconds: 10` inside the job template, so that each job is forcibly killed after 10 seconds.
 
     ```bash
-    guru@controller:~$ vim cronjob.yaml
+    vim cronjob.yaml
     ```
 
     Modify the `jobTemplate.spec.template.spec` section:
@@ -330,11 +331,11 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
 5. Delete and recreate the CronJob. Wait 2 minutes, then observe that jobs are created but never complete - they are killed by the deadline.
 
     ```bash
-    guru@controller:~$ kubectl delete cronjobs.batch sleepy
-    guru@controller:~$ kubectl create -f cronjob.yaml
+    kubectl delete cronjobs.batch sleepy
+    kubectl create -f cronjob.yaml
 
     # After ~2 minutes:
-    guru@controller:~$ kubectl get jobs
+    kubectl get jobs
     NAME                COMPLETIONS   DURATION   AGE
     sleepy-1539723240   0/1           61s        61s
     ```
@@ -342,7 +343,7 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
 6. Delete the CronJob and all its associated jobs.
 
     ```bash
-    guru@controller:~$ kubectl delete cronjobs.batch sleepy
+    kubectl delete cronjobs.batch sleepy
     cronjob.batch "sleepy" deleted
     ```
 
@@ -355,14 +356,14 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
 1. Copy the chapter files to your home directory if not already done, then create a new `design2` deployment.
 
     ```bash
-    guru@controller:~$ kubectl create deployment design2 --image=nginx
+    kubectl create deployment design2 --image=nginx
     deployment.apps/design2 created
     ```
 
 2. View the deployment with `-o wide` and note the `SELECTOR` column.
 
     ```bash
-    guru@controller:~$ kubectl get deployments.apps design2 -o wide
+    kubectl get deployments.apps design2 -o wide
     NAME      READY   UP-TO-DATE   AVAILABLE   ...   SELECTOR
     design2   1/1     1            1           ...   app=design2
     ```
@@ -370,7 +371,7 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
 3. Use the `-l` option to list only pods matching the deployment selector.
 
     ```bash
-    guru@controller:~$ kubectl get -l app=design2 pod
+    kubectl get -l app=design2 pod
     NAME                       READY   STATUS    RESTARTS   AGE
     design2-766d48574f-5w274   1/1     Running   0          3m
     ```
@@ -378,7 +379,7 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
 4. View the pod labels in full YAML output using `--selector`.
 
     ```bash
-    guru@controller:~$ kubectl get --selector app=design2 pod -o yaml | grep -A4 "labels:"
+    kubectl get --selector app=design2 pod -o yaml | grep -A4 "labels:"
     ```
 
     You should see both `app: design2` and `pod-template-hash` labels.
@@ -386,10 +387,11 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
 5. Edit the pod's `app` label and change it to your favourite colour (e.g. `orange`).
 
     ```bash
-    guru@controller:~$ kubectl edit pod design2-766d48574f-5w274
+    kubectl edit pod design2-766d48574f-5w274
     ```
 
     Find and change:
+
     ```yaml
     labels:
       app: orange    # <-- change from design2
@@ -399,7 +401,7 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
 6. Immediately check how many pods the deployment now manages.
 
     ```bash
-    guru@controller:~$ kubectl get pods | grep design2
+    kubectl get pods | grep design2
     design2-766d48574f-5w274   1/1   Running   0   82s
     design2-766d48574f-xttgg   1/1   Running   0   2m12s
     ```
@@ -409,21 +411,21 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
 7. Delete the deployment.
 
     ```bash
-    guru@controller:~$ kubectl delete deploy design2
+    kubectl delete deploy design2
     deployment.apps "design2" deleted
     ```
 
 8. Check for remaining pods. The orphaned pod (with the colour label) still exists - the deployment deletion only removed pods it was managing.
 
     ```bash
-    guru@controller:~$ kubectl get pods | grep design2
+    kubectl get pods | grep design2
     design2-766d48574f-5w274   1/1   Running   0   38m
     ```
 
 9. Delete the orphaned pod using the colour label you assigned.
 
     ```bash
-    guru@controller:~$ kubectl delete pod -l app=orange
+    kubectl delete pod -l app=orange
     pod "design2-766d48574f-5w274" deleted
     ```
 
@@ -436,22 +438,22 @@ Resource requests tell the scheduler how much CPU/memory a pod needs. Limits cap
 1. Review and create the `stress.yaml` deployment. It runs the `vish/stress` image which deliberately consumes CPU and memory.
 
     ```bash
-    guru@controller:~$ cat stress.yaml
-    guru@controller:~$ kubectl create -f stress.yaml
+    cat stress.yaml
+    kubectl create -f stress.yaml
     ```
 
 2. On the controller and on **worker1**, run `top` to see the stress process consuming CPU. Use `q` to exit.
 
     ```bash
-    guru@controller:~$ top
-    guru@worker1:~$ top
+    top
+    top
     ```
 
 3. Delete the deployment, then edit `stress.yaml` to add resource limits and requests.
 
     ```bash
-    guru@controller:~$ kubectl delete -f stress.yaml
-    guru@controller:~$ vim stress.yaml
+    kubectl delete -f stress.yaml
+    vim stress.yaml
     ```
 
     Add the `resources` block under the container name:
@@ -480,19 +482,20 @@ Resource requests tell the scheduler how much CPU/memory a pod needs. Limits cap
 4. Create the deployment and check the pod status. Because the stress command requests more memory than the limit, the container will be OOMKilled.
 
     ```bash
-    guru@controller:~$ kubectl create -f stress.yaml
-    guru@controller:~$ kubectl get pod
+    kubectl create -f stress.yaml
+    kubectl get pod
     NAME                           READY   STATUS      RESTARTS   AGE
     stressmeout-7fbbbcc887-v9kvb   0/1     OOMKilled   2          32s
     ```
 
 5. Delete the deployment and edit `stress.yaml` again. This time:
+
     - Increase the memory limit to `2Gi` (enough for the stress workload)
     - Uncomment and set the `nodeSelector` to pin the pod to **worker1** (to protect the control plane)
 
     ```bash
-    guru@controller:~$ kubectl delete -f stress.yaml
-    guru@controller:~$ vim stress.yaml
+    kubectl delete -f stress.yaml
+    vim stress.yaml
     ```
 
     ```yaml
@@ -513,8 +516,8 @@ Resource requests tell the scheduler how much CPU/memory a pod needs. Limits cap
 6. Create the deployment and verify the pod runs on `worker1` without OOMKilling.
 
     ```bash
-    guru@controller:~$ kubectl create -f stress.yaml
-    guru@controller:~$ kubectl get pod -o wide
+    kubectl create -f stress.yaml
+    kubectl get pod -o wide
     NAME                           READY   STATUS    NODE
     stressmeout-...                1/1     Running   worker1
     ```
@@ -522,7 +525,7 @@ Resource requests tell the scheduler how much CPU/memory a pod needs. Limits cap
 7. Use `kubectl describe node worker1` to view how much of worker1's CPU and memory is now being consumed.
 
     ```bash
-    guru@controller:~$ kubectl describe node worker1 | grep -A8 "Allocated resources"
+    kubectl describe node worker1 | grep -A8 "Allocated resources"
     ```
 
 8. Try editing the limits to values higher than the node has available. Observe how the scheduler handles an unschedulable pod.
@@ -530,7 +533,7 @@ Resource requests tell the scheduler how much CPU/memory a pod needs. Limits cap
 9. Delete the deployment when done.
 
     ```bash
-    guru@controller:~$ kubectl delete deploy stressmeout
+    kubectl delete deploy stressmeout
     ```
 
 ---
@@ -542,7 +545,7 @@ An `initContainer` runs to completion before the main container starts. If it fa
 1. Review the provided `init-tester.yaml`. The initContainer runs `/bin/false` which always exits with a non-zero code.
 
     ```bash
-    guru@controller:~$ cat init-tester.yaml
+    cat init-tester.yaml
     ```
 
     ```yaml
@@ -565,8 +568,8 @@ An `initContainer` runs to completion before the main container starts. If it fa
 2. Create the pod and observe the failure.
 
     ```bash
-    guru@controller:~$ kubectl create -f init-tester.yaml
-    guru@controller:~$ kubectl get pod init-tester
+    kubectl create -f init-tester.yaml
+    kubectl get pod init-tester
     NAME           READY   STATUS       RESTARTS   AGE
     init-tester    0/1     Init:Error   2          30s
     ```
@@ -574,17 +577,18 @@ An `initContainer` runs to completion before the main container starts. If it fa
     Use `describe` to read the init container failure events.
 
     ```bash
-    guru@controller:~$ kubectl describe pod init-tester
+    kubectl describe pod init-tester
     ```
 
 3. Delete the pod, fix the command from `/bin/false` to `/bin/true`, and recreate it.
 
     ```bash
-    guru@controller:~$ kubectl delete pod init-tester
-    guru@controller:~$ vim init-tester.yaml
+    kubectl delete pod init-tester
+    vim init-tester.yaml
     ```
 
     Change:
+
     ```yaml
     command: [/bin/true]
     ```
@@ -592,8 +596,8 @@ An `initContainer` runs to completion before the main container starts. If it fa
 4. Create the pod again and verify the nginx webservice container starts once the initContainer succeeds.
 
     ```bash
-    guru@controller:~$ kubectl create -f init-tester.yaml
-    guru@controller:~$ kubectl get pod init-tester
+    kubectl create -f init-tester.yaml
+    kubectl get pod init-tester
     NAME           READY   STATUS    RESTARTS   AGE
     init-tester    1/1     Running   0          10s
     ```
@@ -601,7 +605,7 @@ An `initContainer` runs to completion before the main container starts. If it fa
 5. Delete the pod when done.
 
     ```bash
-    guru@controller:~$ kubectl delete pod init-tester
+    kubectl delete pod init-tester
     ```
 
 ---
@@ -613,7 +617,7 @@ CRDs extend the Kubernetes API with new resource types.
 1. View all CRDs currently installed in the cluster.
 
     ```bash
-    guru@controller:~$ kubectl get crd
+    kubectl get crd
     ```
 
     With Calico as the CNI, you will see Calico-related CRDs (e.g. `caliconetworkpolicies`, `ippools`, `felixconfigurations`). If additional operators are installed you may see more.
@@ -621,7 +625,7 @@ CRDs extend the Kubernetes API with new resource types.
 2. Pick one of the CRDs listed and inspect its full definition.
 
     ```bash
-    guru@controller:~$ kubectl get crd <crd-name> -o yaml
+    kubectl get crd <crd-name> -o yaml
     ```
 
     Note the `group`, `kind`, `plural`, `scope`, and available `versions`.
@@ -629,21 +633,21 @@ CRDs extend the Kubernetes API with new resource types.
 3. Try querying for resources of that custom type. Most will return empty unless instances have been created.
 
     ```bash
-    guru@controller:~$ kubectl get <kind-from-crd>
+    kubectl get <kind-from-crd>
     No resources found
     ```
 
 4. Explore additional CRDs in the cluster. Note that Kubernetes itself ships with several built-in CRDs for features like autoscaling and flow control.
 
     ```bash
-    guru@controller:~$ kubectl get crd | wc -l
+    kubectl get crd | wc -l
     ```
 
 ---
 
 ## Exercise 4.8: Domain Review
 
-!!! warning "Important"
+!!! important
     Source pages and content in this review can change at any time. Always check the current version before your exam.
 
 Revisit the CKAD curriculum and locate topics covered in this chapter:
@@ -653,42 +657,40 @@ Revisit the CKAD curriculum and locate topics covered in this chapter:
 - Understand multi-container Pod design patterns (sidecar, init, and others)
 - Discover and use resources that extend Kubernetes (CRD)
 
-1. Create a pod using `design-review1.yaml`. Examine the resource limits and requests.
+- Create a pod using `design-review1.yaml`. Examine the resource limits and requests.
 
     ```bash
-    guru@controller:~$ kubectl create -f design-review1.yaml
+    kubectl create -f design-review1.yaml
     ```
 
-2. Determine the CPU and memory resource requirements of `design-pod1`.
+- Determine the CPU and memory resource requirements of `design-pod1`.
+- Edit the pod resource requirements such that the CPU limit is exactly twice the amount requested. (Hint: current limit is `2.22`, request is `0.3` - subtract `0.22` from the limit to make it exactly `2x` the request.)
+- Increase the memory limit until the pod achieves `Running` status and holds it for at least a minute. Find the minimum memory limit required.
 
-3. Edit the pod resource requirements such that the CPU limit is exactly twice the amount requested. (Hint: current limit is `2.22`, request is `0.3` - subtract `0.22` from the limit to make it exactly `2x` the request.)
-
-4. Increase the memory limit until the pod achieves `Running` status and holds it for at least a minute. Find the minimum memory limit required.
-
-5. Create the pods defined in `design-review2.yaml`.
+- Create the pods defined in `design-review2.yaml`.
 
     ```bash
-    guru@controller:~$ kubectl create -f design-review2.yaml
+    kubectl create -f design-review2.yaml
     ```
 
     View all pods and their labels.
 
     ```bash
-    guru@controller:~$ kubectl get pods --show-labels
+    kubectl get pods --show-labels
     ```
 
-6. Delete only the pods with the label `review=tux` using `--selector`. This should delete two of the four pods.
+- Delete only the pods with the label `review=tux` using `--selector`. This should delete two of the four pods.
 
     ```bash
-    guru@controller:~$ kubectl delete pod --selector review=tux
+    kubectl delete pod --selector review=tux
     ```
 
-7. Create a new CronJob that runs `busybox` with the `sleep 30` command every 3 minutes. Verify it runs correctly. Then update the schedule so it runs at a specific time 10 minutes from now, every week (e.g. if it's 14:14, set it to run at `24 14 * * 1`).
+- Create a new CronJob that runs `busybox` with the `sleep 30` command every 3 minutes. Verify it runs correctly. Then update the schedule so it runs at a specific time 10 minutes from now, every week (e.g. if it's 14:14, set it to run at `24 14 * * 1`).
 
-8. Delete all objects created during this review.
+- Delete all objects created during this review.
 
     ```bash
-    guru@controller:~$ kubectl delete pod design-pod1 label-pod3 label-pod4 --ignore-not-found
-    guru@controller:~$ kubectl delete cronjobs.batch sleepy --ignore-not-found
-    guru@controller:~$ kubectl delete deploy stressmeout --ignore-not-found
+    kubectl delete pod design-pod1 label-pod3 label-pod4 --ignore-not-found
+    kubectl delete cronjobs.batch sleepy --ignore-not-found
+    kubectl delete deploy stressmeout --ignore-not-found
     ```
