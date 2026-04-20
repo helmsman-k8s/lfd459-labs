@@ -1,10 +1,10 @@
-# LFD459 ? Kubernetes for Application Developers Lab Guide
+# LFD459 - Kubernetes for Application Developers Lab Guide
 
 Welcome to the student lab guide for **LFD459 / CKAD preparation**, delivered by **VEGA TRAINING**.
 
 ## How to use this guide
 
-Each chapter corresponds to a section of the LFD459 course. Follow the exercises in order ? later chapters build on earlier ones.
+Each chapter corresponds to a section of the LFD459 course. Follow the exercises in order - later chapters build on earlier ones.
 
 Work on your assigned lab nodes:
 

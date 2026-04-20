@@ -1,4 +1,4 @@
-# Chapter 5 ? Deployment Configuration
+# Chapter 5 - Deployment Configuration
 
 ## Lab Overview
 
@@ -14,7 +14,7 @@ This chapter builds directly on Chapter 3. You will configure your existing `sim
 
 ---
 
-## Exercise 5.1: Configure the Deployment ? ConfigMaps
+## Exercise 5.1: Configure the Deployment - ConfigMaps
 
 ConfigMaps decouple configuration from container images. They can be created from literal values, files, or directories, and consumed as environment variables or volume mounts.
 
@@ -157,7 +157,7 @@ ConfigMaps decouple configuration from container images. They can be created fro
     guru@controller:~$ kubectl create -f ~/app1/simpleapp.yaml
     ```
 
-13. The deployment will show `0/6` ready because the `readinessProbe` is still checking for `/tmp/healthy`. Fix this by updating the `readinessProbe` command in the simpleapp container to check for the presence of the `/etc/cars` directory instead ? which will always exist once the ConfigMap volume is mounted.
+13. The deployment will show `0/6` ready because the `readinessProbe` is still checking for `/tmp/healthy`. Fix this by updating the `readinessProbe` command in the simpleapp container to check for the presence of the `/etc/cars` directory instead - which will always exist once the ConfigMap volume is mounted.
 
     ```bash
     guru@controller:~$ kubectl delete deployment try1
@@ -199,7 +199,7 @@ ConfigMaps decouple configuration from container images. They can be created fro
 
 ---
 
-## Exercise 5.2: Configure the Deployment ? Attaching Storage
+## Exercise 5.2: Configure the Deployment - Attaching Storage
 
 We will configure an NFS server on the controller node, create a PersistentVolume backed by it, and attach it to the `try1` deployment.
 
@@ -239,7 +239,7 @@ We will configure an NFS server on the controller node, create a PersistentVolum
     guru@worker1:~$ sudo umount /mnt
     ```
 
-4. Return to the **controller**. Edit `PVol.yaml` ? the `server:` field currently says `cp`, change it to `controller`.
+4. Return to the **controller**. Edit `PVol.yaml` - the `server:` field currently says `cp`, change it to `controller`.
 
     ```bash
     guru@controller:~$ vim PVol.yaml
@@ -270,7 +270,7 @@ We will configure an NFS server on the controller node, create a PersistentVolum
     guru@controller:~$ kubectl get pvc
     ```
 
-7. Create a PVC using `pvc.yaml`. It requests 200Mi with `ReadWriteMany` access ? it will bind to `pvvol-1` since that is the only matching available volume.
+7. Create a PVC using `pvc.yaml`. It requests 200Mi with `ReadWriteMany` access - it will bind to `pvvol-1` since that is the only matching available volume.
 
     ```bash
     guru@controller:~$ kubectl create -f pvc.yaml
@@ -281,7 +281,7 @@ We will configure an NFS server on the controller node, create a PersistentVolum
     pvc-one   Bound    pvvol-1   1Gi        RWX
     ```
 
-    Note the PVC claimed 1Gi even though only 200Mi was requested ? Kubernetes uses the smallest available volume that satisfies the request.
+    Note the PVC claimed 1Gi even though only 200Mi was requested - Kubernetes uses the smallest available volume that satisfies the request.
 
 8. Verify `pvvol-1` is now `Bound`.
 
@@ -553,7 +553,7 @@ We will build a new version of the `simpleapp` image, push it to the local regis
     guru@worker1:~$ sudo podman pull $repo/simpleapp:v2
     ```
 
-    Note: pulling `simpleapp` without a tag pulls `latest` ? which is the **original** image. `latest` is just a string label, not a guarantee of the newest image.
+    Note: pulling `simpleapp` without a tag pulls `latest` - which is the **original** image. `latest` is just a string label, not a guarantee of the newest image.
 
 7. Return to the **controller**. Use `kubectl edit` to update the `try1` deployment to use `v2`. Find the `simpleapp` image line and append `:v2`.
 
@@ -570,7 +570,7 @@ We will build a new version of the `simpleapp` image, push it to the local regis
     - image: 10.97.40.62:5000/simpleapp:v2
     ```
 
-8. Watch the rolling update. Pods are replaced gradually ? old pods terminate as new ones become ready.
+8. Watch the rolling update. Pods are replaced gradually - old pods terminate as new ones become ready.
 
     ```bash
     guru@controller:~/app1$ kubectl get events | tail -20

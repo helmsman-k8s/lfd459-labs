@@ -1,4 +1,4 @@
-# Chapter 3 ? Build
+# Chapter 3 - Build
 
 ## Lab Overview
 
@@ -43,7 +43,7 @@ In this chapter you will containerize a simple Python application using Podman, 
 
     The script runs in an infinite loop, writing the hostname and current timestamp to a file called `date.out` every 5 seconds.
 
-5. Make the script executable and run it briefly to verify it works. Use **Ctrl-C** to stop it after 15?20 seconds.
+5. Make the script executable and run it briefly to verify it works. Use **Ctrl-C** to stop it after 15-20 seconds.
 
     ```bash
     guru@controller:~/app1$ chmod +x simple.py
@@ -80,7 +80,7 @@ In this chapter you will containerize a simple Python application using Podman, 
     ```
 
     !!! note
-        The filename must be exactly `Dockerfile` ? capital D, no extension.
+        The filename must be exactly `Dockerfile` - capital D, no extension.
 
 8. Install Podman. Podman is a daemonless container tool compatible with Docker syntax.
 
@@ -156,7 +156,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     persistentvolume/vol2 created
     ```
 
-2. Note the ClusterIP assigned to the registry service. In this setup it is expected to be `10.97.40.62` ? verify this matches.
+2. Note the ClusterIP assigned to the registry service. In this setup it is expected to be `10.97.40.62` - verify this matches.
 
     ```bash
     guru@controller:~$ kubectl get svc | grep registry
@@ -164,7 +164,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```
 
     !!! warning "If the ClusterIP is different"
-        The `easyregistry.yaml` hardcodes `clusterIP: 10.97.40.62`. If a different IP was assigned, delete the service, edit the YAML to match the actual IP, and recreate it. The `local-repo-setup.sh` script also uses this same IP ? edit it before running if needed.
+        The `easyregistry.yaml` hardcodes `clusterIP: 10.97.40.62`. If a different IP was assigned, delete the service, edit the YAML to match the actual IP, and recreate it. The `local-repo-setup.sh` script also uses this same IP - edit it before running if needed.
 
 3. Verify the registry is responding.
 
@@ -303,7 +303,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
 
 A `readinessProbe` tells Kubernetes when a container is ready to accept traffic. Until the probe succeeds, the pod is not sent any requests.
 
-1. Edit `simpleapp.yaml` and add a `readinessProbe` to the `simpleapp` container. The probe runs `cat /tmp/healthy` ? the container is not considered ready until that file exists.
+1. Edit `simpleapp.yaml` and add a `readinessProbe` to the `simpleapp` container. The probe runs `cat /tmp/healthy` - the container is not considered ready until that file exists.
 
     ```bash
     guru@controller:~/app1$ vim simpleapp.yaml
@@ -339,7 +339,7 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     deployment.apps/try1 created
     ```
 
-3. The deployment shows 6 pods but **0 available** ? all are waiting for `/tmp/healthy` to exist.
+3. The deployment shows 6 pods but **0 available** - all are waiting for `/tmp/healthy` to exist.
 
     ```bash
     guru@controller:~/app1$ kubectl get deployment
@@ -347,7 +347,7 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     try1       0/6     6            0           15s
     ```
 
-4. Check the pods. Each try1 pod shows `0/1` in READY ? the readinessProbe is failing.
+4. Check the pods. Each try1 pod shows `0/1` in READY - the readinessProbe is failing.
 
     ```bash
     guru@controller:~/app1$ kubectl get pods
@@ -516,7 +516,7 @@ Revisit the CKAD curriculum and locate the topics covered in this chapter:
     ```
 
     !!! hint
-        The web server (`nginx`) listens on port 80. The proxy (`goproxy`) listens on port 8080. Examine the probe configurations carefully ? one of the port numbers is wrong.
+        The web server (`nginx`) listens on port 80. The proxy (`goproxy`) listens on port 8080. Examine the probe configurations carefully - one of the port numbers is wrong.
 
 4. Once fixed, access the default nginx page and verify the GET request appears in the container log.
 

@@ -1,4 +1,4 @@
-# Chapter 7 ? Exposing Applications
+# Chapter 7 - Exposing Applications
 
 ## Lab Overview
 
@@ -11,7 +11,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
 
 ## Exercise 7.1: Expose a Service
 
-### ClusterIP ? Internal Access Only
+### ClusterIP - Internal Access Only
 
 1. Connect to the **controller** node and move into the `app2` directory. View existing services.
 
@@ -33,7 +33,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     service "secondapp" deleted
     ```
 
-3. Recreate the service using `newservice.yaml`. Note that no `type` is specified ? it defaults to `ClusterIP`.
+3. Recreate the service using `newservice.yaml`. Note that no `type` is specified - it defaults to `ClusterIP`.
 
     ```bash
     guru@controller:~/app2$ kubectl create -f newservice.yaml
@@ -65,7 +65,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     guru@controller:~/app2$ kubectl get deployment newserver -o wide
     ```
 
-    Note the `SELECTOR` column ? it will be `app=newserver`.
+    Note the `SELECTOR` column - it will be `app=newserver`.
 
 7. Edit the `secondapp` service to switch the selector to `newserver`'s label.
 
@@ -75,20 +75,20 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
 
     Change `selector.example: second` to `selector.app: newserver`.
 
-8. Test ? traffic should now show the httpd default page instead of nginx.
+8. Test - traffic should now show the httpd default page instead of nginx.
 
     ```bash
     guru@controller:~/app2$ curl http://10.98.148.52
     <html><body><h1>It works!</h1></body></html>
     ```
 
-9. Edit the selector back to `example: second` and test again ? nginx returns. Then delete the `newserver` deployment.
+9. Edit the selector back to `example: second` and test again - nginx returns. Then delete the `newserver` deployment.
 
     ```bash
     guru@controller:~/app2$ kubectl delete deployment newserver
     ```
 
-### NodePort ? External Access
+### NodePort - External Access
 
 10. Edit `newservice.yaml` to add a NodePort type and pin the high port to `32000`.
 
@@ -144,7 +144,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     guru@controller:~/app2$ kubectl create -f newservice.yaml
     ```
 
-14. Check the service. `EXTERNAL-IP` will remain `<pending>` ? there is no cloud load balancer in this environment. The NodePort still works.
+14. Check the service. `EXTERNAL-IP` will remain `<pending>` - there is no cloud load balancer in this environment. The NodePort still works.
 
     ```bash
     guru@controller:~/app2$ kubectl get svc secondapp
@@ -169,7 +169,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     Inside the container:
 
     ```sh
-    # Resolve the secondapp service ? only works for services in the same namespace
+    # Resolve the secondapp service - only works for services in the same namespace
     / $ nslookup secondapp
     Name: secondapp.default.svc.cluster.local
     Address: 10.96.214.133
@@ -218,7 +218,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     Inside:
 
     ```sh
-    # Short name fails ? shopping is not in the default namespace
+    # Short name fails - shopping is not in the default namespace
     / $ nslookup shopping
     ** server can't find shopping.default.svc.cluster.local: NXDOMAIN
 
@@ -289,7 +289,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     STATUS: deployed
     ```
 
-5. Verify the controller pods are running ? one per node (DaemonSet).
+5. Verify the controller pods are running - one per node (DaemonSet).
 
     ```bash
     guru@controller:~/ingress-nginx$ kubectl get pods --all-namespaces | grep myingress
@@ -298,7 +298,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     default   myingress-ingress-nginx-controller-zzzzz   1/1   Running   0   20s   worker2
     ```
 
-6. Check the ingress controller service. `EXTERNAL-IP` will be `<pending>` ? that's expected.
+6. Check the ingress controller service. `EXTERNAL-IP` will be `<pending>` - that's expected.
 
     ```bash
     guru@controller:~/ingress-nginx$ kubectl get svc | grep myingress
@@ -344,7 +344,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```
 
     !!! warning "Old ingress file"
-        A file called `ingress_rule.yaml` exists in the lab files ? it uses `apiVersion: networking.k8s.io/v1beta1` which was **removed in Kubernetes 1.22**. Do not use it. Always use `ingress.yaml` (v1).
+        A file called `ingress_rule.yaml` exists in the lab files - it uses `apiVersion: networking.k8s.io/v1beta1` which was **removed in Kubernetes 1.22**. Do not use it. Always use `ingress.yaml` (v1).
 
 9. Copy and apply the ingress rule.
 
@@ -366,11 +366,11 @@ An ingress controller allows you to route traffic to multiple services using a s
     grep myingress | grep controller | awk 'NR==1{print $6}')
     echo $INGRESS_IP
 
-    # Without Host header ? 404 (ingress has no default backend)
+    # Without Host header - 404 (ingress has no default backend)
     guru@controller:~/app2$ curl $INGRESS_IP
     <html><head><title>404 Not Found</title></head>...</html>
 
-    # With matching Host header ? nginx welcome page
+    # With matching Host header - nginx welcome page
     guru@controller:~/app2$ curl -H "Host: www.example.com" http://$INGRESS_IP
     <!DOCTYPE html>
     <html><head><title>Welcome to nginx!</title>...
@@ -460,14 +460,14 @@ An ingress controller allows you to route traffic to multiple services using a s
     <!DOCTYPE html><html><head><title>Welcome to nginx!</title>...
     ```
 
-16. Consider: how would you switch `thirdpage.org` traffic to an `httpd` server by editing only the ingress rule ? without touching the pods or services?
+16. Consider: how would you switch `thirdpage.org` traffic to an `httpd` server by editing only the ingress rule - without touching the pods or services-
 
 ---
 
 ## Exercise 7.2b: Linkerd Service Mesh (Optional)
 
 !!! note "Optional exploration"
-    Linkerd is not tested on the CKAD exam. This exercise is provided for exploration. It takes 10?20 minutes and requires internet access. Skip it if you are focused on exam preparation.
+    Linkerd is not tested on the CKAD exam. This exercise is provided for exploration. It takes 10-20 minutes and requires internet access. Skip it if you are focused on exam preparation.
 
 The `setupLinkerd.txt` file in `~/lfd459/ch07-exposing-apps/` contains the install commands. Key steps:
 

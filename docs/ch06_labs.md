@@ -1,17 +1,17 @@
-# Chapter 6 ? Understanding Security
+# Chapter 6 - Understanding Security
 
 ## Lab Overview
 
 In this chapter you will work with security contexts to control container UIDs and Linux capabilities, create and consume Secrets, configure ServiceAccounts with RBAC, and understand NetworkPolicies. A new working directory `~/app2` is used throughout.
 
 !!! note "NetworkPolicy and Calico"
-    This cluster uses **Calico** as the CNI plugin. Calico **fully enforces NetworkPolicies** ? when you apply a policy in Exercises 6.4 and 6.5, traffic will actually be blocked as described. The curl and nc tests will time out as expected. This matches the behaviour you will see on the CKAD exam.
+    This cluster uses **Calico** as the CNI plugin. Calico **fully enforces NetworkPolicies** - when you apply a policy in Exercises 6.4 and 6.5, traffic will actually be blocked as described. The curl and nc tests will time out as expected. This matches the behaviour you will see on the CKAD exam.
 
 ---
 
 ## Exercise 6.1: Set SecurityContext for a Pod and Container
 
-A SecurityContext restricts what a container process can do ? which UID it runs as, whether it can escalate privileges, and which Linux capabilities it has.
+A SecurityContext restricts what a container process can do - which UID it runs as, whether it can escalate privileges, and which Linux capabilities it has.
 
 1. Connect to the **controller** node. Create a new directory for the second application and copy the chapter lab files.
 
@@ -134,7 +134,7 @@ A SecurityContext restricts what a container process can do ? which UID it runs 
 
 ## Exercise 6.2: Create and Consume Secrets
 
-Secrets store sensitive data in base64-encoded form. They are consumed like ConfigMaps ? as environment variables or volume mounts.
+Secrets store sensitive data in base64-encoded form. They are consumed like ConfigMaps - as environment variables or volume mounts.
 
 1. Generate a base64-encoded password.
 
@@ -143,7 +143,7 @@ Secrets store sensitive data in base64-encoded form. They are consumed like Conf
     TEZUckAxbgo=
     ```
 
-2. Review `secret.yaml` ? it already contains the encoded password.
+2. Review `secret.yaml` - it already contains the encoded password.
 
     ```bash
     guru@controller:~/app2$ cat secret.yaml
@@ -216,7 +216,7 @@ Secrets store sensitive data in base64-encoded form. They are consumed like Conf
     / $ exit
     ```
 
-    The mount point uses symlinks ? the actual data is in a timestamped directory, and `..data` is a symlink to it. This allows Kubernetes to atomically update secrets.
+    The mount point uses symlinks - the actual data is in a timestamped directory, and `..data` is a symlink to it. This allows Kubernetes to atomically update secrets.
 
 ---
 
@@ -365,9 +365,9 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     ```
 
     !!! note "If only 1/2 containers start"
-        If the pod shows `CrashLoopBackOff`, check `kubectl logs secondapp webserver`. If there is a permission error about creating directories, ensure the pod-level `securityContext.runAsUser` is commented out ? nginx must run as root.
+        If the pod shows `CrashLoopBackOff`, check `kubectl logs secondapp webserver`. If there is a permission error about creating directories, ensure the pod-level `securityContext.runAsUser` is commented out - nginx must run as root.
 
-4. Try to expose the pod ? this will fail because the pod has no labels.
+4. Try to expose the pod - this will fail because the pod has no labels.
 
     ```bash
     guru@controller:~/app2$ kubectl expose pod secondapp --type=NodePort --port=80
@@ -515,7 +515,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     -- ping -c5 <secondapp-pod-ip>
     ```
 
-    With Calico this will succeed ? the ingress rule allows all pod traffic including ICMP. The next step will restrict to TCP port 80 only, at which point ping will fail.
+    With Calico this will succeed - the ingress rule allows all pod traffic including ICMP. The next step will restrict to TCP port 80 only, at which point ping will fail.
 
 6. Update the policy to only allow TCP port 80, and block ICMP (ping).
 
@@ -569,7 +569,7 @@ Revisit the CKAD curriculum for topics covered in this chapter:
 
 1. Create a new deployment using the `nginx` image.
 
-2. Create a `LoadBalancer` service to expose the deployment on port 80. Note the `EXTERNAL-IP` will remain `<pending>` without a cloud provider ? the NodePort still works.
+2. Create a `LoadBalancer` service to expose the deployment on port 80. Note the `EXTERNAL-IP` will remain `<pending>` without a cloud provider - the NodePort still works.
 
 3. Create a new NetworkPolicy called `netblock` that blocks all traffic to pods in this deployment only (use a `podSelector` that matches your deployment's labels, not `{}`). Verify the object is created.
 

@@ -1,4 +1,4 @@
-# Chapter 2 ? Kubernetes Architecture
+# Chapter 2 - Kubernetes Architecture
 
 ## Lab Overview
 
@@ -287,7 +287,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     service "basicservice" deleted
     ```
 
-    Review `basicservice-AllDone.yaml` ? it already has `type: NodePort` added:
+    Review `basicservice-AllDone.yaml` - it already has `type: NodePort` added:
 
     ```bash
     guru@controller:~$ cat basicservice-AllDone.yaml
@@ -334,7 +334,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
 
 ## Exercise 2.4: Multi-Container Pods
 
-1. Edit `basic.yaml` to add a second container acting as a logging sidecar. Add the `fdlogger` container after the `webcont` container ? the dash should align with the previous container dash.
+1. Edit `basic.yaml` to add a second container acting as a logging sidecar. Add the `fdlogger` container after the `webcont` container - the dash should align with the previous container dash.
 
     ```bash
     guru@controller:~$ vim basic.yaml
@@ -429,7 +429,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
 
     You should see Calico (`calico-system` or `kube-system`), CoreDNS, etcd, and other control plane components.
 
-6. Query a namespace that does not exist. Note no error is returned ? simply no resources found.
+6. Query a namespace that does not exist. Note no error is returned - simply no resources found.
 
     ```bash
     guru@controller:~$ kubectl get pod -n fakenamespace
@@ -457,7 +457,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     guru@controller:~$ kubectl get deploy,rs,po
     ```
 
-    Notice the age on the new ReplicaSet and pod is only a few seconds ? the Deployment reconciled immediately.
+    Notice the age on the new ReplicaSet and pod is only a few seconds - the Deployment reconciled immediately.
 
 10. Delete the top-level Deployment. After about 30 seconds everything it manages cascades down.
 
@@ -488,7 +488,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
 
 2. Open the **Curriculum Overview** and **Candidate Handbook** in separate tabs and read both in full.
 
-3. In the Curriculum Overview, find the **Application Design and Build** domain. Notice the sub-topics ? many will be covered in the upcoming chapters.
+3. In the Curriculum Overview, find the **Application Design and Build** domain. Notice the sub-topics - many will be covered in the upcoming chapters.
 
 4. In the Candidate Handbook, find the **Important Instructions: CKA and CKAD** section. Note the Kubernetes version for the exam and the list of allowed resources.
 

@@ -1,4 +1,4 @@
-# Chapter 4 ? Design
+# Chapter 4 - Design
 
 ## Lab Overview
 
@@ -38,13 +38,13 @@ While application developers don't configure cluster networking, understanding t
 
     Answer the following questions:
 
-    - Which plugins support vxlans?
-    - Which are layer 2 plugins?
-    - Which are layer 3?
-    - Which support network policies?
-    - Which can encrypt all TCP and UDP traffic?
+    - Which plugins support vxlans-
+    - Which are layer 2 plugins-
+    - Which are layer 3-
+    - Which support network policies-
+    - Which can encrypt all TCP and UDP traffic-
 
-??? success "Plugin Answers"
+--- success "Plugin Answers"
     - **vxlans**: Canal, Calico, Flannel, Weave Net, Cilium
     - **Layer 2**: Canal, Weave Net
     - **Layer 3**: Calico, Romana, Kube Router
@@ -58,17 +58,17 @@ While application developers don't configure cluster networking, understanding t
 
 Consider the following questions based on what you learned in this chapter:
 
-1. Which deployment method allows the most flexibility ? one app per pod or multiple?
-2. Which allows the most granular scalability?
-3. Which has the best inter-container performance?
-4. How many IP addresses are assigned per pod?
-5. What are some ways containers can communicate within the same pod?
-6. What are some reasons to use multiple containers per pod?
+1. Which deployment method allows the most flexibility - one app per pod or multiple-
+2. Which allows the most granular scalability-
+3. Which has the best inter-container performance-
+4. How many IP addresses are assigned per pod-
+5. What are some ways containers can communicate within the same pod-
+6. What are some reasons to use multiple containers per pod-
 
-??? success "Multi-Pod Answers"
-    1. One per pod ? most flexible
-    2. One per pod ? most granular scalability
-    3. Multiple per pod ? best inter-container performance
+--- success "Multi-Pod Answers"
+    1. One per pod - most flexible
+    2. One per pod - most granular scalability
+    3. Multiple per pod - best inter-container performance
     4. One IP per pod
     5. IPC, loopback interface, shared filesystem
     6. Lean containers may lack logging or other features. Adding sidecar, ambassador, or adapter containers provides that functionality without modifying the primary container.
@@ -227,7 +227,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
     sleepy   4/5           16s        16s
     ```
 
-14. Check the status message in the job YAML ? it should show `DeadlineExceeded`.
+14. Check the status message in the job YAML - it should show `DeadlineExceeded`.
 
     ```bash
     guru@controller:~$ kubectl get job sleepy -o yaml | grep -A8 "^status:"
@@ -278,7 +278,7 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
     ```
 
     !!! warning "batch/v1beta1 is removed"
-        A file named `cron-job.yaml` is also in your directory ? it uses `apiVersion: batch/v1beta1` which was **removed in Kubernetes 1.25**. Do not use it. Always use `batch/v1` for CronJobs on this cluster.
+        A file named `cron-job.yaml` is also in your directory - it uses `apiVersion: batch/v1beta1` which was **removed in Kubernetes 1.25**. Do not use it. Always use `batch/v1` for CronJobs on this cluster.
 
 2. Create the CronJob and monitor it. The first job will not run for up to 2 minutes.
 
@@ -327,7 +327,7 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
             restartPolicy: Never
     ```
 
-5. Delete and recreate the CronJob. Wait 2 minutes, then observe that jobs are created but never complete ? they are killed by the deadline.
+5. Delete and recreate the CronJob. Wait 2 minutes, then observe that jobs are created but never complete - they are killed by the deadline.
 
     ```bash
     guru@controller:~$ kubectl delete cronjobs.batch sleepy
@@ -404,7 +404,7 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
     design2-766d48574f-xttgg   1/1   Running   0   2m12s
     ```
 
-    There are now **two** pods. The deployment noticed the edited pod no longer matched its selector (`app=design2`) and created a replacement. The edited pod is now orphaned ? no controller manages it.
+    There are now **two** pods. The deployment noticed the edited pod no longer matched its selector (`app=design2`) and created a replacement. The edited pod is now orphaned - no controller manages it.
 
 7. Delete the deployment.
 
@@ -413,7 +413,7 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
     deployment.apps "design2" deleted
     ```
 
-8. Check for remaining pods. The orphaned pod (with the colour label) still exists ? the deployment deletion only removed pods it was managing.
+8. Check for remaining pods. The orphaned pod (with the colour label) still exists - the deployment deletion only removed pods it was managing.
 
     ```bash
     guru@controller:~$ kubectl get pods | grep design2
@@ -475,7 +475,7 @@ Resource requests tell the scheduler how much CPU/memory a pod needs. Limits cap
     ```
 
     !!! tip
-        The `edited-stress.yaml` file already has these resources added ? use it as a reference.
+        The `edited-stress.yaml` file already has these resources added - use it as a reference.
 
 4. Create the deployment and check the pod status. Because the stress command requests more memory than the limit, the container will be OOMKilled.
 
@@ -661,7 +661,7 @@ Revisit the CKAD curriculum and locate topics covered in this chapter:
 
 2. Determine the CPU and memory resource requirements of `design-pod1`.
 
-3. Edit the pod resource requirements such that the CPU limit is exactly twice the amount requested. (Hint: current limit is `2.22`, request is `0.3` ? subtract `0.22` from the limit to make it exactly `2x` the request.)
+3. Edit the pod resource requirements such that the CPU limit is exactly twice the amount requested. (Hint: current limit is `2.22`, request is `0.3` - subtract `0.22` from the limit to make it exactly `2x` the request.)
 
 4. Increase the memory limit until the pod achieves `Running` status and holds it for at least a minute. Find the minimum memory limit required.
 

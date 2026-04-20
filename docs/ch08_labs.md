@@ -1,8 +1,8 @@
-# Chapter 8 ? Application Troubleshooting
+# Chapter 8 - Application Troubleshooting
 
 ## Lab Overview
 
-This final chapter covers the troubleshooting flow for Kubernetes applications ? from pod inspection to service endpoints to kube-proxy. You will work with API deprecations, use `kubectl debug` with ephemeral containers, and tackle a multi-bug deployment as a domain review.
+This final chapter covers the troubleshooting flow for Kubernetes applications - from pod inspection to service endpoints to kube-proxy. You will work with API deprecations, use `kubectl debug` with ephemeral containers, and tackle a multi-bug deployment as a domain review.
 
 ---
 
@@ -18,7 +18,7 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
     secondapp   2/2     Running   49         2d
     ```
 
-    The pod is running. Note `busy` has many restarts ? this is expected, as the `sleep 3600` command completes every hour and the container is restarted. `webserver` (nginx) should have 0 restarts.
+    The pod is running. Note `busy` has many restarts - this is expected, as the `sleep 3600` command completes every hour and the container is restarted. `webserver` (nginx) should have 0 restarts.
 
 2. Describe the pod in detail. Work through every section.
 
@@ -43,7 +43,7 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
       PodScheduled      True
     ```
 
-4. Scan the Events section at the bottom of `describe` output for any `Warning` entries. Repeated `Pulling` events for `busybox` are normal ? they accompany each restart.
+4. Scan the Events section at the bottom of `describe` output for any `Warning` entries. Repeated `Pulling` events for `busybox` are normal - they accompany each restart.
 
     ```bash
     guru@controller:~$ kubectl describe pod secondapp | grep -A20 "^Events:"
@@ -75,10 +75,10 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
     search default.svc.cluster.local svc.cluster.local cluster.local
 
     / $ nc -vz www.linux.com 25
-    # If this hangs, Ctrl-C ? port 25 (SMTP) may be blocked by the lab network
+    # If this hangs, Ctrl-C - port 25 (SMTP) may be blocked by the lab network
 
     / $ wget http://www.linux.com/
-    # May get "Permission denied" writing index.html ? this is expected
+    # May get "Permission denied" writing index.html - this is expected
     # with runAsUser: 2000. Connectivity itself works.
 
     / $ exit
@@ -93,7 +93,7 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
 
     Confirm `selector.example: second` matches the pod label `example=second`.
 
-8. Verify the endpoint object exists and has the correct pod IP and port. An empty `ENDPOINTS` field means the selector matched nothing ? no pods are ready.
+8. Verify the endpoint object exists and has the correct pod IP and port. An empty `ENDPOINTS` field means the selector matched nothing - no pods are ready.
 
     ```bash
     guru@controller:~$ kubectl get ep
@@ -127,7 +127,7 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
     guru@controller:~$ curl localhost:32000
     ```
 
-    A successful nginx response confirms the full path ? service ? endpoint ? pod ? is working.
+    A successful nginx response confirms the full path - service - endpoint - pod - is working.
 
 ---
 
@@ -179,16 +179,16 @@ The Kubernetes API evolves. YAML that worked on older clusters may fail on newer
     guru@controller:~$ kubectl delete deployment broken
     ```
 
-??? success "Fixes revealed"
-    1. `apiVersion: extensions/v1beta1` ? `apiVersion: apps/v1` (`extensions/v1beta1` was removed in Kubernetes 1.16)
-    2. Add `selector.matchLabels: {app: broken}` under `spec:` ? mandatory for `apps/v1`
+--- success "Fixes revealed"
+    1. `apiVersion: extensions/v1beta1` - `apiVersion: apps/v1` (`extensions/v1beta1` was removed in Kubernetes 1.16)
+    2. Add `selector.matchLabels: {app: broken}` under `spec:` - mandatory for `apps/v1`
     3. Change pod template label from `app: thirdpage` to `app: broken` so the selector matches
 
 ---
 
 ## Exercise 8.3: Troubleshooting with Ephemeral Containers
 
-Ephemeral containers allow you to attach a debugging shell to a running pod ? even if the original container image has no shell. This is the modern replacement for exec when the shell has been removed or was never present.
+Ephemeral containers allow you to attach a debugging shell to a running pod - even if the original container image has no shell. This is the modern replacement for exec when the shell has been removed or was never present.
 
 1. Deploy the broken application.
 
@@ -198,7 +198,7 @@ Ephemeral containers allow you to attach a debugging shell to a running pod ? ev
     service/nginx-debug-svc created
     ```
 
-2. Check the pod status. It will show `0/1 READY` ? running but not ready.
+2. Check the pod status. It will show `0/1 READY` - running but not ready.
 
     ```bash
     guru@controller:~$ kubectl get all
@@ -209,7 +209,7 @@ Ephemeral containers allow you to attach a debugging shell to a running pod ? ev
     service/nginx-debug-svc ClusterIP  10.111.195.30    80/TCP    5s
     ```
 
-3. Try to connect to the service. It will fail ? the pod is not ready, so it has no endpoints.
+3. Try to connect to the service. It will fail - the pod is not ready, so it has no endpoints.
 
     ```bash
     guru@controller:~$ kubectl get ep nginx-debug-svc
@@ -235,10 +235,10 @@ Ephemeral containers allow you to attach a debugging shell to a running pod ? ev
     ```
 
     Two things are happening:
-    - The **startupProbe** runs `rm -f /bin/bash` ? it deletes the bash shell from the container
-    - The **readinessProbe** checks for `/tmp/app.log` ? this file doesn't exist yet
+    - The **startupProbe** runs `rm -f /bin/bash` - it deletes the bash shell from the container
+    - The **readinessProbe** checks for `/tmp/app.log` - this file doesn't exist yet
 
-6. Try to exec directly into the pod ? it will fail because `/bin/bash` has been removed.
+6. Try to exec directly into the pod - it will fail because `/bin/bash` has been removed.
 
     ```bash
     guru@controller:~$ kubectl exec -it pod/nginx-debug-pod -- bash
@@ -271,7 +271,7 @@ Ephemeral containers allow you to attach a debugging shell to a running pod ? ev
     nginx-debug-pod
     ```
 
-10. Create the missing `/tmp/app.log` file by writing through `/proc/1/root` ? the root filesystem of the target container (PID 1 = nginx).
+10. Create the missing `/tmp/app.log` file by writing through `/proc/1/root` - the root filesystem of the target container (PID 1 = nginx).
 
     ```sh
     # echo "hello from debug" > /proc/1/root/tmp/app.log
@@ -293,7 +293,7 @@ Ephemeral containers allow you to attach a debugging shell to a running pod ? ev
     service/nginx-debug-svc ClusterIP  10.111.195.30   10.244.x.y:80
     ```
 
-12. Test service access ? it now works.
+12. Test service access - it now works.
 
     ```bash
     guru@controller:~$ curl 10.111.195.30
@@ -326,7 +326,7 @@ https://github.com/vmware-tanzu/sonobuoy/releases/latest/download/sonobuoy_linux
 guru@controller:~$ tar -xvf sonobuoy_linux_amd64.tar.gz
 guru@controller:~$ sudo mv sonobuoy /usr/local/bin/
 
-# Run tests (--wait blocks until complete ? up to 60+ minutes)
+# Run tests (--wait blocks until complete - up to 60+ minutes)
 guru@controller:~$ sonobuoy run --wait
 
 # In a second terminal, monitor progress
@@ -383,11 +383,11 @@ Revisit the CKAD curriculum for topics covered in this chapter:
     guru@controller:~$ kubectl delete deploy igottrouble --ignore-not-found
     ```
 
-??? success "Fixes revealed"
-    1. `apiVersion: extensions/v1` ? `apiVersion: apps/v1` (invalid group)
-    2. `replicas: 0` ? `replicas: 1`
-    3. `selector.matchLabels: run: ugottrouble` ? `run: igottrouble` (typo ? doesn't match pod template label)
-    4. CPU `requests: 2.5` exceeds `limits: 1` ? requests cannot exceed limits. Fix: `requests.cpu: "0.5"` (or raise the limit)
+--- success "Fixes revealed"
+    1. `apiVersion: extensions/v1` - `apiVersion: apps/v1` (invalid group)
+    2. `replicas: 0` - `replicas: 1`
+    3. `selector.matchLabels: run: ugottrouble` - `run: igottrouble` (typo - doesn't match pod template label)
+    4. CPU `requests: 2.5` exceeds `limits: 1` - requests cannot exceed limits. Fix: `requests.cpu: "0.5"` (or raise the limit)
 
 ---
 
