@@ -375,5 +375,5 @@ Congratulations on completing all LFD459 lab chapters. Before sitting the CKAD e
 - Are familiar with the three documentation sources allowed during the exam
 - Have practised the domain review exercises at speed
 - Have reviewed the current CKAD curriculum at <https://www.cncf.io/certification/ckad/>
-
+x
 Good luck!
