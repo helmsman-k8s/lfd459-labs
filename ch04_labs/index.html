@@ -620,13 +620,13 @@
 <ol>
 <li>
 <p>Connect to the <strong>controller</strong> node. Verify the CNI plugin is active by reading the controller manager startup logs. Use Tab completion for the pod name.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>logs<span class="w"> </span>kube-controller-manager-controller
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>logs<span class="w"> </span>kube-controller-manager-controller
 </code></pre></div>
 <p>Look for lines referencing the network plugin initialization.</p>
 </li>
 <li>
 <p>Check the kube-proxy logs to see which proxy mode is active.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>logs<span class="w"> </span>kube-proxy-&lt;TAB&gt;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>logs<span class="w"> </span>kube-proxy-&lt;TAB&gt;
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Our CNI: Calico</p>
@@ -643,52 +643,62 @@
 </ul>
 <p>Answer the following questions:</p>
 <ul>
-<li>Which plugins support vxlans-</li>
-<li>Which are layer 2 plugins-</li>
-<li>Which are layer 3-</li>
-<li>Which support network policies-</li>
-<li>Which can encrypt all TCP and UDP traffic-</li>
+<li>Which plugins support vxlans?</li>
+<li>Which are layer 2 plugins?</li>
+<li>Which are layer 3?</li>
+<li>Which support network policies?</li>
+<li>Which can encrypt all TCP and UDP traffic?</li>
 </ul>
 </li>
 </ol>
-<p>--- success "Plugin Answers"
-    - <strong>vxlans</strong>: Canal, Calico, Flannel, Weave Net, Cilium
-    - <strong>Layer 2</strong>: Canal, Weave Net
-    - <strong>Layer 3</strong>: Calico, Romana, Kube Router
-    - <strong>Network policies</strong>: Calico, Canal, Kube Router, Weave Net, Cilium
-    - <strong>Encrypt TCP/UDP</strong>: Calico, Weave Net, Cilium</p>
-<div class="highlight"><pre><span></span><code>!!! note
-    Flannel does **not** support network policies natively. Calico, which this cluster uses, does. Keep this in mind in Chapter 6.
-</code></pre></div>
+<details class="success">
+<summary>Plugin Answers</summary>
+<ul>
+<li><strong>vxlans</strong>: Canal, Calico, Flannel, Weave Net, Cilium</li>
+<li><strong>Layer 2</strong>: Canal, Weave Net</li>
+<li><strong>Layer 3</strong>: Calico, Romana, Kube Router</li>
+<li><strong>Network policies</strong>: Calico, Canal, Kube Router, Weave Net, Cilium</li>
+<li><strong>Encrypt TCP/UDP</strong>: Calico, Weave Net, Cilium</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Flannel does <strong>not</strong> support network policies natively. Calico, which this cluster uses, does. Keep this in mind in Chapter 6.</p>
+</div>
+</details>
 <h3 id="multi-container-pod-considerations">Multi-Container Pod Considerations<a class="headerlink" href="#multi-container-pod-considerations" title="Permanent link">&para;</a></h3>
 <p>Consider the following questions based on what you learned in this chapter:</p>
 <ol>
-<li>Which deployment method allows the most flexibility - one app per pod or multiple-</li>
-<li>Which allows the most granular scalability-</li>
-<li>Which has the best inter-container performance-</li>
-<li>How many IP addresses are assigned per pod-</li>
-<li>What are some ways containers can communicate within the same pod-</li>
-<li>What are some reasons to use multiple containers per pod-</li>
+<li>Which deployment method allows the most flexibility - one app per pod or multiple?</li>
+<li>Which allows the most granular scalability?</li>
+<li>Which has the best inter-container performance?</li>
+<li>How many IP addresses are assigned per pod?</li>
+<li>What are some ways containers can communicate within the same pod?</li>
+<li>What are some reasons to use multiple containers per pod?</li>
 </ol>
-<p>--- success "Multi-Pod Answers"
-    1. One per pod - most flexible
-    2. One per pod - most granular scalability
-    3. Multiple per pod - best inter-container performance
-    4. One IP per pod
-    5. IPC, loopback interface, shared filesystem
-    6. Lean containers may lack logging or other features. Adding sidecar, ambassador, or adapter containers provides that functionality without modifying the primary container.</p>
+<details class="success">
+<summary>Multi-Pod Answers</summary>
+<ol>
+<li>One per pod - most flexible</li>
+<li>One per pod - most granular scalability</li>
+<li>Multiple per pod - best inter-container performance</li>
+<li>One IP per pod</li>
+<li>IPC, loopback interface, shared filesystem</li>
+<li>Lean containers may lack logging or other features. Adding sidecar, ambassador, or adapter containers provides that functionality without modifying the primary container.</li>
+</ol>
+</details>
 <hr />
 <h2 id="exercise-42-create-a-job">Exercise 4.2: Create a Job<a class="headerlink" href="#exercise-42-create-a-job" title="Permanent link">&para;</a></h2>
 <p>Jobs run a container a set number of times to completion, rather than keeping it running continuously.</p>
 <ol>
 <li>
-<p>Copy the chapter lab files to your home directory.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>guru@controller:~$<span class="w"> </span>cp<span class="w"> </span>~/lfd459/ch04-design/*<span class="w"> </span>.
+<p>Move into the chapter lab directory.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">cd</span><span class="w"> </span>~/lfd459/ch04-design
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>ls
 </code></pre></div>
 </li>
 <li>
 <p>Review and create the basic job definition.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>guru@controller:~$<span class="w"> </span>cat<span class="w"> </span>job.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>cat<span class="w"> </span>job.yaml
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">batch/v1</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Job</span>
@@ -704,40 +714,40 @@
 <a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;3&quot;</span><span class="p p-Indicator">]</span>
 <a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">      </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Never</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>job.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>job.yaml
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>job.batch/sleepy<span class="w"> </span>created
 </code></pre></div>
 </li>
 <li>
 <p>Verify the job completes successfully. Check while it is running, then again after it finishes.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>job
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>job
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>NAME<span class="w">     </span>COMPLETIONS<span class="w">   </span>DURATION<span class="w">   </span>AGE
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>sleepy<span class="w">   </span><span class="m">0</span>/1<span class="w">           </span>3s<span class="w">         </span>3s
 <a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>job
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>kubectl<span class="w"> </span>get<span class="w"> </span>job
 <a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>NAME<span class="w">     </span>COMPLETIONS<span class="w">   </span>DURATION<span class="w">   </span>AGE
 <a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>sleepy<span class="w">   </span><span class="m">1</span>/1<span class="w">           </span>7s<span class="w">         </span>11s
 </code></pre></div>
 </li>
 <li>
 <p>Describe the job to see its full details including parallelism, completions, and pod statuses.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>jobs.batch<span class="w"> </span>sleepy
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>jobs.batch<span class="w"> </span>sleepy
 </code></pre></div>
 </li>
 <li>
 <p>Inspect the default job parameters in YAML output. Note <code>backoffLimit: 6</code>, <code>completions: 1</code>, <code>parallelism: 1</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>jobs.batch<span class="w"> </span>sleepy<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A5<span class="w"> </span><span class="s2">&quot;^spec:&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>jobs.batch<span class="w"> </span>sleepy<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A5<span class="w"> </span><span class="s2">&quot;^spec:&quot;</span>
 </code></pre></div>
 </li>
 <li>
 <p>Delete the job.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>delete<span class="w"> </span>jobs.batch<span class="w"> </span>sleepy
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>jobs.batch<span class="w"> </span>sleepy
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>job.batch<span class="w"> </span><span class="s2">&quot;sleepy&quot;</span><span class="w"> </span>deleted
 </code></pre></div>
 </li>
 <li>
 <p>Edit <code>job.yaml</code> and add <code>completions: 5</code> to run the job five times sequentially.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>guru@controller:~$<span class="w"> </span>vim<span class="w"> </span>job.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>vim<span class="w"> </span>job.yaml
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nt">spec</span><span class="p">:</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nt">completions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w">        </span><span class="c1"># &lt;-- add this line</span>
@@ -746,24 +756,24 @@
 </li>
 <li>
 <p>Create the job again and watch the completions count up.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>job.yaml
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>jobs.batch
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>job.yaml
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>jobs.batch
 <a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>NAME<span class="w">     </span>COMPLETIONS<span class="w">   </span>DURATION<span class="w">   </span>AGE
 <a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>sleepy<span class="w">   </span><span class="m">0</span>/5<span class="w">           </span>5s<span class="w">         </span>5s
 </code></pre></div>
 </li>
 <li>
 <p>Once all 5 complete, delete the job.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>jobs.batch
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>jobs.batch
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>NAME<span class="w">     </span>COMPLETIONS<span class="w">   </span>DURATION<span class="w">   </span>AGE
 <a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>sleepy<span class="w">   </span><span class="m">5</span>/5<span class="w">           </span>26s<span class="w">        </span>10m
 <a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>
-<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>delete<span class="w"> </span>jobs.batch<span class="w"> </span>sleepy
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>jobs.batch<span class="w"> </span>sleepy
 </code></pre></div>
 </li>
 <li>
 <p>Edit <code>job.yaml</code> and add <code>parallelism: 2</code> so two pods run at the same time.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>guru@controller:~$<span class="w"> </span>vim<span class="w"> </span>job.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>vim<span class="w"> </span>job.yaml
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nt">spec</span><span class="p">:</span>
 <a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="nt">completions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
@@ -773,8 +783,8 @@
 </li>
 <li>
 <p>Create the job and verify two pods run simultaneously.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>job.yaml
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pods
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>job.yaml
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
 <a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>NAME<span class="w">             </span>READY<span class="w">   </span>STATUS<span class="w">    </span>RESTARTS<span class="w">   </span>AGE
 <a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>sleepy-8xwpc<span class="w">     </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>5s
 <a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>sleepy-xjqnf<span class="w">     </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>5s
@@ -783,7 +793,7 @@
 </li>
 <li>
 <p>Edit <code>job.yaml</code> again and add <code>activeDeadlineSeconds: 15</code> to forcibly stop the job after 15 seconds.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>guru@controller:~$<span class="w"> </span>vim<span class="w"> </span>job.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>vim<span class="w"> </span>job.yaml
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nt">spec</span><span class="p">:</span>
 <a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span><span class="nt">completions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
@@ -794,18 +804,18 @@
 </li>
 <li>
 <p>Delete and recreate the job. It will stop after 15 seconds regardless of how many completions remain.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>delete<span class="w"> </span>jobs.batch<span class="w"> </span>sleepy
-<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>job.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>jobs.batch<span class="w"> </span>sleepy
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>job.yaml
 </code></pre></div>
 <p>Wait ~20 seconds, then verify the job stopped early.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span><span class="nb">jobs</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span><span class="nb">jobs</span>
 <a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>NAME<span class="w">     </span>COMPLETIONS<span class="w">   </span>DURATION<span class="w">   </span>AGE
 <a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>sleepy<span class="w">   </span><span class="m">4</span>/5<span class="w">           </span>16s<span class="w">        </span>16s
 </code></pre></div>
 </li>
 <li>
 <p>Check the status message in the job YAML - it should show <code>DeadlineExceeded</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>job<span class="w"> </span>sleepy<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A8<span class="w"> </span><span class="s2">&quot;^status:&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>job<span class="w"> </span>sleepy<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A8<span class="w"> </span><span class="s2">&quot;^status:&quot;</span>
 <a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>status:
 <a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">  </span>conditions:
 <a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">  </span>-<span class="w"> </span>message:<span class="w"> </span>Job<span class="w"> </span>was<span class="w"> </span>active<span class="w"> </span>longer<span class="w"> </span>than<span class="w"> </span>specified<span class="w"> </span>deadline
@@ -817,7 +827,7 @@
 </li>
 <li>
 <p>Delete the job.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>delete<span class="w"> </span>jobs.batch<span class="w"> </span>sleepy
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>jobs.batch<span class="w"> </span>sleepy
 </code></pre></div>
 </li>
 </ol>
@@ -827,7 +837,7 @@
 <ol>
 <li>
 <p>Review the provided <code>cronjob.yaml</code> file. It runs the sleep container every 2 minutes.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>guru@controller:~$<span class="w"> </span>cat<span class="w"> </span>cronjob.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>cat<span class="w"> </span>cronjob.yaml
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">batch/v1</span>
 <a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CronJob</span>
@@ -853,21 +863,21 @@
 </li>
 <li>
 <p>Create the CronJob and monitor it. The first job will not run for up to 2 minutes.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>cronjob.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>cronjob.yaml
 <a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>cronjob.batch/sleepy<span class="w"> </span>created
 <a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>
-<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>cronjobs.batch
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>kubectl<span class="w"> </span>get<span class="w"> </span>cronjobs.batch
 <a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>NAME<span class="w">     </span>SCHEDULE<span class="w">      </span>SUSPEND<span class="w">   </span>ACTIVE<span class="w">   </span>LAST<span class="w"> </span>SCHEDULE<span class="w">   </span>AGE
 <a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>sleepy<span class="w">   </span>*/2<span class="w"> </span>*<span class="w"> </span>*<span class="w"> </span>*<span class="w"> </span>*<span class="w">   </span>False<span class="w">     </span><span class="m">0</span><span class="w">        </span>&lt;none&gt;<span class="w">          </span>8s
 </code></pre></div>
 </li>
 <li>
 <p>After 2 minutes, verify a Job was created by the CronJob.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>cronjobs.batch
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>cronjobs.batch
 <a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>NAME<span class="w">     </span>SCHEDULE<span class="w">      </span>SUSPEND<span class="w">   </span>ACTIVE<span class="w">   </span>LAST<span class="w"> </span>SCHEDULE<span class="w">   </span>AGE
 <a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>sleepy<span class="w">   </span>*/2<span class="w"> </span>*<span class="w"> </span>*<span class="w"> </span>*<span class="w"> </span>*<span class="w">   </span>False<span class="w">     </span><span class="m">0</span><span class="w">        </span>21s<span class="w">             </span>2m1s
 <a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>
-<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>jobs.batch
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>kubectl<span class="w"> </span>get<span class="w"> </span>jobs.batch
 <a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>NAME<span class="w">                </span>COMPLETIONS<span class="w">   </span>DURATION<span class="w">   </span>AGE
 <a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>sleepy-1539722040<span class="w">   </span><span class="m">1</span>/1<span class="w">           </span>5s<span class="w">         </span>18s
 </code></pre></div>
@@ -875,7 +885,7 @@
 </li>
 <li>
 <p>Edit <code>cronjob.yaml</code> to make the sleep command run for 30 seconds and add <code>activeDeadlineSeconds: 10</code> inside the job template, so that each job is forcibly killed after 10 seconds.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>guru@controller:~$<span class="w"> </span>vim<span class="w"> </span>cronjob.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>vim<span class="w"> </span>cronjob.yaml
 </code></pre></div>
 <p>Modify the <code>jobTemplate.spec.template.spec</code> section:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="nt">jobTemplate</span><span class="p">:</span>
@@ -893,18 +903,18 @@
 </li>
 <li>
 <p>Delete and recreate the CronJob. Wait 2 minutes, then observe that jobs are created but never complete - they are killed by the deadline.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>delete<span class="w"> </span>cronjobs.batch<span class="w"> </span>sleepy
-<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>cronjob.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>cronjobs.batch<span class="w"> </span>sleepy
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>cronjob.yaml
 <a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>
 <a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="c1"># After ~2 minutes:</span>
-<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span><span class="nb">jobs</span>
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>kubectl<span class="w"> </span>get<span class="w"> </span><span class="nb">jobs</span>
 <a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>NAME<span class="w">                </span>COMPLETIONS<span class="w">   </span>DURATION<span class="w">   </span>AGE
 <a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a>sleepy-1539723240<span class="w">   </span><span class="m">0</span>/1<span class="w">           </span>61s<span class="w">        </span>61s
 </code></pre></div>
 </li>
 <li>
 <p>Delete the CronJob and all its associated jobs.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>delete<span class="w"> </span>cronjobs.batch<span class="w"> </span>sleepy
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>cronjobs.batch<span class="w"> </span>sleepy
 <a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>cronjob.batch<span class="w"> </span><span class="s2">&quot;sleepy&quot;</span><span class="w"> </span>deleted
 </code></pre></div>
 </li>
@@ -915,43 +925,43 @@
 <ol>
 <li>
 <p>Copy the chapter files to your home directory if not already done, then create a new <code>design2</code> deployment.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>deployment<span class="w"> </span>design2<span class="w"> </span>--image<span class="o">=</span>nginx
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>deployment<span class="w"> </span>design2<span class="w"> </span>--image<span class="o">=</span>nginx
 <a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>deployment.apps/design2<span class="w"> </span>created
 </code></pre></div>
 </li>
 <li>
 <p>View the deployment with <code>-o wide</code> and note the <code>SELECTOR</code> column.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>deployments.apps<span class="w"> </span>design2<span class="w"> </span>-o<span class="w"> </span>wide
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deployments.apps<span class="w"> </span>design2<span class="w"> </span>-o<span class="w"> </span>wide
 <a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>NAME<span class="w">      </span>READY<span class="w">   </span>UP-TO-DATE<span class="w">   </span>AVAILABLE<span class="w">   </span>...<span class="w">   </span>SELECTOR
 <a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>design2<span class="w">   </span><span class="m">1</span>/1<span class="w">     </span><span class="m">1</span><span class="w">            </span><span class="m">1</span><span class="w">           </span>...<span class="w">   </span><span class="nv">app</span><span class="o">=</span>design2
 </code></pre></div>
 </li>
 <li>
 <p>Use the <code>-l</code> option to list only pods matching the deployment selector.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>design2<span class="w"> </span>pod
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>design2<span class="w"> </span>pod
 <a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>NAME<span class="w">                       </span>READY<span class="w">   </span>STATUS<span class="w">    </span>RESTARTS<span class="w">   </span>AGE
 <a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>design2-766d48574f-5w274<span class="w">   </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>3m
 </code></pre></div>
 </li>
 <li>
 <p>View the pod labels in full YAML output using <code>--selector</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>--selector<span class="w"> </span><span class="nv">app</span><span class="o">=</span>design2<span class="w"> </span>pod<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A4<span class="w"> </span><span class="s2">&quot;labels:&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>--selector<span class="w"> </span><span class="nv">app</span><span class="o">=</span>design2<span class="w"> </span>pod<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A4<span class="w"> </span><span class="s2">&quot;labels:&quot;</span>
 </code></pre></div>
 <p>You should see both <code>app: design2</code> and <code>pod-template-hash</code> labels.</p>
 </li>
 <li>
 <p>Edit the pod's <code>app</code> label and change it to your favourite colour (e.g. <code>orange</code>).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>edit<span class="w"> </span>pod<span class="w"> </span>design2-766d48574f-5w274
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>kubectl<span class="w"> </span>edit<span class="w"> </span>pod<span class="w"> </span>design2-766d48574f-5w274
 </code></pre></div>
-<p>Find and change:
+<p>Find and change:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="nt">labels</span><span class="p">:</span>
 <a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="w">  </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orange</span><span class="w">    </span><span class="c1"># &lt;-- change from design2</span>
 <a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="w">  </span><span class="nt">pod-template-hash</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">766d48574f</span>
-</code></pre></div></p>
+</code></pre></div>
 </li>
 <li>
 <p>Immediately check how many pods the deployment now manages.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>design2
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>design2
 <a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>design2-766d48574f-5w274<span class="w">   </span><span class="m">1</span>/1<span class="w">   </span>Running<span class="w">   </span><span class="m">0</span><span class="w">   </span>82s
 <a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>design2-766d48574f-xttgg<span class="w">   </span><span class="m">1</span>/1<span class="w">   </span>Running<span class="w">   </span><span class="m">0</span><span class="w">   </span>2m12s
 </code></pre></div>
@@ -959,19 +969,19 @@
 </li>
 <li>
 <p>Delete the deployment.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>delete<span class="w"> </span>deploy<span class="w"> </span>design2
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deploy<span class="w"> </span>design2
 <a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>deployment.apps<span class="w"> </span><span class="s2">&quot;design2&quot;</span><span class="w"> </span>deleted
 </code></pre></div>
 </li>
 <li>
 <p>Check for remaining pods. The orphaned pod (with the colour label) still exists - the deployment deletion only removed pods it was managing.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>design2
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>design2
 <a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>design2-766d48574f-5w274<span class="w">   </span><span class="m">1</span>/1<span class="w">   </span>Running<span class="w">   </span><span class="m">0</span><span class="w">   </span>38m
 </code></pre></div>
 </li>
 <li>
 <p>Delete the orphaned pod using the colour label you assigned.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>orange
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>orange
 <a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>pod<span class="w"> </span><span class="s2">&quot;design2-766d48574f-5w274&quot;</span><span class="w"> </span>deleted
 </code></pre></div>
 </li>
@@ -982,20 +992,20 @@
 <ol>
 <li>
 <p>Review and create the <code>stress.yaml</code> deployment. It runs the <code>vish/stress</code> image which deliberately consumes CPU and memory.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>guru@controller:~$<span class="w"> </span>cat<span class="w"> </span>stress.yaml
-<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>stress.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>cat<span class="w"> </span>stress.yaml
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>stress.yaml
 </code></pre></div>
 </li>
 <li>
 <p>On the controller and on <strong>worker1</strong>, run <code>top</code> to see the stress process consuming CPU. Use <code>q</code> to exit.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>guru@controller:~$<span class="w"> </span>top
-<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a>guru@worker1:~$<span class="w"> </span>top
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>top
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a>top
 </code></pre></div>
 </li>
 <li>
 <p>Delete the deployment, then edit <code>stress.yaml</code> to add resource limits and requests.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>delete<span class="w"> </span>-f<span class="w"> </span>stress.yaml
-<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a>guru@controller:~$<span class="w"> </span>vim<span class="w"> </span>stress.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>-f<span class="w"> </span>stress.yaml
+<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a>vim<span class="w"> </span>stress.yaml
 </code></pre></div>
 <p>Add the <code>resources</code> block under the container name:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="nt">containers</span><span class="p">:</span>
@@ -1021,8 +1031,8 @@
 </li>
 <li>
 <p>Create the deployment and check the pod status. Because the stress command requests more memory than the limit, the container will be OOMKilled.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>stress.yaml
-<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pod
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>stress.yaml
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod
 <a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a>NAME<span class="w">                           </span>READY<span class="w">   </span>STATUS<span class="w">      </span>RESTARTS<span class="w">   </span>AGE
 <a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a>stressmeout-7fbbbcc887-v9kvb<span class="w">   </span><span class="m">0</span>/1<span class="w">     </span>OOMKilled<span class="w">   </span><span class="m">2</span><span class="w">          </span>32s
 </code></pre></div>
@@ -1033,8 +1043,8 @@
 <li>Increase the memory limit to <code>2Gi</code> (enough for the stress workload)</li>
 <li>Uncomment and set the <code>nodeSelector</code> to pin the pod to <strong>worker1</strong> (to protect the control plane)</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>delete<span class="w"> </span>-f<span class="w"> </span>stress.yaml
-<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a>guru@controller:~$<span class="w"> </span>vim<span class="w"> </span>stress.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>-f<span class="w"> </span>stress.yaml
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a>vim<span class="w"> </span>stress.yaml
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="nt">spec</span><span class="p">:</span>
 <a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span>
@@ -1052,15 +1062,15 @@
 </li>
 <li>
 <p>Create the deployment and verify the pod runs on <code>worker1</code> without OOMKilling.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>stress.yaml
-<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-o<span class="w"> </span>wide
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>stress.yaml
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-o<span class="w"> </span>wide
 <a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a>NAME<span class="w">                           </span>READY<span class="w">   </span>STATUS<span class="w">    </span>NODE
 <a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a>stressmeout-...<span class="w">                </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span>worker1
 </code></pre></div>
 </li>
 <li>
 <p>Use <code>kubectl describe node worker1</code> to view how much of worker1's CPU and memory is now being consumed.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>node<span class="w"> </span>worker1<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A8<span class="w"> </span><span class="s2">&quot;Allocated resources&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>node<span class="w"> </span>worker1<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A8<span class="w"> </span><span class="s2">&quot;Allocated resources&quot;</span>
 </code></pre></div>
 </li>
 <li>
@@ -1068,7 +1078,7 @@
 </li>
 <li>
 <p>Delete the deployment when done.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>delete<span class="w"> </span>deploy<span class="w"> </span>stressmeout
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deploy<span class="w"> </span>stressmeout
 </code></pre></div>
 </li>
 </ol>
@@ -1078,7 +1088,7 @@
 <ol>
 <li>
 <p>Review the provided <code>init-tester.yaml</code>. The initContainer runs <code>/bin/false</code> which always exits with a non-zero code.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>guru@controller:~$<span class="w"> </span>cat<span class="w"> </span>init-tester.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>cat<span class="w"> </span>init-tester.yaml
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
 <a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span>
@@ -1098,35 +1108,35 @@
 </li>
 <li>
 <p>Create the pod and observe the failure.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>init-tester.yaml
-<a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>init-tester
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>init-tester.yaml
+<a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>init-tester
 <a id="__codelineno-53-3" name="__codelineno-53-3" href="#__codelineno-53-3"></a>NAME<span class="w">           </span>READY<span class="w">   </span>STATUS<span class="w">       </span>RESTARTS<span class="w">   </span>AGE
 <a id="__codelineno-53-4" name="__codelineno-53-4" href="#__codelineno-53-4"></a>init-tester<span class="w">    </span><span class="m">0</span>/1<span class="w">     </span>Init:Error<span class="w">   </span><span class="m">2</span><span class="w">          </span>30s
 </code></pre></div>
 <p>Use <code>describe</code> to read the init container failure events.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>init-tester
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>init-tester
 </code></pre></div>
 </li>
 <li>
 <p>Delete the pod, fix the command from <code>/bin/false</code> to <code>/bin/true</code>, and recreate it.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>init-tester
-<a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a>guru@controller:~$<span class="w"> </span>vim<span class="w"> </span>init-tester.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>init-tester
+<a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a>vim<span class="w"> </span>init-tester.yaml
 </code></pre></div>
-<p>Change:
+<p>Change:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">/bin/true</span><span class="p p-Indicator">]</span>
-</code></pre></div></p>
+</code></pre></div>
 </li>
 <li>
 <p>Create the pod again and verify the nginx webservice container starts once the initContainer succeeds.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>init-tester.yaml
-<a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>init-tester
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>init-tester.yaml
+<a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>init-tester
 <a id="__codelineno-57-3" name="__codelineno-57-3" href="#__codelineno-57-3"></a>NAME<span class="w">           </span>READY<span class="w">   </span>STATUS<span class="w">    </span>RESTARTS<span class="w">   </span>AGE
 <a id="__codelineno-57-4" name="__codelineno-57-4" href="#__codelineno-57-4"></a>init-tester<span class="w">    </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>10s
 </code></pre></div>
 </li>
 <li>
 <p>Delete the pod when done.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>init-tester
+<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>init-tester
 </code></pre></div>
 </li>
 </ol>
@@ -1136,31 +1146,31 @@
 <ol>
 <li>
 <p>View all CRDs currently installed in the cluster.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>crd
+<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>crd
 </code></pre></div>
 <p>With Calico as the CNI, you will see Calico-related CRDs (e.g. <code>caliconetworkpolicies</code>, <code>ippools</code>, <code>felixconfigurations</code>). If additional operators are installed you may see more.</p>
 </li>
 <li>
 <p>Pick one of the CRDs listed and inspect its full definition.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>crd<span class="w"> </span>&lt;crd-name&gt;<span class="w"> </span>-o<span class="w"> </span>yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>crd<span class="w"> </span>&lt;crd-name&gt;<span class="w"> </span>-o<span class="w"> </span>yaml
 </code></pre></div>
 <p>Note the <code>group</code>, <code>kind</code>, <code>plural</code>, <code>scope</code>, and available <code>versions</code>.</p>
 </li>
 <li>
 <p>Try querying for resources of that custom type. Most will return empty unless instances have been created.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>&lt;kind-from-crd&gt;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>&lt;kind-from-crd&gt;
 <a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a>No<span class="w"> </span>resources<span class="w"> </span>found
 </code></pre></div>
 </li>
 <li>
 <p>Explore additional CRDs in the cluster. Note that Kubernetes itself ships with several built-in CRDs for features like autoscaling and flow control.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>crd<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l
+<div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>crd<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l
 </code></pre></div>
 </li>
 </ol>
 <hr />
 <h2 id="exercise-48-domain-review">Exercise 4.8: Domain Review<a class="headerlink" href="#exercise-48-domain-review" title="Permanent link">&para;</a></h2>
-<div class="admonition warning">
+<div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>Source pages and content in this review can change at any time. Always check the current version before your exam.</p>
 </div>
@@ -1174,29 +1184,27 @@
 </li>
 <li>
 <p>Create a pod using <code>design-review1.yaml</code>. Examine the resource limits and requests.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>design-review1.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>design-review1.yaml
 </code></pre></div>
 </li>
 <li>
 <p>Determine the CPU and memory resource requirements of <code>design-pod1</code>.</p>
 </li>
-<li>
-<p>Edit the pod resource requirements such that the CPU limit is exactly twice the amount requested. (Hint: current limit is <code>2.22</code>, request is <code>0.3</code> - subtract <code>0.22</code> from the limit to make it exactly <code>2x</code> the request.)</p>
-</li>
+<li>Edit the pod resource requirements such that the CPU limit is exactly twice the amount requested. (Hint: current limit is <code>2.22</code>, request is <code>0.3</code> - subtract <code>0.22</code> from the limit to make it exactly <code>2x</code> the request.)</li>
 <li>
 <p>Increase the memory limit until the pod achieves <code>Running</code> status and holds it for at least a minute. Find the minimum memory limit required.</p>
 </li>
 <li>
 <p>Create the pods defined in <code>design-review2.yaml</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>design-review2.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>design-review2.yaml
 </code></pre></div>
 <p>View all pods and their labels.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>--show-labels
+<div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>--show-labels
 </code></pre></div>
 </li>
 <li>
 <p>Delete only the pods with the label <code>review=tux</code> using <code>--selector</code>. This should delete two of the four pods.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>--selector<span class="w"> </span><span class="nv">review</span><span class="o">=</span>tux
+<div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>--selector<span class="w"> </span><span class="nv">review</span><span class="o">=</span>tux
 </code></pre></div>
 </li>
 <li>
@@ -1204,9 +1212,9 @@
 </li>
 <li>
 <p>Delete all objects created during this review.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-67-1" name="__codelineno-67-1" href="#__codelineno-67-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>design-pod1<span class="w"> </span>label-pod3<span class="w"> </span>label-pod4<span class="w"> </span>--ignore-not-found
-<a id="__codelineno-67-2" name="__codelineno-67-2" href="#__codelineno-67-2"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>delete<span class="w"> </span>cronjobs.batch<span class="w"> </span>sleepy<span class="w"> </span>--ignore-not-found
-<a id="__codelineno-67-3" name="__codelineno-67-3" href="#__codelineno-67-3"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>delete<span class="w"> </span>deploy<span class="w"> </span>stressmeout<span class="w"> </span>--ignore-not-found
+<div class="highlight"><pre><span></span><code><a id="__codelineno-67-1" name="__codelineno-67-1" href="#__codelineno-67-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>design-pod1<span class="w"> </span>label-pod3<span class="w"> </span>label-pod4<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-67-2" name="__codelineno-67-2" href="#__codelineno-67-2"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>cronjobs.batch<span class="w"> </span>sleepy<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-67-3" name="__codelineno-67-3" href="#__codelineno-67-3"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deploy<span class="w"> </span>stressmeout<span class="w"> </span>--ignore-not-found
 </code></pre></div>
 </li>
 </ul>
