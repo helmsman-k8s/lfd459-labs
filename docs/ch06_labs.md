@@ -22,7 +22,7 @@ A SecurityContext restricts what a container process can do - which UID it runs 
 2. Review and create the `secondapp` pod. It sets a pod-level UID of 1000 and a container-level UID of 2000. The container setting takes precedence.
 
     ```bash
-cat second.yaml
+    cat second.yaml
     ```
 
     ```yaml
@@ -45,9 +45,9 @@ cat second.yaml
     ```
 
     ```bash
-kubectl create -f second.yaml
+    kubectl create -f second.yaml
     pod/secondapp created
-kubectl get pod secondapp
+    kubectl get pod secondapp
     NAME         READY   STATUS    RESTARTS   AGE
     secondapp    1/1     Running   0          21s
     ```
@@ -55,7 +55,7 @@ kubectl get pod secondapp
 3. Exec into the container and verify the process is running as UID 2000.
 
     ```bash
-kubectl exec -it secondapp -- sh
+    kubectl exec -it secondapp -- sh
     ```
 
     Inside the container:
@@ -78,7 +78,7 @@ kubectl exec -it secondapp -- sh
 5. Decode the capability bitmask using `capsh` on the controller.
 
     ```bash
-capsh --decode=00000000a80425fb
+    capsh --decode=00000000a80425fb
     ```
 
     You should see approximately 14 capabilities including `cap_chown`, `cap_net_bind_service`, etc.
@@ -86,8 +86,8 @@ capsh --decode=00000000a80425fb
 6. Delete the pod and edit `second.yaml` to add two additional Linux capabilities: `NET_ADMIN` and `SYS_TIME`.
 
     ```bash
-kubectl delete pod secondapp
-vim second.yaml
+    kubectl delete pod secondapp
+    vim second.yaml
     ```
 
     Add the `capabilities` block inside the container's `securityContext`:
@@ -103,8 +103,8 @@ vim second.yaml
 7. Recreate the pod and check the new capability bitmask.
 
     ```bash
-kubectl create -f second.yaml
-kubectl exec -it secondapp -- sh
+    kubectl create -f second.yaml
+    kubectl exec -it secondapp -- sh
     ```
 
     Inside:
@@ -118,7 +118,7 @@ kubectl exec -it secondapp -- sh
 8. Decode the new bitmask. Confirm `cap_net_admin` and `cap_sys_time` are now present (16 capabilities total).
 
     ```bash
-capsh --decode=00000000aa0435fb
+    capsh --decode=00000000aa0435fb
     ```
 
 ---
@@ -130,14 +130,14 @@ Secrets store sensitive data in base64-encoded form. They are consumed like Conf
 1. Generate a base64-encoded password.
 
     ```bash
-echo LFTr@1n | base64
+    echo LFTr@1n | base64
     TEZUckAxbgo=
     ```
 
 2. Review `secret.yaml` - it already contains the encoded password.
 
     ```bash
-cat secret.yaml
+    cat secret.yaml
     ```
 
     ```yaml
@@ -152,14 +152,14 @@ cat secret.yaml
 3. Create the secret.
 
     ```bash
-kubectl create -f secret.yaml
+    kubectl create -f secret.yaml
     secret/lfsecret created
     ```
 
 4. Edit `second.yaml` to mount the secret as a volume at `/mysqlpassword`.
 
     ```bash
-vim second.yaml
+    vim second.yaml
     ```
 
     In the container spec (after the `capabilities` block):
@@ -182,12 +182,12 @@ vim second.yaml
 5. Delete, recreate, and verify the secret is accessible inside the container.
 
     ```bash
-kubectl delete pod secondapp
-kubectl create -f second.yaml
-kubectl get pod secondapp
+    kubectl delete pod secondapp
+    kubectl create -f second.yaml
+    kubectl get pod secondapp
     NAME         READY   STATUS    RESTARTS   AGE
     secondapp    1/1     Running   0          34s
-kubectl exec -ti secondapp -- /bin/sh
+    kubectl exec -ti secondapp -- /bin/sh
     ```
 
     Inside:
@@ -217,17 +217,17 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
 1. Return to the home directory and view existing secrets.
 
     ```bash
-cd
-kubectl get secrets
-kubectl get secrets --all-namespaces
+    cd
+    kubectl get secrets
+    kubectl get secrets --all-namespaces
     ```
 
 2. Create the ServiceAccount from `serviceaccount.yaml`.
 
     ```bash
-kubectl create -f ~/app2/serviceaccount.yaml
+    kubectl create -f ~/app2/serviceaccount.yaml
     serviceaccount/secret-access-sa created
-kubectl get serviceaccounts
+    kubectl get serviceaccounts
     NAME               SECRETS   AGE
     default            0         ...
     secret-access-sa   0         34s
@@ -236,9 +236,9 @@ kubectl get serviceaccounts
 3. View existing ClusterRoles and compare `admin` vs `cluster-admin`.
 
     ```bash
-kubectl get clusterroles
-kubectl get clusterroles admin -o yaml
-kubectl get clusterroles cluster-admin -o yaml
+    kubectl get clusterroles
+    kubectl get clusterroles admin -o yaml
+    kubectl get clusterroles cluster-admin -o yaml
     ```
 
     Note that `cluster-admin` uses `*` (wildcard) for all resources and verbs.
@@ -246,17 +246,17 @@ kubectl get clusterroles cluster-admin -o yaml
 4. Create the `secret-access-cr` ClusterRole from `clusterrole.yaml`. It grants only `get` and `list` on secrets.
 
     ```bash
-kubectl create -f ~/app2/clusterrole.yaml
+    kubectl create -f ~/app2/clusterrole.yaml
     clusterrole.rbac.authorization.k8s.io/secret-access-cr created
-kubectl get clusterrole secret-access-cr -o yaml
+    kubectl get clusterrole secret-access-cr -o yaml
     ```
 
 5. Bind the ClusterRole to the ServiceAccount using `rolebinding.yaml`.
 
     ```bash
-kubectl create -f ~/app2/rolebinding.yaml
+    kubectl create -f ~/app2/rolebinding.yaml
     rolebinding.rbac.authorization.k8s.io/secret-rb created
-kubectl get rolebindings
+    kubectl get rolebindings
     NAME        AGE
     secret-rb   17s
     ```
@@ -264,7 +264,7 @@ kubectl get rolebindings
 6. Verify the current `secondapp` pod uses the `default` serviceAccount.
 
     ```bash
-kubectl get pod secondapp -o yaml | grep serviceAccount
+    kubectl get pod secondapp -o yaml | grep serviceAccount
     serviceAccount: default
     serviceAccountName: default
     ```
@@ -272,7 +272,7 @@ kubectl get pod secondapp -o yaml | grep serviceAccount
 7. Edit `~/app2/second.yaml` and add `serviceAccountName: secret-access-sa` to the pod spec.
 
     ```bash
-vim ~/app2/second.yaml
+    vim ~/app2/second.yaml
     ```
 
     ```yaml
@@ -285,9 +285,9 @@ vim ~/app2/second.yaml
 8. Delete and recreate. Verify the new serviceAccount is in use.
 
     ```bash
-kubectl delete pod secondapp
-kubectl create -f ~/app2/second.yaml
-kubectl get pod secondapp -o yaml | grep serviceAccount
+    kubectl delete pod secondapp
+    kubectl create -f ~/app2/second.yaml
+    kubectl get pod secondapp -o yaml | grep serviceAccount
     serviceAccount: secret-access-sa
     serviceAccountName: secret-access-sa
     ```
@@ -302,7 +302,7 @@ kubectl get pod secondapp -o yaml | grep serviceAccount
 1. Review `allclosed.yaml`. This deny-all policy matches every pod and blocks both ingress and egress.
 
     ```bash
-cat ~/app2/allclosed.yaml
+    cat ~/app2/allclosed.yaml
     ```
 
     ```yaml
@@ -320,8 +320,8 @@ cat ~/app2/allclosed.yaml
 2. Delete the existing `secondapp` pod and rebuild it with a `webserver` nginx container and a label.
 
     ```bash
-kubectl delete pod secondapp
-vim second.yaml
+    kubectl delete pod secondapp
+    vim second.yaml
     ```
 
     ```yaml
@@ -347,8 +347,8 @@ vim second.yaml
     ```
 
     ```bash
-kubectl create -f second.yaml
-kubectl get pods
+    kubectl create -f second.yaml
+    kubectl get pods
     NAME        READY   STATUS    RESTARTS   AGE
     secondapp   2/2     Running   0          5s
     ```
@@ -356,29 +356,29 @@ kubectl get pods
 3. Create the NodePort service and set it to port 32000.
 
     ```bash
-kubectl create service nodeport secondapp --tcp=80
+    kubectl create service nodeport secondapp --tcp=80
     service/secondapp created
     ```
 
     Edit the service to change the selector to `example: second` and set the nodePort to `32000`.
 
     ```bash
-kubectl edit svc secondapp
+    kubectl edit svc secondapp
     ```
 
 4. Verify the service and test access.
 
     ```bash
-kubectl get svc secondapp
+    kubectl get svc secondapp
     NAME        TYPE       CLUSTER-IP      PORT(S)
     secondapp   NodePort   10.97.96.75     80:32000/TCP
-curl http://10.97.96.75
+    curl http://10.97.96.75
     ```
 
 5. Test egress from within the container.
 
     ```bash
-kubectl exec -it -c busy secondapp -- sh
+    kubectl exec -it -c busy secondapp -- sh
     ```
 
     Inside:
@@ -403,15 +403,15 @@ kubectl exec -it -c busy secondapp -- sh
 1. Apply the deny-all policy.
 
     ```bash
-kubectl create -f ~/app2/allclosed.yaml
+    kubectl create -f ~/app2/allclosed.yaml
     networkpolicy.networking.k8s.io/deny-default created
     ```
 
 2. Test that traffic is now blocked.
 
     ```bash
-curl http://10.97.96.75
-kubectl exec -it -c busy secondapp -- sh
+    curl http://10.97.96.75
+    kubectl exec -it -c busy secondapp -- sh
     / $ nc -vz www.linux.com 80
     / $ exit
     ```
@@ -419,7 +419,7 @@ kubectl exec -it -c busy secondapp -- sh
 3. Update the policy to remove the Egress restriction and replace.
 
     ```bash
-vim ~/app2/allclosed.yaml
+    vim ~/app2/allclosed.yaml
     ```
 
     ```yaml
@@ -431,14 +431,14 @@ vim ~/app2/allclosed.yaml
     ```
 
     ```bash
-kubectl replace -f ~/app2/allclosed.yaml
+    kubectl replace -f ~/app2/allclosed.yaml
     networkpolicy.networking.k8s.io/deny-default replaced
     ```
 
 4. Get the pod IP, then add an ingress rule to allow traffic from any pod.
 
     ```bash
-kubectl get pod secondapp -o wide
+    kubectl get pod secondapp -o wide
     ```
 
     Edit `allclosed.yaml` to add an ingress rule:
@@ -453,20 +453,20 @@ kubectl get pod secondapp -o wide
     ```
 
     ```bash
-kubectl replace -f ~/app2/allclosed.yaml
+    kubectl replace -f ~/app2/allclosed.yaml
     ```
 
 5. Test pod-to-pod ingress with ping using a temporary alpine pod.
 
     ```bash
-kubectl run -it test --rm=true --image alpine \
+    kubectl run -it test --rm=true --image alpine \
     -- ping -c5 <secondapp-pod-ip>
     ```
 
 6. Update the policy to only allow TCP port 80, blocking ICMP.
 
     ```bash
-vim ~/app2/allclosed.yaml
+    vim ~/app2/allclosed.yaml
     ```
 
     ```yaml
@@ -479,22 +479,22 @@ vim ~/app2/allclosed.yaml
     ```
 
     ```bash
-kubectl replace -f ~/app2/allclosed.yaml
+    kubectl replace -f ~/app2/allclosed.yaml
     ```
 
     ```bash
     # HTTP allowed:
-curl http://10.97.96.75
+    curl http://10.97.96.75
 
     # ICMP blocked:
-kubectl run -it test --rm=true --image alpine \
+    kubectl run -it test --rm=true --image alpine \
     -- ping -c5 <secondapp-pod-ip>
     ```
 
 7. Delete the NetworkPolicy so the registry and other pods remain accessible for future chapters.
 
     ```bash
-kubectl delete networkpolicies deny-default
+    kubectl delete networkpolicies deny-default
     networkpolicy.networking.k8s.io "deny-default" deleted
     ```
 
@@ -520,15 +520,15 @@ Revisit the CKAD curriculum for topics covered in this chapter:
 - Create a pod using `security-review1.yaml`.
 
     ```bash
-kubectl create -f ~/app2/security-review1.yaml
+    kubectl create -f ~/app2/security-review1.yaml
     ```
 
 - Check the pod status.
 
     ```bash
-kubectl get pod securityreview
-kubectl describe pod securityreview
-kubectl logs securityreview
+    kubectl get pod securityreview
+    kubectl describe pod securityreview
+    kubectl logs securityreview
     ```
 
 - Exec into the container (or use `kubectl debug`) to find the UID that nginx actually needs. Hint: check `/etc/passwd` inside the nginx image for the `nginx` user's UID.
@@ -536,7 +536,7 @@ kubectl logs securityreview
 - Create a new ServiceAccount called `securityaccount`.
 
     ```bash
-kubectl create serviceaccount securityaccount
+    kubectl create serviceaccount securityaccount
     ```
 
 - Create a ClusterRole named `secrole` that allows `create`, `delete`, and `list` of pods in all apiGroups.
@@ -544,17 +544,17 @@ kubectl create serviceaccount securityaccount
 - Create a token for `securityaccount` and save only the token value to `/tmp/securitytoken`.
 
     ```bash
-kubectl create token securityaccount > /tmp/securitytoken
+    kubectl create token securityaccount > /tmp/securitytoken
     ```
 
 - Clean up all resources created during this review.
 
     ```bash
-kubectl delete deployment nginx --ignore-not-found
-kubectl delete svc nginx --ignore-not-found
-kubectl delete networkpolicy netblock --ignore-not-found
-kubectl delete pod securityreview --ignore-not-found
-kubectl delete serviceaccount securityaccount --ignore-not-found
-kubectl delete clusterrole secrole --ignore-not-found
-kubectl delete clusterrolebinding secrole --ignore-not-found
+    kubectl delete deployment nginx --ignore-not-found
+    kubectl delete svc nginx --ignore-not-found
+    kubectl delete networkpolicy netblock --ignore-not-found
+    kubectl delete pod securityreview --ignore-not-found
+    kubectl delete serviceaccount securityaccount --ignore-not-found
+    kubectl delete clusterrole secrole --ignore-not-found
+    kubectl delete clusterrolebinding secrole --ignore-not-found
     ```

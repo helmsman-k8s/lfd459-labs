@@ -13,7 +13,7 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
 1. Connect to the **controller** node. Check the `secondapp` pod status.
 
     ```bash
-kubectl get pods secondapp
+    kubectl get pods secondapp
     NAME        READY   STATUS    RESTARTS   AGE
     secondapp   2/2     Running   49         2d
     ```
@@ -23,7 +23,7 @@ kubectl get pods secondapp
 2. Describe the pod in detail.
 
     ```bash
-kubectl describe pod secondapp
+    kubectl describe pod secondapp
     ```
 
     Check:
@@ -35,7 +35,7 @@ kubectl describe pod secondapp
 3. Check pod `Conditions` specifically.
 
     ```bash
-kubectl describe pod secondapp | grep -A8 "Conditions:"
+    kubectl describe pod secondapp | grep -A8 "Conditions:"
     Conditions:
       Type              Status
       Initialized       True
@@ -46,20 +46,20 @@ kubectl describe pod secondapp | grep -A8 "Conditions:"
 4. Scan the Events section for any `Warning` entries.
 
     ```bash
-kubectl describe pod secondapp | grep -A20 "^Events:"
+    kubectl describe pod secondapp | grep -A20 "^Events:"
     ```
 
 5. View the logs for each container.
 
     ```bash
-kubectl logs secondapp webserver
-kubectl logs secondapp busy
+    kubectl logs secondapp webserver
+    kubectl logs secondapp busy
     ```
 
 6. Exec into `busy` and test DNS and external connectivity.
 
     ```bash
-kubectl exec -it secondapp -c busy -- sh
+    kubectl exec -it secondapp -c busy -- sh
     ```
 
     Inside:
@@ -80,8 +80,8 @@ kubectl exec -it secondapp -c busy -- sh
 7. Verify services and their selectors.
 
     ```bash
-kubectl get svc
-kubectl get svc secondapp -o yaml | grep -A5 "selector:"
+    kubectl get svc
+    kubectl get svc secondapp -o yaml | grep -A5 "selector:"
     ```
 
     Confirm `selector.example: second` matches the pod label `example=second`.
@@ -89,24 +89,24 @@ kubectl get svc secondapp -o yaml | grep -A5 "selector:"
 8. Verify the endpoint object exists and has the correct pod IP and port.
 
     ```bash
-kubectl get ep
+    kubectl get ep
     NAME         ENDPOINTS
     secondapp    192.168.x.y:80
     ...
-kubectl get ep secondapp -o yaml
+    kubectl get ep secondapp -o yaml
     ```
 
 9. Check kube-proxy logs.
 
     ```bash
-kubectl -n kube-system get pod | grep proxy
-kubectl -n kube-system logs kube-proxy-<TAB>
+    kubectl -n kube-system get pod | grep proxy
+    kubectl -n kube-system logs kube-proxy-<TAB>
     ```
 
 10. Verify kube-proxy has created iptables rules for the service.
 
     ```bash
-sudo iptables-save | grep secondapp
+    sudo iptables-save | grep secondapp
     ```
 
     You should see rules referencing port `32000` (NodePort) and the service ClusterIP.
@@ -114,7 +114,7 @@ sudo iptables-save | grep secondapp
 11. Test via localhost NodePort to confirm the full proxy chain is working.
 
     ```bash
-curl localhost:32000
+    curl localhost:32000
     ```
 
 ---
@@ -135,7 +135,7 @@ The Kubernetes API evolves. YAML that worked on older clusters may fail on newer
 2. Create a working deployment from scratch to understand what the current API requires.
 
     ```bash
-kubectl create deployment reference --image=nginx --dry-run=client -o yaml
+    kubectl create deployment reference --image=nginx --dry-run=client -o yaml
     ```
 
     Compare the output with `brokendeploy.yaml`.
@@ -150,21 +150,21 @@ kubectl create deployment reference --image=nginx --dry-run=client -o yaml
 4. Edit the file and apply fixes.
 
     ```bash
-vim brokendeploy.yaml
+    vim brokendeploy.yaml
     ```
 
 5. Create the deployment and verify the pod starts successfully.
 
     ```bash
-kubectl create -f brokendeploy.yaml
-kubectl get deployment broken
-kubectl get pods -l app=broken
+    kubectl create -f brokendeploy.yaml
+    kubectl get deployment broken
+    kubectl get pods -l app=broken
     ```
 
 6. Clean up.
 
     ```bash
-kubectl delete deployment broken
+    kubectl delete deployment broken
     ```
 
 ??? success "Fixes revealed"
@@ -181,7 +181,7 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
 1. Deploy the broken application.
 
     ```bash
-kubectl apply -f brokenapp.yaml
+    kubectl apply -f brokenapp.yaml
     pod/nginx-debug-pod created
     service/nginx-debug-svc created
     ```
@@ -189,7 +189,7 @@ kubectl apply -f brokenapp.yaml
 2. Check the pod status. It will show `0/1 READY`.
 
     ```bash
-kubectl get all
+    kubectl get all
     NAME                   READY   STATUS    RESTARTS   AGE
     pod/nginx-debug-pod    0/1     Running   0          5s
 
@@ -200,17 +200,17 @@ kubectl get all
 3. Try to connect to the service - it will fail as the pod has no endpoints yet.
 
     ```bash
-kubectl get ep nginx-debug-svc
+    kubectl get ep nginx-debug-svc
     NAME              ENDPOINTS   AGE
     nginx-debug-svc   <none>      10s
-curl 10.111.195.30
+    curl 10.111.195.30
     curl: (7) Failed to connect to 10.111.195.30 port 80
     ```
 
 4. Review the pod's probes.
 
     ```bash
-cat brokenapp.yaml
+    cat brokenapp.yaml
     ```
 
     Two things are happening:
@@ -221,14 +221,14 @@ cat brokenapp.yaml
 5. Try to exec directly into the pod - it will fail because `/bin/bash` has been removed.
 
     ```bash
-kubectl exec -it pod/nginx-debug-pod -- bash
+    kubectl exec -it pod/nginx-debug-pod -- bash
     error: Internal error occurred: exec: "bash": executable file not found in $PATH
     ```
 
 6. Attach an **ephemeral container** using `kubectl debug`.
 
     ```bash
-kubectl debug pod/nginx-debug-pod -it \
+    kubectl debug pod/nginx-debug-pod -it \
     --image=busybox --target=nginx -- /bin/sh
     ```
 
@@ -263,7 +263,7 @@ kubectl debug pod/nginx-debug-pod -it \
 10. The readiness probe succeeds within the next `periodSeconds`. Verify the pod is now Ready.
 
     ```bash
-kubectl get all
+    kubectl get all
     NAME                   READY   STATUS    RESTARTS   AGE
     pod/nginx-debug-pod    1/1     Running   0          2m
 
@@ -274,7 +274,7 @@ kubectl get all
 11. Test service access.
 
     ```bash
-curl 10.111.195.30
+    curl 10.111.195.30
     <!DOCTYPE html>
     <html><head><title>Welcome to nginx!</title></head>...
     ```
@@ -282,7 +282,7 @@ curl 10.111.195.30
 12. Clean up.
 
     ```bash
-kubectl delete -f brokenapp.yaml
+    kubectl delete -f brokenapp.yaml
     ```
 
 !!! note "Key takeaway"
@@ -333,13 +333,13 @@ Revisit the CKAD curriculum for topics covered in this chapter:
 - Use `troubleshoot-review1.yaml` to create a deployment. The create command will fail immediately.
 
     ```bash
-kubectl create -f troubleshoot-review1.yaml
+    kubectl create -f troubleshoot-review1.yaml
     ```
 
 - Read the error carefully. Then inspect the file and identify **all** the problems. There are at least four distinct issues.
 
     ```bash
-cat troubleshoot-review1.yaml
+    cat troubleshoot-review1.yaml
     ```
 
     !!! note "Where to look"
@@ -348,7 +348,7 @@ cat troubleshoot-review1.yaml
 - Fix each issue and recreate until the deployment runs a single pod for at least one minute without errors.
 
     ```bash
-kubectl get deploy igottrouble
+    kubectl get deploy igottrouble
     NAME          READY   UP-TO-DATE   AVAILABLE   AGE
     igottrouble   1/1     1            1           5m13s
     ```
@@ -356,7 +356,7 @@ kubectl get deploy igottrouble
 - Clean up.
 
     ```bash
-kubectl delete deploy igottrouble --ignore-not-found
+    kubectl delete deploy igottrouble --ignore-not-found
     ```
 
 ??? success "Fixes revealed"
@@ -375,5 +375,5 @@ Congratulations on completing all LFD459 lab chapters. Before sitting the CKAD e
 - Are familiar with the three documentation sources allowed during the exam
 - Have practised the domain review exercises at speed
 - Have reviewed the current CKAD curriculum at <https://www.cncf.io/certification/ckad/>
-x
+
 Good luck!

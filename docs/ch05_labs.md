@@ -10,7 +10,7 @@ This chapter builds directly on Chapter 3. You will configure your existing `sim
     **Save a backup of your simpleapp.yaml before starting:**
 
     ```bash
-cp ~/app1/simpleapp.yaml ~/beforeLab5.yaml
+    cp ~/app1/simpleapp.yaml ~/beforeLab5.yaml
     ```
 
 ---
@@ -29,19 +29,19 @@ ConfigMaps decouple configuration from container images. They can be created fro
 2. Create a directory of files to ingest into a ConfigMap, and a separate single file.
 
     ```bash
-mkdir primary
-echo c > primary/cyan
-echo m > primary/magenta
-echo y > primary/yellow
-echo k > primary/black
-echo "known as key" >> primary/black
-echo blue > favorite
+    mkdir primary
+    echo c > primary/cyan
+    echo m > primary/magenta
+    echo y > primary/yellow
+    echo k > primary/black
+    echo "known as key" >> primary/black
+    echo blue > favorite
     ```
 
 3. Create a ConfigMap called `colors` using all three ingestion methods at once: a literal, a single file, and a directory.
 
     ```bash
-kubectl create configmap colors \
+    kubectl create configmap colors \
     --from-literal=text=black \
     --from-file=./favorite \
     --from-file=./primary/
@@ -51,7 +51,7 @@ kubectl create configmap colors \
 4. View the ConfigMap and verify all six keys are present.
 
     ```bash
-kubectl get configmap colors -o yaml
+    kubectl get configmap colors -o yaml
     ```
 
     You should see keys: `black`, `cyan`, `favorite`, `magenta`, `text`, `yellow`.
@@ -59,7 +59,7 @@ kubectl get configmap colors -o yaml
 5. Edit `~/app1/simpleapp.yaml` to add a single environment variable `ilike` sourced from the `colors` ConfigMap. Add the `env:` block inside the `simpleapp` container spec, after `imagePullPolicy`.
 
     ```bash
-vim ~/app1/simpleapp.yaml
+    vim ~/app1/simpleapp.yaml
     ```
 
     Find the simpleapp container section and add:
@@ -79,15 +79,15 @@ vim ~/app1/simpleapp.yaml
 6. Delete and recreate the deployment.
 
     ```bash
-kubectl delete deployment try1
-kubectl create -f ~/app1/simpleapp.yaml
+    kubectl delete deployment try1
+    kubectl create -f ~/app1/simpleapp.yaml
     ```
 
 7. Verify the `ilike` environment variable is set inside the container.
 
     ```bash
-kubectl get pods
-kubectl exec -c simpleapp -it <try1-pod-name> \
+    kubectl get pods
+    kubectl exec -c simpleapp -it <try1-pod-name> \
     -- /bin/bash -c 'echo $ilike'
     blue
     ```
@@ -95,7 +95,7 @@ kubectl exec -c simpleapp -it <try1-pod-name> \
 8. Edit `simpleapp.yaml` again to add `envFrom` so **all** keys from the `colors` ConfigMap are injected as environment variables.
 
     ```bash
-vim ~/app1/simpleapp.yaml
+    vim ~/app1/simpleapp.yaml
     ```
 
     Add after `key: favorite`:
@@ -111,23 +111,23 @@ vim ~/app1/simpleapp.yaml
 9. Delete, recreate, and verify all color keys are visible as environment variables.
 
     ```bash
-kubectl delete deployment try1
-kubectl create -f ~/app1/simpleapp.yaml
-kubectl exec -it <try1-pod-name> -- /bin/bash -c 'env' | grep -E 'ilike|cyan|magenta|yellow|black|text'
+    kubectl delete deployment try1
+    kubectl create -f ~/app1/simpleapp.yaml
+    kubectl exec -it <try1-pod-name> -- /bin/bash -c 'env' | grep -E 'ilike|cyan|magenta|yellow|black|text'
     ```
 
 10. Create the `fast-car` ConfigMap from the provided YAML file.
 
     ```bash
-kubectl create -f car-map.yaml
+    kubectl create -f car-map.yaml
     configmap/fast-car created
-kubectl get configmap fast-car -o yaml
+    kubectl get configmap fast-car -o yaml
     ```
 
 11. Edit `simpleapp.yaml` to mount the `fast-car` ConfigMap as a volume at `/etc/cars` inside the `simpleapp` container.
 
     ```bash
-vim ~/app1/simpleapp.yaml
+    vim ~/app1/simpleapp.yaml
     ```
 
     In the `simpleapp` container spec, add before `env:`:
@@ -154,15 +154,15 @@ vim ~/app1/simpleapp.yaml
 12. Delete and recreate the deployment.
 
     ```bash
-kubectl delete deployment try1
-kubectl create -f ~/app1/simpleapp.yaml
+    kubectl delete deployment try1
+    kubectl create -f ~/app1/simpleapp.yaml
     ```
 
 13. The deployment will show `0/6` ready because the `readinessProbe` is still checking for `/tmp/healthy`. Update the probe to check for `/etc/cars` instead.
 
     ```bash
-kubectl delete deployment try1
-vim ~/app1/simpleapp.yaml
+    kubectl delete deployment try1
+    vim ~/app1/simpleapp.yaml
     ```
 
     Change the `readinessProbe` exec command inside the `simpleapp` container:
@@ -177,13 +177,13 @@ vim ~/app1/simpleapp.yaml
     ```
 
     ```bash
-kubectl create -f ~/app1/simpleapp.yaml
+    kubectl create -f ~/app1/simpleapp.yaml
     ```
 
 14. Wait about a minute. All six pods should show `2/2 Running`.
 
     ```bash
-kubectl get pods
+    kubectl get pods
     NAME                         READY   STATUS    RESTARTS   AGE
     try1-7865dcb948-2dzc8        2/2     Running   0          1m
     try1-7865dcb948-7fkh7        2/2     Running   0          1m
@@ -193,7 +193,7 @@ kubectl get pods
 15. Verify the ConfigMap data is visible inside the container as a file.
 
     ```bash
-kubectl exec -c simpleapp -it <try1-pod-name> \
+    kubectl exec -c simpleapp -it <try1-pod-name> \
     -- /bin/bash -c 'cat /etc/cars/car.trim'
     Shelby
     ```
@@ -207,7 +207,7 @@ We will configure an NFS server on the controller node, create a PersistentVolum
 1. Run the `CreateNFS.sh` script to install and configure NFS on the **controller** node.
 
     ```bash
-bash CreateNFS.sh
+    bash CreateNFS.sh
     ```
 
     The script installs `nfs-kernel-server`, creates `/opt/sfw/`, exports it, and creates `/opt/sfw/hello.txt`. At the end you should see:
@@ -221,8 +221,8 @@ bash CreateNFS.sh
 2. Connect to **worker1** and verify the NFS export is visible from the worker.
 
     ```bash
-sudo apt-get -y install nfs-common nfs-kernel-server
-showmount -e controller
+    sudo apt-get -y install nfs-common nfs-kernel-server
+    showmount -e controller
     Export list for controller:
     /opt/sfw *
     ```
@@ -232,17 +232,17 @@ showmount -e controller
 3. Test the mount from worker1.
 
     ```bash
-sudo mount controller:/opt/sfw /mnt
-ls -l /mnt
+    sudo mount controller:/opt/sfw /mnt
+    ls -l /mnt
     total 4
     -rw-r--r-- 1 root root 9 ... hello.txt
-sudo umount /mnt
+    sudo umount /mnt
     ```
 
 4. Return to the **controller**. Edit `PVol.yaml` - the `server:` field currently says `cp`, change it to `controller`.
 
     ```bash
-vim PVol.yaml
+    vim PVol.yaml
     ```
 
     ```yaml
@@ -255,9 +255,9 @@ vim PVol.yaml
 5. Create the PersistentVolume and verify it shows `Available`.
 
     ```bash
-kubectl create -f PVol.yaml
+    kubectl create -f PVol.yaml
     persistentvolume/pvvol-1 created
-kubectl get pv
+    kubectl get pv
     NAME       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS
     pvvol-1    1Gi        RWX            Retain           Available
     ...
@@ -266,15 +266,15 @@ kubectl get pv
 6. Check any existing PVCs (from the registry deployment in Chapter 3).
 
     ```bash
-kubectl get pvc
+    kubectl get pvc
     ```
 
 7. Create a PVC using `pvc.yaml`.
 
     ```bash
-kubectl create -f pvc.yaml
+    kubectl create -f pvc.yaml
     persistentvolumeclaim/pvc-one created
-kubectl get pvc pvc-one
+    kubectl get pvc pvc-one
     NAME      STATUS   VOLUME    CAPACITY   ACCESS MODES
     pvc-one   Bound    pvvol-1   1Gi        RWX
     ```
@@ -284,7 +284,7 @@ kubectl get pvc pvc-one
 8. Verify `pvvol-1` is now `Bound`.
 
     ```bash
-kubectl get pv pvvol-1
+    kubectl get pv pvvol-1
     NAME      CAPACITY   ACCESS MODES   STATUS   CLAIM
     pvvol-1   1Gi        RWX            Bound    default/pvc-one
     ```
@@ -292,7 +292,7 @@ kubectl get pv pvvol-1
 9. Edit `~/app1/simpleapp.yaml` to add the NFS volume to the `simpleapp` container.
 
     ```bash
-vim ~/app1/simpleapp.yaml
+    vim ~/app1/simpleapp.yaml
     ```
 
     In the simpleapp `volumeMounts` section, add after the `car-vol` mount:
@@ -313,14 +313,14 @@ vim ~/app1/simpleapp.yaml
 10. Delete and recreate the deployment.
 
     ```bash
-kubectl delete deployment try1
-kubectl create -f ~/app1/simpleapp.yaml
+    kubectl delete deployment try1
+    kubectl create -f ~/app1/simpleapp.yaml
     ```
 
 11. Verify the NFS volume is mounted under `/opt` in a pod.
 
     ```bash
-kubectl describe pod <try1-pod-name> | grep -A5 "Mounts:"
+    kubectl describe pod <try1-pod-name> | grep -A5 "Mounts:"
     Mounts:
       /etc/cars from car-vol (rw)
       /opt from nfs-vol (rw)
@@ -336,7 +336,7 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
 1. Review the current `basic.yaml` in your home directory.
 
     ```bash
-cat basic.yaml
+    cat basic.yaml
     ```
 
     It should have two containers: `webcont` (nginx) and `fdlogger` (fluentd).
@@ -344,15 +344,15 @@ cat basic.yaml
 2. Create the directory that will back the hostPath PV.
 
     ```bash
-sudo mkdir /tmp/weblog
+    sudo mkdir /tmp/weblog
     ```
 
 3. Create the PV using `weblog-pv.yaml`.
 
     ```bash
-kubectl create -f weblog-pv.yaml
+    kubectl create -f weblog-pv.yaml
     persistentvolume/weblog-pv-volume created
-kubectl get pv weblog-pv-volume
+    kubectl get pv weblog-pv-volume
     NAME               CAPACITY   ACCESS MODES   STATUS
     weblog-pv-volume   100Mi      RWO            Available
     ```
@@ -360,9 +360,9 @@ kubectl get pv weblog-pv-volume
 4. Create the PVC using `weblog-pvc.yaml` and verify it binds to `weblog-pv-volume`.
 
     ```bash
-kubectl create -f weblog-pvc.yaml
+    kubectl create -f weblog-pvc.yaml
     persistentvolumeclaim/weblog-pv-claim created
-kubectl get pvc weblog-pv-claim
+    kubectl get pvc weblog-pv-claim
     NAME             STATUS   VOLUME             CAPACITY   STORAGE CLASS
     weblog-pv-claim  Bound    weblog-pv-volume   100Mi      manual
     ```
@@ -370,7 +370,7 @@ kubectl get pvc weblog-pv-claim
 5. Edit `basic.yaml` to add the shared volume to both containers.
 
     ```bash
-vim basic.yaml
+    vim basic.yaml
     ```
 
     The final file should look like `basic.yaml-with-edits`:
@@ -405,9 +405,9 @@ vim basic.yaml
 6. Create the pod and open a shell into the `webcont` container. Verify the nginx access log is a real file and start tailing it.
 
     ```bash
-kubectl create -f basic.yaml
+    kubectl create -f basic.yaml
     pod/basicpod created
-kubectl exec -c webcont -it basicpod -- /bin/bash
+    kubectl exec -c webcont -it basicpod -- /bin/bash
     root@basicpod:/# ls -l /var/log/nginx/access.log
     -rw-r--r-- 1 root root 0 ... /var/log/nginx/access.log
 
@@ -417,10 +417,10 @@ kubectl exec -c webcont -it basicpod -- /bin/bash
 7. Open a **second terminal** on the controller. Get the pod IP and curl the nginx default page.
 
     ```bash
-kubectl get pods -o wide
+    kubectl get pods -o wide
     NAME       READY   STATUS    IP               NODE
     basicpod   2/2     Running   10.244.1.23      worker1
-curl http://10.244.1.23
+    curl http://10.244.1.23
     ```
 
     You should see a new log entry appear in the tail window in your first terminal. Use `Ctrl-C` and `exit` to return to the host.
@@ -428,21 +428,21 @@ curl http://10.244.1.23
 8. Create the fluentd ConfigMap from `weblog-configmap.yaml`.
 
     ```bash
-kubectl create -f weblog-configmap.yaml
+    kubectl create -f weblog-configmap.yaml
     configmap/fluentd-config created
     ```
 
 9. Check the current logs for both containers.
 
     ```bash
-kubectl logs basicpod webcont
-kubectl logs basicpod fdlogger
+    kubectl logs basicpod webcont
+    kubectl logs basicpod fdlogger
     ```
 
 10. Edit `basic.yaml` to configure the `fdlogger` container to use the ConfigMap.
 
     ```bash
-vim basic.yaml
+    vim basic.yaml
     ```
 
     In the `volumes` section, add after `weblog-pv-storage`:
@@ -471,9 +471,9 @@ vim basic.yaml
 11. Delete and recreate the pod.
 
     ```bash
-kubectl delete pod basicpod
-kubectl create -f basic.yaml
-kubectl get pod basicpod -o wide
+    kubectl delete pod basicpod
+    kubectl create -f basic.yaml
+    kubectl get pod basicpod -o wide
     NAME       READY   STATUS    IP
     basicpod   2/2     Running   10.244.1.xx
     ```
@@ -481,9 +481,9 @@ kubectl get pod basicpod -o wide
 12. Curl the nginx page a few times, then check the `fdlogger` logs.
 
     ```bash
-curl http://<basicpod-ip>
-curl http://<basicpod-ip>
-kubectl logs basicpod fdlogger | tail -10
+    curl http://<basicpod-ip>
+    curl http://<basicpod-ip>
+    kubectl logs basicpod fdlogger | tail -10
     ```
 
     Look for lines like:
@@ -499,8 +499,8 @@ kubectl logs basicpod fdlogger | tail -10
 1. Move into the `app1` directory and add a comment to `simple.py` to produce a slightly different image.
 
     ```bash
-cd ~/app1
-vim simple.py
+    cd ~/app1
+    vim simple.py
     ```
 
     Add a comment on the last line:
@@ -514,40 +514,40 @@ vim simple.py
 2. Check the current images.
 
     ```bash
-sudo podman images | grep simple
+    sudo podman images | grep simple
     ```
 
 3. Build the updated image.
 
     ```bash
-sudo podman build -t simpleapp .
+    sudo podman build -t simpleapp .
     ```
 
 4. Tag and push the updated image as `v2`.
 
     ```bash
-sudo podman tag simpleapp $repo/simpleapp:v2
-sudo podman push $repo/simpleapp:v2
+    sudo podman tag simpleapp $repo/simpleapp:v2
+    sudo podman push $repo/simpleapp:v2
     ```
 
 5. Verify the registry now has both `latest` and `v2` tagged images.
 
     ```bash
-curl $repo/v2/simpleapp/tags/list
+    curl $repo/v2/simpleapp/tags/list
     {"name":"simpleapp","tags":["latest","v2"]}
     ```
 
 6. Connect to **worker1** and pull both versions to confirm the worker can access them.
 
     ```bash
-sudo podman pull $repo/simpleapp
-sudo podman pull $repo/simpleapp:v2
+    sudo podman pull $repo/simpleapp
+    sudo podman pull $repo/simpleapp:v2
     ```
 
 7. Return to the **controller**. Use `kubectl edit` to update the `try1` deployment to use `v2`.
 
     ```bash
-kubectl edit deployment try1
+    kubectl edit deployment try1
     ```
 
     Change:
@@ -565,14 +565,14 @@ kubectl edit deployment try1
 8. Watch the rolling update.
 
     ```bash
-kubectl get events | tail -20
-kubectl get pods
+    kubectl get events | tail -20
+    kubectl get pods
     ```
 
 9. Verify the new pods are using `v2`.
 
     ```bash
-kubectl describe pod <try1-pod-name> | grep Image:
+    kubectl describe pod <try1-pod-name> | grep Image:
     Image:    10.97.40.62:5000/simpleapp:v2
     Image:    registry.k8s.io/goproxy:0.1
     ```
@@ -580,7 +580,7 @@ kubectl describe pod <try1-pod-name> | grep Image:
 10. View the rollout history.
 
     ```bash
-kubectl rollout history deployment try1
+    kubectl rollout history deployment try1
     REVISION   CHANGE-CAUSE
     1          <none>
     2          <none>
@@ -589,29 +589,29 @@ kubectl rollout history deployment try1
 11. Compare the two revisions by saving them to files and diffing.
 
     ```bash
-kubectl rollout history deployment try1 --revision=1 > one.out
-kubectl rollout history deployment try1 --revision=2 > two.out
-diff one.out two.out
+    kubectl rollout history deployment try1 --revision=1 > one.out
+    kubectl rollout history deployment try1 --revision=2 > two.out
+    diff one.out two.out
     ```
 
 12. Preview the rollback without applying it.
 
     ```bash
-kubectl rollout undo --dry-run=client deployment/try1
+    kubectl rollout undo --dry-run=client deployment/try1
     ```
 
 13. Roll back to revision 1.
 
     ```bash
-kubectl rollout undo deployment try1 --to-revision=1
+    kubectl rollout undo deployment try1 --to-revision=1
     deployment.apps/try1 rolled back
     ```
 
 14. Wait for all pods to cycle and verify they are back to the original image.
 
     ```bash
-kubectl get pods
-kubectl describe pod <try1-pod-name> | grep Image:
+    kubectl get pods
+    kubectl describe pod <try1-pod-name> | grep Image:
     Image:    10.97.40.62:5000/simpleapp
     ```
 
@@ -641,8 +641,8 @@ Revisit the CKAD curriculum for topics covered in this chapter:
 - Delete all resources created during this review.
 
     ```bash
-kubectl delete deployment foodie --ignore-not-found
-kubectl delete secret specialofday --ignore-not-found
-kubectl delete pvc reviewpvc --ignore-not-found
-kubectl delete pv reviewvol --ignore-not-found
+    kubectl delete deployment foodie --ignore-not-found
+    kubectl delete secret specialofday --ignore-not-found
+    kubectl delete pvc reviewpvc --ignore-not-found
+    kubectl delete pv reviewvol --ignore-not-found
     ```

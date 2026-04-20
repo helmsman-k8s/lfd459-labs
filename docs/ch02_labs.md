@@ -15,7 +15,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
 2. Verify both worker nodes have joined the cluster and show a `Ready` state.
 
     ```bash
-kubectl get nodes
+    kubectl get nodes
     ```
 
     Expected output:
@@ -31,14 +31,14 @@ kubectl get nodes
         By default, worker nodes show `<none>` for the ROLES column. If your output shows `<none>`, label them with:
 
         ```bash
-kubectl label node worker1 node-role.kubernetes.io/worker=worker
-kubectl label node worker2 node-role.kubernetes.io/worker=worker
+        kubectl label node worker1 node-role.kubernetes.io/worker=worker
+        kubectl label node worker2 node-role.kubernetes.io/worker=worker
         ```
 
 3. Verify all system pods are running.
 
     ```bash
-kubectl get pods -n kube-system
+    kubectl get pods -n kube-system
     ```
 
     You should see Calico, CoreDNS, etcd, kube-apiserver, kube-controller-manager, kube-proxy and kube-scheduler all in `Running` state.
@@ -46,26 +46,26 @@ kubectl get pods -n kube-system
 4. Configure `kubectl` command-line completion for your current shell and persist it for future sessions.
 
     ```bash
-source <(kubectl completion bash)
-echo "source <(kubectl completion bash)" >> $HOME/.bashrc
+    source <(kubectl completion bash)
+    echo "source <(kubectl completion bash)" >> $HOME/.bashrc
     ```
 
 5. Check whether the control-plane taint is present. In a training environment we remove it so pods can schedule on all nodes.
 
     ```bash
-kubectl describe nodes | grep -i taint
+    kubectl describe nodes | grep -i taint
     ```
 
     If you see `node-role.kubernetes.io/control-plane:NoSchedule` on the controller node, remove it:
 
     ```bash
-kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+    kubectl taint nodes --all node-role.kubernetes.io/control-plane-
     ```
 
     Verify all nodes now show `<none>` for taints:
 
     ```bash
-kubectl describe nodes | grep -i taint
+    kubectl describe nodes | grep -i taint
     Taints:             <none>
     Taints:             <none>
     Taints:             <none>
@@ -78,13 +78,13 @@ kubectl describe nodes | grep -i taint
 1. Review the `kubectl` help output to become familiar with the available commands.
 
     ```bash
-kubectl --help
+    kubectl --help
     ```
 
 2. Get a list of all available API resources and their API groups. Note that `pods` belongs to the stable `v1` group.
 
     ```bash
-kubectl api-resources
+    kubectl api-resources
     ```
 
     Example output (truncated):
@@ -101,7 +101,7 @@ kubectl api-resources
 3. Explore a specific sub-command using `--help`. For example, inspect the `taint` command.
 
     ```bash
-kubectl taint --help
+    kubectl taint --help
     ```
 
 ---
@@ -120,7 +120,7 @@ kubectl taint --help
 2. Review the minimal pod definition.
 
     ```bash
-cat basic.yaml
+    cat basic.yaml
     ```
 
     ```yaml
@@ -137,9 +137,9 @@ cat basic.yaml
 3. Create the pod and verify it is running.
 
     ```bash
-kubectl create -f basic.yaml
+    kubectl create -f basic.yaml
     pod/basicpod created
-kubectl get pod
+    kubectl get pod
     NAME       READY   STATUS    RESTARTS   AGE
     basicpod   1/1     Running   0          23s
     ```
@@ -147,22 +147,22 @@ kubectl get pod
 4. Inspect the pod details using `describe`. Look for the container image name and node assignment.
 
     ```bash
-kubectl describe pod basicpod
+    kubectl describe pod basicpod
     ```
 
 5. Delete the pod and confirm it is gone.
 
     ```bash
-kubectl delete pod basicpod
+    kubectl delete pod basicpod
     pod "basicpod" deleted
-kubectl get pod
+    kubectl get pod
     No resources found in default namespace.
     ```
 
 6. Edit `basic.yaml` to expose port 80. Add two lines at the same indentation as `image:`.
 
     ```bash
-vim basic.yaml
+    vim basic.yaml
     ```
 
     The file should now look like this:
@@ -183,12 +183,12 @@ vim basic.yaml
 7. Re-create the pod and verify the internal IP address. Use `curl` to reach the nginx default page.
 
     ```bash
-kubectl create -f basic.yaml
+    kubectl create -f basic.yaml
     pod/basicpod created
-kubectl get pod -o wide
+    kubectl get pod -o wide
     NAME       READY   STATUS    RESTARTS   AGE   IP            NODE      ...
     basicpod   1/1     Running   0          18s   10.244.1.23   worker1   ...
-curl http://10.244.1.23
+    curl http://10.244.1.23
     <!DOCTYPE html>
     <html>
     <head>
@@ -202,13 +202,13 @@ curl http://10.244.1.23
     Delete the pod before continuing.
 
     ```bash
-kubectl delete pod basicpod
+    kubectl delete pod basicpod
     ```
 
 8. Review the service definition.
 
     ```bash
-cat basicservice.yaml
+    cat basicservice.yaml
     ```
 
     ```yaml
@@ -227,7 +227,7 @@ cat basicservice.yaml
 9. Edit `basic.yaml` to add a label that matches the service selector.
 
     ```bash
-vim basic.yaml
+    vim basic.yaml
     ```
 
     Add the `labels` section under `metadata`:
@@ -250,14 +250,14 @@ vim basic.yaml
 10. Create both the pod and the service. Verify both are running.
 
     ```bash
-kubectl create -f basic.yaml
+    kubectl create -f basic.yaml
     pod/basicpod created
-kubectl create -f basicservice.yaml
+    kubectl create -f basicservice.yaml
     service/basicservice created
-kubectl get pod
+    kubectl get pod
     NAME       READY   STATUS    RESTARTS   AGE
     basicpod   1/1     Running   0          110s
-kubectl get svc
+    kubectl get svc
     NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
     basicservice   ClusterIP   10.96.112.50    <none>        80/TCP    14s
     kubernetes     ClusterIP   10.96.0.1       <none>        443/TCP   4h
@@ -266,7 +266,7 @@ kubectl get svc
 11. Test access to the webserver via the service `CLUSTER-IP`.
 
     ```bash
-curl http://10.96.112.50
+    curl http://10.96.112.50
     <!DOCTYPE html>
     <html>
     <head>
@@ -277,14 +277,14 @@ curl http://10.96.112.50
 12. Now expose the service outside the cluster using `NodePort`. Delete the existing service and update the YAML.
 
     ```bash
-kubectl delete svc basicservice
+    kubectl delete svc basicservice
     service "basicservice" deleted
     ```
 
     Review `basicservice-AllDone.yaml` - it already has `type: NodePort` added:
 
     ```bash
-cat basicservice-AllDone.yaml
+    cat basicservice-AllDone.yaml
     ```
 
     ```yaml
@@ -304,9 +304,9 @@ cat basicservice-AllDone.yaml
     Create the service using this file.
 
     ```bash
-kubectl create -f basicservice-AllDone.yaml
+    kubectl create -f basicservice-AllDone.yaml
     service/basicservice created
-kubectl get svc
+    kubectl get svc
     NAME           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
     basicservice   NodePort    10.100.139.155   <none>        80:31514/TCP   3s
     kubernetes     ClusterIP   10.96.0.1        <none>        443/TCP        47h
@@ -315,7 +315,7 @@ kubectl get svc
 13. Note the high-numbered NodePort (e.g. `31514`). Test access from the controller node using any node's IP.
 
     ```bash
-curl http://<worker1-ip>:31514
+    curl http://<worker1-ip>:31514
     <!DOCTYPE html>
     ...
     ```
@@ -330,7 +330,7 @@ curl http://<worker1-ip>:31514
 1. Edit `basic.yaml` to add a second container acting as a logging sidecar. Add the `fdlogger` container after the `webcont` container - the dash should align with the previous container dash.
 
     ```bash
-vim basic.yaml
+    vim basic.yaml
     ```
 
     ```yaml
@@ -347,10 +347,10 @@ vim basic.yaml
 2. Delete and recreate the pod. This time `READY` should show `2/2`.
 
     ```bash
-kubectl delete pod basicpod ; kubectl create -f basic.yaml
+    kubectl delete pod basicpod ; kubectl create -f basic.yaml
     pod "basicpod" deleted
     pod/basicpod created
-kubectl get pod
+    kubectl get pod
     NAME       READY   STATUS    RESTARTS   AGE
     basicpod   2/2     Running   0          2m8s
     ```
@@ -358,7 +358,7 @@ kubectl get pod
 3. Verify the `fdlogger` container is present in the describe output.
 
     ```bash
-kubectl describe pod basicpod
+    kubectl describe pod basicpod
     ```
 
     Look for the `fdlogger` section listing image, container ID and state.
@@ -366,7 +366,7 @@ kubectl describe pod basicpod
 4. Shut down the pod. We will revisit it with persistent storage in Chapter 5.
 
     ```bash
-kubectl delete pod basicpod
+    kubectl delete pod basicpod
     pod "basicpod" deleted
     ```
 
@@ -377,14 +377,14 @@ kubectl delete pod basicpod
 1. Create a Deployment running the nginx webserver. A Deployment gives you scalability, self-healing, and rolling updates.
 
     ```bash
-kubectl create deployment firstpod --image=nginx
+    kubectl create deployment firstpod --image=nginx
     deployment.apps/firstpod created
     ```
 
 2. Verify the Deployment and its managed pod are both running.
 
     ```bash
-kubectl get deployment,pod
+    kubectl get deployment,pod
     NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
     deployment.apps/firstpod   1/1     1            1           10s
 
@@ -395,8 +395,8 @@ kubectl get deployment,pod
 3. Describe the Deployment, then the Pod. Note the labels, replica count, strategy type, and the node the pod is scheduled on.
 
     ```bash
-kubectl describe deployment firstpod
-kubectl describe pod <pod-name>
+    kubectl describe deployment firstpod
+    kubectl describe pod <pod-name>
     ```
 
     !!! tip
@@ -405,7 +405,7 @@ kubectl describe pod <pod-name>
 4. List available namespaces.
 
     ```bash
-kubectl get namespaces
+    kubectl get namespaces
     NAME              STATUS   AGE
     default           Active   20m
     kube-node-lease   Active   20m
@@ -416,7 +416,7 @@ kubectl get namespaces
 5. View all pods in the `kube-system` namespace.
 
     ```bash
-kubectl get pod -n kube-system
+    kubectl get pod -n kube-system
     ```
 
     You should see Calico, CoreDNS, etcd, and other control plane components.
@@ -424,28 +424,28 @@ kubectl get pod -n kube-system
 6. Query a namespace that does not exist. Note no error is returned - simply no resources found.
 
     ```bash
-kubectl get pod -n fakenamespace
+    kubectl get pod -n fakenamespace
     No resources found in fakenamespaces namespace.
     ```
 
 7. View pods across all namespaces at once.
 
     ```bash
-kubectl get pod --all-namespaces
+    kubectl get pod --all-namespaces
     ```
 
 8. View multiple resource types in a single command. Note the short names: `deploy`, `rs`, `po`, `svc`, `ep`.
 
     ```bash
-kubectl get deploy,rs,po,svc,ep
+    kubectl get deploy,rs,po,svc,ep
     ```
 
 9. Delete the ReplicaSet and immediately check the resources again. You will see a **new** ReplicaSet and pod created automatically by the Deployment operator.
 
     ```bash
-kubectl delete rs <replicaset-name>
+    kubectl delete rs <replicaset-name>
     replicaset.apps "firstpod-65c7f8b5bb" deleted
-kubectl get deploy,rs,po
+    kubectl get deploy,rs,po
     ```
 
     Notice the age on the new ReplicaSet and pod is only a few seconds - the Deployment reconciled immediately.
@@ -453,9 +453,9 @@ kubectl get deploy,rs,po
 10. Delete the top-level Deployment. After about 30 seconds everything it manages cascades down.
 
     ```bash
-kubectl delete deployment firstpod
+    kubectl delete deployment firstpod
     deployment.apps "firstpod" deleted
-kubectl get deployment,rs,po,svc,ep
+    kubectl get deployment,rs,po,svc,ep
     ```
 
     Only the cluster services and endpoints remain.
@@ -463,7 +463,7 @@ kubectl get deployment,rs,po,svc,ep
 11. Clean up the `basicservice` service.
 
     ```bash
-kubectl delete svc basicservice
+    kubectl delete svc basicservice
     service "basicservice" deleted
     ```
 
@@ -487,9 +487,9 @@ kubectl delete svc basicservice
 6. Use the `architecture-review1.yaml` file to practice troubleshooting. Create the pod and determine why it does not start.
 
     ```bash
-kubectl create -f architecture-review1.yaml
-kubectl get pod
-kubectl describe pod break1
+    kubectl create -f architecture-review1.yaml
+    kubectl get pod
+    kubectl describe pod break1
     ```
 
     !!! hint
@@ -498,7 +498,7 @@ kubectl describe pod break1
 7. Once you have fixed and verified the pod, clean up before moving to the next chapter.
 
     ```bash
-kubectl delete -f architecture-review1.yaml
-kubectl delete pod basicpod --ignore-not-found
-kubectl delete svc basicservice --ignore-not-found
+    kubectl delete -f architecture-review1.yaml
+    kubectl delete pod basicpod --ignore-not-found
+    kubectl delete svc basicservice --ignore-not-found
     ```
