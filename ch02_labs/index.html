@@ -572,48 +572,47 @@
 </li>
 <li>
 <p>Verify both worker nodes have joined the cluster and show a <code>Ready</code> state.</p>
-<p><code>bash
-kubectl get nodes
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Expected output:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>nodes
 </code></pre></div>
-NAME         STATUS   ROLES           AGE   VERSION
-controller   Ready    control-plane   Xm    v1.33.1
-worker1      Ready    worker          Xm    v1.33.1
-worker2      Ready    worker          Xm    v1.33.1</code></p>
+<p>Expected output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>NAME         STATUS   ROLES           AGE   VERSION
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>controller   Ready    control-plane   Xm    v1.33.1
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>worker1      Ready    worker          Xm    v1.33.1
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>worker2      Ready    worker          Xm    v1.33.1
+</code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Worker node roles</p>
 <p>By default, worker nodes show <code>&lt;none&gt;</code> for the ROLES column. If your output shows <code>&lt;none&gt;</code>, label them with:</p>
-<p>```bash</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>kubectl<span class="w"> </span>label<span class="w"> </span>node<span class="w"> </span>worker1<span class="w"> </span>node-role.kubernetes.io/worker<span class="o">=</span>worker
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>kubectl<span class="w"> </span>label<span class="w"> </span>node<span class="w"> </span>worker2<span class="w"> </span>node-role.kubernetes.io/worker<span class="o">=</span>worker
+</code></pre></div>
 </div>
-<p>kubectl label node worker1 node-role.kubernetes.io/worker=worker
-kubectl label node worker2 node-role.kubernetes.io/worker=worker
-    ```</p>
 </li>
 <li>
 <p>Verify all system pods are running.</p>
-<p><code>bash
-kubectl get pods -n kube-system</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>kube-system
+</code></pre></div>
 <p>You should see Calico, CoreDNS, etcd, kube-apiserver, kube-controller-manager, kube-proxy and kube-scheduler all in <code>Running</code> state.</p>
 </li>
 <li>
 <p>Configure <code>kubectl</code> command-line completion for your current shell and persist it for future sessions.</p>
-<p><code>bash
-source &lt;(kubectl completion bash)
-echo "source &lt;(kubectl completion bash)" &gt;&gt; $HOME/.bashrc</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">source</span><span class="w"> </span>&lt;<span class="o">(</span>kubectl<span class="w"> </span>completion<span class="w"> </span>bash<span class="o">)</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;source &lt;(kubectl completion bash)&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$HOME</span>/.bashrc
+</code></pre></div>
 </li>
 <li>
 <p>Check whether the control-plane taint is present. In a training environment we remove it so pods can schedule on all nodes.</p>
-<p><code>bash
-kubectl describe nodes | grep -i taint</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>nodes<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>taint
+</code></pre></div>
 <p>If you see <code>node-role.kubernetes.io/control-plane:NoSchedule</code> on the controller node, remove it:</p>
-<p><code>bash
-kubectl taint nodes --all node-role.kubernetes.io/control-plane-</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>kubectl<span class="w"> </span>taint<span class="w"> </span>nodes<span class="w"> </span>--all<span class="w"> </span>node-role.kubernetes.io/control-plane-
+</code></pre></div>
 <p>Verify all nodes now show <code>&lt;none&gt;</code> for taints:</p>
-<p><code>bash
-kubectl describe nodes | grep -i taint
-Taints:             &lt;none&gt;
-Taints:             &lt;none&gt;
-Taints:             &lt;none&gt;</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>nodes<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>taint
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Taints:<span class="w">             </span>&lt;none&gt;
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Taints:<span class="w">             </span>&lt;none&gt;
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>Taints:<span class="w">             </span>&lt;none&gt;
+</code></pre></div>
 </li>
 </ol>
 <hr />
@@ -621,26 +620,26 @@ Taints:             &lt;none&gt;</code></p>
 <ol>
 <li>
 <p>Review the <code>kubectl</code> help output to become familiar with the available commands.</p>
-<p><code>bash
-kubectl --help</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>kubectl<span class="w"> </span>--help
+</code></pre></div>
 </li>
 <li>
 <p>Get a list of all available API resources and their API groups. Note that <code>pods</code> belongs to the stable <code>v1</code> group.</p>
-<p><code>bash
-kubectl api-resources
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Example output (truncated):
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>kubectl<span class="w"> </span>api-resources
 </code></pre></div>
-NAME                SHORTNAMES   APIVERSION   NAMESPACED   KIND
-configmaps          cm           v1           true         ConfigMap
-pods                po           v1           true         Pod
-services            svc          v1           true         Service
-deployments         deploy       apps/v1      true         Deployment
-replicasets         rs           apps/v1      true         ReplicaSet</code></p>
+<p>Example output (truncated):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>NAME                SHORTNAMES   APIVERSION   NAMESPACED   KIND
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>configmaps          cm           v1           true         ConfigMap
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>pods                po           v1           true         Pod
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>services            svc          v1           true         Service
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>deployments         deploy       apps/v1      true         Deployment
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>replicasets         rs           apps/v1      true         ReplicaSet
+</code></pre></div>
 </li>
 <li>
 <p>Explore a specific sub-command using <code>--help</code>. For example, inspect the <code>taint</code> command.</p>
-<p><code>bash
-kubectl taint --help</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>kubectl<span class="w"> </span>taint<span class="w"> </span>--help
+</code></pre></div>
 </li>
 </ol>
 <hr />
@@ -648,188 +647,181 @@ kubectl taint --help</code></p>
 <ol>
 <li>
 <p>Move into the chapter lab directory.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">cd</span><span class="w"> </span>~/lfd459/ch02-architecture
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>ls
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nb">cd</span><span class="w"> </span>~/lfd459/ch02-architecture
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>ls
 </code></pre></div>
 <p>You should see: <code>basic.yaml</code>, <code>basic-later.yaml</code>, <code>basicservice.yaml</code>, <code>basicservice-AllDone.yaml</code>, <code>architecture-review1.yaml</code></p>
 </li>
 <li>
 <p>Review the minimal pod definition.</p>
-<p>```bash
-cat basic.yaml
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>```yaml
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>apiVersion: v1
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>kind: Pod
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>metadata:
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  name: basicpod
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>spec:
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>  containers:
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>  - name: webcont
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    image: nginx
-</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>cat<span class="w"> </span>basic.yaml
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">basicpod</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">  </span><span class="nt">containers</span><span class="p">:</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webcont</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span>
+</code></pre></div>
 </li>
 <li>
 <p>Create the pod and verify it is running.</p>
-<p><code>bash
-kubectl create -f basic.yaml
-pod/basicpod created
-kubectl get pod
-NAME       READY   STATUS    RESTARTS   AGE
-basicpod   1/1     Running   0          23s</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>basic.yaml
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>pod/basicpod<span class="w"> </span>created
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>NAME<span class="w">       </span>READY<span class="w">   </span>STATUS<span class="w">    </span>RESTARTS<span class="w">   </span>AGE
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>basicpod<span class="w">   </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>23s
+</code></pre></div>
 </li>
 <li>
 <p>Inspect the pod details using <code>describe</code>. Look for the container image name and node assignment.</p>
-<p><code>bash
-kubectl describe pod basicpod</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>basicpod
+</code></pre></div>
 </li>
 <li>
 <p>Delete the pod and confirm it is gone.</p>
-<p><code>bash
-kubectl delete pod basicpod
-pod "basicpod" deleted
-kubectl get pod
-No resources found in default namespace.</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>basicpod
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>pod<span class="w"> </span><span class="s2">&quot;basicpod&quot;</span><span class="w"> </span>deleted
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>No<span class="w"> </span>resources<span class="w"> </span>found<span class="w"> </span><span class="k">in</span><span class="w"> </span>default<span class="w"> </span>namespace.
+</code></pre></div>
 </li>
 <li>
 <p>Edit <code>basic.yaml</code> to expose port 80. Add two lines at the same indentation as <code>image:</code>.</p>
-<p>```bash
-vim basic.yaml
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>The file should now look like this:
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>```yaml
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>apiVersion: v1
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>kind: Pod
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>metadata:
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>  name: basicpod
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>spec:
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>  containers:
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>  - name: webcont
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    image: nginx
-<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    ports:
-<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    - containerPort: 80
-</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>vim<span class="w"> </span>basic.yaml
+</code></pre></div>
+<p>The file should now look like this:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">basicpod</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">  </span><span class="nt">containers</span><span class="p">:</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webcont</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+</code></pre></div>
 </li>
 <li>
 <p>Re-create the pod and verify the internal IP address. Use <code>curl</code> to reach the nginx default page.</p>
-<p><code>bash
-kubectl create -f basic.yaml
-pod/basicpod created
-kubectl get pod -o wide
-NAME       READY   STATUS    RESTARTS   AGE   IP            NODE      ...
-basicpod   1/1     Running   0          18s   10.244.1.23   worker1   ...
-curl http://10.244.1.23
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;title&gt;Welcome to nginx!&lt;/title&gt;
-...</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>basic.yaml
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>pod/basicpod<span class="w"> </span>created
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-o<span class="w"> </span>wide
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>NAME<span class="w">       </span>READY<span class="w">   </span>STATUS<span class="w">    </span>RESTARTS<span class="w">   </span>AGE<span class="w">   </span>IP<span class="w">            </span>NODE<span class="w">      </span>...
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>basicpod<span class="w">   </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>18s<span class="w">   </span><span class="m">10</span>.244.1.23<span class="w">   </span>worker1<span class="w">   </span>...
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>curl<span class="w"> </span>http://10.244.1.23
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>&lt;!DOCTYPE<span class="w"> </span>html&gt;
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>&lt;html&gt;
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>&lt;head&gt;
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>&lt;title&gt;Welcome<span class="w"> </span>to<span class="w"> </span>nginx!&lt;/title&gt;
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a>...
+</code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The pod IP comes from the Calico CNI CIDR (<code>10.244.0.0/16</code>). The exact address will differ in your environment.</p>
 </div>
 <p>Delete the pod before continuing.</p>
-<p><code>bash
-kubectl delete pod basicpod</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>basicpod
+</code></pre></div>
 </li>
 <li>
 <p>Review the service definition.</p>
-<p>```bash
-cat basicservice.yaml
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>```yaml
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>apiVersion: v1
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>kind: Service
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>metadata:
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>  name: basicservice
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>spec:
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>  selector:
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    type: webserver
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>  ports:
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>  - protocol: TCP
-<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>    port: 80
-</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>cat<span class="w"> </span>basicservice.yaml
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">basicservice</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webserver</span>
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="w">  </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TCP</span>
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+</code></pre></div>
 </li>
 <li>
 <p>Edit <code>basic.yaml</code> to add a label that matches the service selector.</p>
-<p>```bash
-vim basic.yaml
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Add the `labels` section under `metadata`:
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>```yaml
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>apiVersion: v1
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>kind: Pod
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>metadata:
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>  name: basicpod
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>  labels:
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    type: webserver     # &lt;-- add this
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>spec:
-<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>  containers:
-<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>  - name: webcont
-<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>    image: nginx
-<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>    ports:
-<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>    - containerPort: 80
-</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>vim<span class="w"> </span>basic.yaml
+</code></pre></div>
+<p>Add the <code>labels</code> section under <code>metadata</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">basicpod</span>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webserver</span><span class="w">     </span><span class="c1"># &lt;-- add this</span>
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="w">  </span><span class="nt">containers</span><span class="p">:</span>
+<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webcont</span>
+<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span>
+<a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-25-12" name="__codelineno-25-12" href="#__codelineno-25-12"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+</code></pre></div>
 </li>
 <li>
 <p>Create both the pod and the service. Verify both are running.</p>
-<p><code>bash
-kubectl create -f basic.yaml
-pod/basicpod created
-kubectl create -f basicservice.yaml
-service/basicservice created
-kubectl get pod
-NAME       READY   STATUS    RESTARTS   AGE
-basicpod   1/1     Running   0          110s
-kubectl get svc
-NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
-basicservice   ClusterIP   10.96.112.50    &lt;none&gt;        80/TCP    14s
-kubernetes     ClusterIP   10.96.0.1       &lt;none&gt;        443/TCP   4h</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>basic.yaml
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>pod/basicpod<span class="w"> </span>created
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>basicservice.yaml
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>service/basicservice<span class="w"> </span>created
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>NAME<span class="w">       </span>READY<span class="w">   </span>STATUS<span class="w">    </span>RESTARTS<span class="w">   </span>AGE
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>basicpod<span class="w">   </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>110s
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>kubectl<span class="w"> </span>get<span class="w"> </span>svc
+<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a>NAME<span class="w">           </span>TYPE<span class="w">        </span>CLUSTER-IP<span class="w">      </span>EXTERNAL-IP<span class="w">   </span>PORT<span class="o">(</span>S<span class="o">)</span><span class="w">   </span>AGE
+<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a>basicservice<span class="w">   </span>ClusterIP<span class="w">   </span><span class="m">10</span>.96.112.50<span class="w">    </span>&lt;none&gt;<span class="w">        </span><span class="m">80</span>/TCP<span class="w">    </span>14s
+<a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a>kubernetes<span class="w">     </span>ClusterIP<span class="w">   </span><span class="m">10</span>.96.0.1<span class="w">       </span>&lt;none&gt;<span class="w">        </span><span class="m">443</span>/TCP<span class="w">   </span>4h
+</code></pre></div>
 </li>
 <li>
 <p>Test access to the webserver via the service <code>CLUSTER-IP</code>.</p>
-<p><code>bash
-curl http://10.96.112.50
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;title&gt;Welcome to nginx!&lt;/title&gt;
-...</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>curl<span class="w"> </span>http://10.96.112.50
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>&lt;!DOCTYPE<span class="w"> </span>html&gt;
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>&lt;html&gt;
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>&lt;head&gt;
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>&lt;title&gt;Welcome<span class="w"> </span>to<span class="w"> </span>nginx!&lt;/title&gt;
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a>...
+</code></pre></div>
 </li>
 <li>
 <p>Now expose the service outside the cluster using <code>NodePort</code>. Delete the existing service and update the YAML.</p>
-<p><code>bash
-kubectl delete svc basicservice
-service "basicservice" deleted</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>svc<span class="w"> </span>basicservice
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>service<span class="w"> </span><span class="s2">&quot;basicservice&quot;</span><span class="w"> </span>deleted
+</code></pre></div>
 <p>Review <code>basicservice-AllDone.yaml</code> - it already has <code>type: NodePort</code> added:</p>
-<p>```bash
-cat basicservice-AllDone.yaml
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>```yaml
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>apiVersion: v1
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>kind: Service
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>metadata:
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>  name: basicservice
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>spec:
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>  selector:
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    type: webserver
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>  type: NodePort
-<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>  ports:
-<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>  - protocol: TCP
-<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>    port: 80
-</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>cat<span class="w"> </span>basicservice-AllDone.yaml
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service</span>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">basicservice</span>
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
+<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webserver</span>
+<a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NodePort</span>
+<a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a><span class="w">  </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TCP</span>
+<a id="__codelineno-30-11" name="__codelineno-30-11" href="#__codelineno-30-11"></a><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+</code></pre></div>
 <p>Create the service using this file.</p>
-<p><code>bash
-kubectl create -f basicservice-AllDone.yaml
-service/basicservice created
-kubectl get svc
-NAME           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
-basicservice   NodePort    10.100.139.155   &lt;none&gt;        80:31514/TCP   3s
-kubernetes     ClusterIP   10.96.0.1        &lt;none&gt;        443/TCP        47h</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>basicservice-AllDone.yaml
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>service/basicservice<span class="w"> </span>created
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>kubectl<span class="w"> </span>get<span class="w"> </span>svc
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>NAME<span class="w">           </span>TYPE<span class="w">        </span>CLUSTER-IP<span class="w">       </span>EXTERNAL-IP<span class="w">   </span>PORT<span class="o">(</span>S<span class="o">)</span><span class="w">        </span>AGE
+<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a>basicservice<span class="w">   </span>NodePort<span class="w">    </span><span class="m">10</span>.100.139.155<span class="w">   </span>&lt;none&gt;<span class="w">        </span><span class="m">80</span>:31514/TCP<span class="w">   </span>3s
+<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a>kubernetes<span class="w">     </span>ClusterIP<span class="w">   </span><span class="m">10</span>.96.0.1<span class="w">        </span>&lt;none&gt;<span class="w">        </span><span class="m">443</span>/TCP<span class="w">        </span>47h
+</code></pre></div>
 </li>
 <li>
 <p>Note the high-numbered NodePort (e.g. <code>31514</code>). Test access from the controller node using any node's IP.</p>
-<p><code>bash
-curl http://&lt;worker1-ip&gt;:31514
-&lt;!DOCTYPE html&gt;
-...</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>curl<span class="w"> </span>http://&lt;worker1-ip&gt;:31514
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>&lt;!DOCTYPE<span class="w"> </span>html&gt;
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>...
+</code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>Use <code>kubectl get nodes -o wide</code> to find the node IPs.</p>
@@ -841,40 +833,39 @@ curl http://&lt;worker1-ip&gt;:31514
 <ol>
 <li>
 <p>Edit <code>basic.yaml</code> to add a second container acting as a logging sidecar. Add the <code>fdlogger</code> container after the <code>webcont</code> container - the dash should align with the previous container dash.</p>
-<p>```bash
-vim basic.yaml
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>```yaml
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>...
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>containers:
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>- name: webcont
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>  image: nginx
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>  ports:
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>  - containerPort: 80
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>- name: fdlogger
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>  image: fluentd
-</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>vim<span class="w"> </span>basic.yaml
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="nn">...</span>
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="nt">containers</span><span class="p">:</span>
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webcont</span>
+<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span>
+<a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="w">  </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+<a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fdlogger</span>
+<a id="__codelineno-34-8" name="__codelineno-34-8" href="#__codelineno-34-8"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fluentd</span>
+</code></pre></div>
 </li>
 <li>
 <p>Delete and recreate the pod. This time <code>READY</code> should show <code>2/2</code>.</p>
-<p><code>bash
-kubectl delete pod basicpod ; kubectl create -f basic.yaml
-pod "basicpod" deleted
-pod/basicpod created
-kubectl get pod
-NAME       READY   STATUS    RESTARTS   AGE
-basicpod   2/2     Running   0          2m8s</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>basicpod<span class="w"> </span><span class="p">;</span><span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>basic.yaml
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>pod<span class="w"> </span><span class="s2">&quot;basicpod&quot;</span><span class="w"> </span>deleted
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>pod/basicpod<span class="w"> </span>created
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod
+<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>NAME<span class="w">       </span>READY<span class="w">   </span>STATUS<span class="w">    </span>RESTARTS<span class="w">   </span>AGE
+<a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a>basicpod<span class="w">   </span><span class="m">2</span>/2<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>2m8s
+</code></pre></div>
 </li>
 <li>
 <p>Verify the <code>fdlogger</code> container is present in the describe output.</p>
-<p><code>bash
-kubectl describe pod basicpod</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>basicpod
+</code></pre></div>
 <p>Look for the <code>fdlogger</code> section listing image, container ID and state.</p>
 </li>
 <li>
 <p>Shut down the pod. We will revisit it with persistent storage in Chapter 5.</p>
-<p><code>bash
-kubectl delete pod basicpod
-pod "basicpod" deleted</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>basicpod
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>pod<span class="w"> </span><span class="s2">&quot;basicpod&quot;</span><span class="w"> </span>deleted
+</code></pre></div>
 </li>
 </ol>
 <hr />
@@ -882,25 +873,25 @@ pod "basicpod" deleted</code></p>
 <ol>
 <li>
 <p>Create a Deployment running the nginx webserver. A Deployment gives you scalability, self-healing, and rolling updates.</p>
-<p><code>bash
-kubectl create deployment firstpod --image=nginx
-deployment.apps/firstpod created</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>deployment<span class="w"> </span>firstpod<span class="w"> </span>--image<span class="o">=</span>nginx
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>deployment.apps/firstpod<span class="w"> </span>created
+</code></pre></div>
 </li>
 <li>
 <p>Verify the Deployment and its managed pod are both running.</p>
-<p>```bash
-kubectl get deployment,pod
-NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/firstpod   1/1     1            1           10s</p>
-<p>NAME                            READY   STATUS    RESTARTS   AGE
-pod/firstpod-65c7f8b5bb-zmlp8   1/1     Running   0          10s
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deployment,pod
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>NAME<span class="w">                       </span>READY<span class="w">   </span>UP-TO-DATE<span class="w">   </span>AVAILABLE<span class="w">   </span>AGE
+<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a>deployment.apps/firstpod<span class="w">   </span><span class="m">1</span>/1<span class="w">     </span><span class="m">1</span><span class="w">            </span><span class="m">1</span><span class="w">           </span>10s
+<a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a>
+<a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a>NAME<span class="w">                            </span>READY<span class="w">   </span>STATUS<span class="w">    </span>RESTARTS<span class="w">   </span>AGE
+<a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a>pod/firstpod-65c7f8b5bb-zmlp8<span class="w">   </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>10s
+</code></pre></div>
 </li>
 <li>
 <p>Describe the Deployment, then the Pod. Note the labels, replica count, strategy type, and the node the pod is scheduled on.</p>
-<p><code>bash
-kubectl describe deployment firstpod
-kubectl describe pod &lt;pod-name&gt;</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>deployment<span class="w"> </span>firstpod
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>&lt;pod-name&gt;
+</code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>Use Tab completion to avoid typing the full auto-generated pod name.</p>
@@ -908,57 +899,57 @@ kubectl describe pod &lt;pod-name&gt;</code></p>
 </li>
 <li>
 <p>List available namespaces.</p>
-<p><code>bash
-kubectl get namespaces
-NAME              STATUS   AGE
-default           Active   20m
-kube-node-lease   Active   20m
-kube-public       Active   20m
-kube-system       Active   20m</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>namespaces
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>NAME<span class="w">              </span>STATUS<span class="w">   </span>AGE
+<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a>default<span class="w">           </span>Active<span class="w">   </span>20m
+<a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a>kube-node-lease<span class="w">   </span>Active<span class="w">   </span>20m
+<a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a>kube-public<span class="w">       </span>Active<span class="w">   </span>20m
+<a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a>kube-system<span class="w">       </span>Active<span class="w">   </span>20m
+</code></pre></div>
 </li>
 <li>
 <p>View all pods in the <code>kube-system</code> namespace.</p>
-<p><code>bash
-kubectl get pod -n kube-system</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-n<span class="w"> </span>kube-system
+</code></pre></div>
 <p>You should see Calico, CoreDNS, etcd, and other control plane components.</p>
 </li>
 <li>
 <p>Query a namespace that does not exist. Note no error is returned - simply no resources found.</p>
-<p><code>bash
-kubectl get pod -n fakenamespace
-No resources found in fakenamespaces namespace.</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-n<span class="w"> </span>fakenamespace
+<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a>No<span class="w"> </span>resources<span class="w"> </span>found<span class="w"> </span><span class="k">in</span><span class="w"> </span>fakenamespaces<span class="w"> </span>namespace.
+</code></pre></div>
 </li>
 <li>
 <p>View pods across all namespaces at once.</p>
-<p><code>bash
-kubectl get pod --all-namespaces</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>--all-namespaces
+</code></pre></div>
 </li>
 <li>
 <p>View multiple resource types in a single command. Note the short names: <code>deploy</code>, <code>rs</code>, <code>po</code>, <code>svc</code>, <code>ep</code>.</p>
-<p><code>bash
-kubectl get deploy,rs,po,svc,ep</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deploy,rs,po,svc,ep
+</code></pre></div>
 </li>
 <li>
 <p>Delete the ReplicaSet and immediately check the resources again. You will see a <strong>new</strong> ReplicaSet and pod created automatically by the Deployment operator.</p>
-<p><code>bash
-kubectl delete rs &lt;replicaset-name&gt;
-replicaset.apps "firstpod-65c7f8b5bb" deleted
-kubectl get deploy,rs,po</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>rs<span class="w"> </span>&lt;replicaset-name&gt;
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a>replicaset.apps<span class="w"> </span><span class="s2">&quot;firstpod-65c7f8b5bb&quot;</span><span class="w"> </span>deleted
+<a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deploy,rs,po
+</code></pre></div>
 <p>Notice the age on the new ReplicaSet and pod is only a few seconds - the Deployment reconciled immediately.</p>
 </li>
 <li>
 <p>Delete the top-level Deployment. After about 30 seconds everything it manages cascades down.</p>
-<p><code>bash
-kubectl delete deployment firstpod
-deployment.apps "firstpod" deleted
-kubectl get deployment,rs,po,svc,ep</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>firstpod
+<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a>deployment.apps<span class="w"> </span><span class="s2">&quot;firstpod&quot;</span><span class="w"> </span>deleted
+<a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deployment,rs,po,svc,ep
+</code></pre></div>
 <p>Only the cluster services and endpoints remain.</p>
 </li>
 <li>
 <p>Clean up the <code>basicservice</code> service.</p>
-<p><code>bash
-kubectl delete svc basicservice
-service "basicservice" deleted</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>svc<span class="w"> </span>basicservice
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a>service<span class="w"> </span><span class="s2">&quot;basicservice&quot;</span><span class="w"> </span>deleted
+</code></pre></div>
 </li>
 </ol>
 <hr />
@@ -982,10 +973,10 @@ service "basicservice" deleted</code></p>
 </li>
 <li>
 <p>Use the <code>architecture-review1.yaml</code> file to practice troubleshooting. Create the pod and determine why it does not start.</p>
-<p><code>bash
-kubectl create -f architecture-review1.yaml
-kubectl get pod
-kubectl describe pod break1</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>architecture-review1.yaml
+<a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod
+<a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>break1
+</code></pre></div>
 <div class="admonition hint">
 <p class="admonition-title">Hint</p>
 <p>Look carefully at the image name in the YAML. Use <code>kubectl describe</code> to read the event messages.</p>
@@ -993,10 +984,10 @@ kubectl describe pod break1</code></p>
 </li>
 <li>
 <p>Once you have fixed and verified the pod, clean up before moving to the next chapter.</p>
-<p><code>bash
-kubectl delete -f architecture-review1.yaml
-kubectl delete pod basicpod --ignore-not-found
-kubectl delete svc basicservice --ignore-not-found</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>-f<span class="w"> </span>architecture-review1.yaml
+<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>basicpod<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>svc<span class="w"> </span>basicservice<span class="w"> </span>--ignore-not-found
+</code></pre></div>
 </li>
 </ol>
 

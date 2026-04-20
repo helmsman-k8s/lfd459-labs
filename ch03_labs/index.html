@@ -592,61 +592,60 @@
 <ol>
 <li>
 <p>Connect to the <strong>controller</strong> node. Verify Python 3 is installed.</p>
-<p><code>bash
-sudo apt-get -y install python3</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>python3
+</code></pre></div>
 <p>It should report already installed on Ubuntu 22.04.</p>
 </li>
 <li>
 <p>Move into the chapter lab directory.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>~/lfd459/ch03-build
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>ls
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>~/lfd459/ch03-build
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>ls
 </code></pre></div>
 <p>You should see: <code>simple.py</code>, <code>Dockerfile</code>, <code>easyregistry.yaml</code>, <code>local-repo-setup.sh</code>, <code>edited-simpleapp.yaml</code>, <code>edited-later-simpleapp.yaml</code>, <code>build-review1.yaml</code></p>
 </li>
 <li>
 <p>Create a working directory for the application and move into it.</p>
-<p><code>bash
-mkdir app1
-cd app1</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>mkdir<span class="w"> </span>app1
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">cd</span><span class="w"> </span>app1
+</code></pre></div>
 </li>
 <li>
 <p>Copy <code>simple.py</code> into the app1 directory and review it.</p>
-<p><code>bash
-cp ../simple.py .
-cat simple.py</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>cp<span class="w"> </span>../simple.py<span class="w"> </span>.
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>cat<span class="w"> </span>simple.py
+</code></pre></div>
 <p>The script runs in an infinite loop, writing the hostname and current timestamp to a file called <code>date.out</code> every 5 seconds.</p>
 </li>
 <li>
 <p>Make the script executable and run it briefly to verify it works. Use <strong>Ctrl-C</strong> to stop it after 15-20 seconds.</p>
-<p><code>bash
-chmod +x simple.py
-./simple.py
-^CTraceback (most recent call last):
-  File "./simple.py", line 24, in &lt;module&gt;
-    time.sleep(5)
-KeyboardInterrupt</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>chmod<span class="w"> </span>+x<span class="w"> </span>simple.py
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>./simple.py
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>^CTraceback<span class="w"> </span><span class="o">(</span>most<span class="w"> </span>recent<span class="w"> </span>call<span class="w"> </span>last<span class="o">)</span>:
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span>File<span class="w"> </span><span class="s2">&quot;./simple.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">24</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>&lt;module&gt;
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span>time.sleep<span class="o">(</span><span class="m">5</span><span class="o">)</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>KeyboardInterrupt
+</code></pre></div>
 </li>
 <li>
 <p>Verify the output file was created with hostname and timestamp entries.</p>
-<p><code>bash
-cat date.out
-2026-03-18 19:27:50
-controller
-2026-03-18 19:27:55
-controller
-...</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cat<span class="w"> </span>date.out
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="m">2026</span>-03-18<span class="w"> </span><span class="m">19</span>:27:50
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>controller
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="m">2026</span>-03-18<span class="w"> </span><span class="m">19</span>:27:55
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>controller
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>...
+</code></pre></div>
 </li>
 <li>
 <p>Copy the <code>Dockerfile</code> into the app1 directory and review it.</p>
-<p>```bash
-cp ../Dockerfile .
-cat Dockerfile
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>```dockerfile
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>FROM docker.io/library/python:3
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>ADD simple.py /
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>## RUN pip install pystrich
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>CMD [ &quot;python&quot;, &quot;./simple.py&quot; ]
-</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cp<span class="w"> </span>../Dockerfile<span class="w"> </span>.
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>cat<span class="w"> </span>Dockerfile
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">docker.io/library/python:3</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">ADD</span><span class="w"> </span>simple.py<span class="w"> </span>/
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="c">## RUN pip install pystrich</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;python&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;./simple.py&quot;</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The filename must be exactly <code>Dockerfile</code> - capital D, no extension.</p>
@@ -654,50 +653,50 @@ cat Dockerfile
 </li>
 <li>
 <p>Install Podman. Podman is a daemonless container tool compatible with Docker syntax.</p>
-<p><code>bash
-sudo apt-get install -y podman</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>podman
+</code></pre></div>
 </li>
 <li>
 <p>Build the container image. The dot (<code>.</code>) at the end means "use the current directory as the build context". When prompted to choose a registry for the <code>python</code> base image, select <code>docker.io</code>.</p>
-<p><code>bash
-sudo podman build -t simpleapp .
-STEP 1/3: FROM docker.io/library/python:3
-Trying to pull docker.io/library/python:3...
-...
-Successfully tagged localhost/simpleapp:latest</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sudo<span class="w"> </span>podman<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>simpleapp<span class="w"> </span>.
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>STEP<span class="w"> </span><span class="m">1</span>/3:<span class="w"> </span>FROM<span class="w"> </span>docker.io/library/python:3
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>Trying<span class="w"> </span>to<span class="w"> </span>pull<span class="w"> </span>docker.io/library/python:3...
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>...
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>Successfully<span class="w"> </span>tagged<span class="w"> </span>localhost/simpleapp:latest
+</code></pre></div>
 </li>
 <li>
 <p>Verify the new image appears in the local image list.</p>
-<p><code>bash
-sudo podman images
-REPOSITORY              TAG     IMAGE ID      CREATED        SIZE
-localhost/simpleapp     latest  11d4607c72e0  7 seconds ago  1.04 GB
-docker.io/library/python  3     58a8f3dcd68a  3 days ago     1.04 GB</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sudo<span class="w"> </span>podman<span class="w"> </span>images
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>REPOSITORY<span class="w">              </span>TAG<span class="w">     </span>IMAGE<span class="w"> </span>ID<span class="w">      </span>CREATED<span class="w">        </span>SIZE
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>localhost/simpleapp<span class="w">     </span>latest<span class="w">  </span>11d4607c72e0<span class="w">  </span><span class="m">7</span><span class="w"> </span>seconds<span class="w"> </span>ago<span class="w">  </span><span class="m">1</span>.04<span class="w"> </span>GB
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>docker.io/library/python<span class="w">  </span><span class="m">3</span><span class="w">     </span>58a8f3dcd68a<span class="w">  </span><span class="m">3</span><span class="w"> </span>days<span class="w"> </span>ago<span class="w">     </span><span class="m">1</span>.04<span class="w"> </span>GB
+</code></pre></div>
 </li>
 <li>
 <p>Run the container image with Podman. The script will run silently in the foreground. Wait 15 seconds then use <strong>Ctrl-C</strong> to stop it.</p>
-<p><code>bash
-sudo podman run localhost/simpleapp
-^CTraceback (most recent call last):
-  File "./simple.py", line 24, in &lt;module&gt;
-    time.sleep(5)
-KeyboardInterrupt</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>sudo<span class="w"> </span>podman<span class="w"> </span>run<span class="w"> </span>localhost/simpleapp
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>^CTraceback<span class="w"> </span><span class="o">(</span>most<span class="w"> </span>recent<span class="w"> </span>call<span class="w"> </span>last<span class="o">)</span>:
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span>File<span class="w"> </span><span class="s2">&quot;./simple.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">24</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>&lt;module&gt;
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span>time.sleep<span class="o">(</span><span class="m">5</span><span class="o">)</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>KeyboardInterrupt
+</code></pre></div>
 </li>
 <li>
 <p>Locate the <code>date.out</code> file that Podman created inside the container's overlay filesystem. Note the container hostname is a random hash, not <code>controller</code>.</p>
-<p><code>bash
-sudo find / -name date.out
-/home/guru/app1/date.out
-/var/lib/containers/storage/overlay/.../diff/date.out</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>sudo<span class="w"> </span>find<span class="w"> </span>/<span class="w"> </span>-name<span class="w"> </span>date.out
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>/home/guru/app1/date.out
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>/var/lib/containers/storage/overlay/.../diff/date.out
+</code></pre></div>
 </li>
 <li>
 <p>View the contents of the container's <code>date.out</code> file. Use the full path returned by the find command above.</p>
-<p><code>bash
-sudo tail /var/lib/containers/storage/overlay/&lt;hash&gt;/diff/date.out
-2026-03-18 19:32:20
-b8cec851efca
-2026-03-18 19:32:25
-b8cec851efca</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>sudo<span class="w"> </span>tail<span class="w"> </span>/var/lib/containers/storage/overlay/&lt;hash&gt;/diff/date.out
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="m">2026</span>-03-18<span class="w"> </span><span class="m">19</span>:32:20
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>b8cec851efca
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="m">2026</span>-03-18<span class="w"> </span><span class="m">19</span>:32:25
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>b8cec851efca
+</code></pre></div>
 </li>
 </ol>
 <hr />
@@ -706,23 +705,23 @@ b8cec851efca</code></p>
 <ol>
 <li>
 <p>Return to the home directory and create the local registry using the provided YAML.</p>
-<p><code>bash
-cd $HOME
-kubectl create -f easyregistry.yaml
-service/nginx created
-service/registry created
-deployment.apps/nginx created
-persistentvolumeclaim/nginx-claim0 created
-deployment.apps/registry created
-persistentvolumeclaim/registry-claim0 created
-persistentvolume/vol1 created
-persistentvolume/vol2 created</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>easyregistry.yaml
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>service/nginx<span class="w"> </span>created
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>service/registry<span class="w"> </span>created
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>deployment.apps/nginx<span class="w"> </span>created
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>persistentvolumeclaim/nginx-claim0<span class="w"> </span>created
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>deployment.apps/registry<span class="w"> </span>created
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>persistentvolumeclaim/registry-claim0<span class="w"> </span>created
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>persistentvolume/vol1<span class="w"> </span>created
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>persistentvolume/vol2<span class="w"> </span>created
+</code></pre></div>
 </li>
 <li>
 <p>Note the ClusterIP assigned to the registry service. In this setup it is expected to be <code>10.97.40.62</code> - verify this matches.</p>
-<p><code>bash
-kubectl get svc | grep registry
-registry   ClusterIP   10.97.40.62   &lt;none&gt;   5000/TCP   5m35s</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>registry
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>registry<span class="w">   </span>ClusterIP<span class="w">   </span><span class="m">10</span>.97.40.62<span class="w">   </span>&lt;none&gt;<span class="w">   </span><span class="m">5000</span>/TCP<span class="w">   </span>5m35s
+</code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">If the ClusterIP is different</p>
 <p>The <code>easyregistry.yaml</code> hardcodes <code>clusterIP: 10.97.40.62</code>. If a different IP was assigned, delete the service, edit the YAML to match the actual IP, and recreate it. The <code>local-repo-setup.sh</code> script also uses this same IP - edit it before running if needed.</p>
@@ -730,109 +729,109 @@ registry   ClusterIP   10.97.40.62   &lt;none&gt;   5000/TCP   5m35s</code></p>
 </li>
 <li>
 <p>Verify the registry is responding.</p>
-<p><code>bash
-curl 10.97.40.62:5000/v2/_catalog
-{"repositories":[]}</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>curl<span class="w"> </span><span class="m">10</span>.97.40.62:5000/v2/_catalog
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="o">{</span><span class="s2">&quot;repositories&quot;</span>:<span class="o">[]}</span>
+</code></pre></div>
 </li>
 <li>
 <p>Configure containerd and Podman on the <strong>controller</strong> to use the local registry over HTTP. Run the setup script (note the dot-space to source it and export the <code>$repo</code> variable into your shell).</p>
-<p><code>bash
-chmod +x local-repo-setup.sh
-. ./local-repo-setup.sh
-Configuring local repo, Please standby
-...
-Local Repo configured, follow the next steps</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>chmod<span class="w"> </span>+x<span class="w"> </span>local-repo-setup.sh
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>.<span class="w"> </span>./local-repo-setup.sh
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>Configuring<span class="w"> </span><span class="nb">local</span><span class="w"> </span>repo,<span class="w"> </span>Please<span class="w"> </span>standby
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>...
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>Local<span class="w"> </span>Repo<span class="w"> </span>configured,<span class="w"> </span>follow<span class="w"> </span>the<span class="w"> </span>next<span class="w"> </span>steps
+</code></pre></div>
 </li>
 <li>
 <p>Pull a small test image from Docker Hub, tag it for the local registry, and push it.</p>
-<p><code>bash
-sudo podman pull docker.io/library/alpine
-sudo podman tag alpine $repo/tagtest
-sudo podman push $repo/tagtest
-Getting image source signatures
-Copying blob b2d5eeeaba3a done
-...</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>sudo<span class="w"> </span>podman<span class="w"> </span>pull<span class="w"> </span>docker.io/library/alpine
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>sudo<span class="w"> </span>podman<span class="w"> </span>tag<span class="w"> </span>alpine<span class="w"> </span><span class="nv">$repo</span>/tagtest
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>sudo<span class="w"> </span>podman<span class="w"> </span>push<span class="w"> </span><span class="nv">$repo</span>/tagtest
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>Getting<span class="w"> </span>image<span class="w"> </span><span class="nb">source</span><span class="w"> </span>signatures
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>Copying<span class="w"> </span>blob<span class="w"> </span>b2d5eeeaba3a<span class="w"> </span><span class="k">done</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>...
+</code></pre></div>
 </li>
 <li>
 <p>Remove the local cached copies of the images, then pull from your local registry to verify it works end-to-end.</p>
-<p><code>bash
-sudo podman image rm alpine
-sudo podman image rm $repo/tagtest
-sudo podman pull $repo/tagtest
-Trying to pull 10.97.40.62:5000/tagtest:latest...
-...
-6dbb9cc54074106d46d4ccb330f2a40a682d49dda5f4844962b7dce9fe44aaec</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>sudo<span class="w"> </span>podman<span class="w"> </span>image<span class="w"> </span>rm<span class="w"> </span>alpine
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>sudo<span class="w"> </span>podman<span class="w"> </span>image<span class="w"> </span>rm<span class="w"> </span><span class="nv">$repo</span>/tagtest
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>sudo<span class="w"> </span>podman<span class="w"> </span>pull<span class="w"> </span><span class="nv">$repo</span>/tagtest
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>Trying<span class="w"> </span>to<span class="w"> </span>pull<span class="w"> </span><span class="m">10</span>.97.40.62:5000/tagtest:latest...
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>...
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>6dbb9cc54074106d46d4ccb330f2a40a682d49dda5f4844962b7dce9fe44aaec
+</code></pre></div>
 </li>
 <li>
 <p>Connect to <strong>worker1</strong> in a separate terminal. Install Podman and configure the local registry on the worker node the same way.</p>
-<p><code>bash
-sudo apt-get install -y podman
-cp ~/lfd459/ch03-build/local-repo-setup.sh .
-chmod +x local-repo-setup.sh
-. ./local-repo-setup.sh</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>podman
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>cp<span class="w"> </span>~/lfd459/ch03-build/local-repo-setup.sh<span class="w"> </span>.
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>chmod<span class="w"> </span>+x<span class="w"> </span>local-repo-setup.sh
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>.<span class="w"> </span>./local-repo-setup.sh
+</code></pre></div>
 <p>Verify the worker can pull from the registry.</p>
-<p><code>bash
-sudo podman pull $repo/tagtest
-Trying to pull 10.97.40.62:5000/tagtest:latest...
-...</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>sudo<span class="w"> </span>podman<span class="w"> </span>pull<span class="w"> </span><span class="nv">$repo</span>/tagtest
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>Trying<span class="w"> </span>to<span class="w"> </span>pull<span class="w"> </span><span class="m">10</span>.97.40.62:5000/tagtest:latest...
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>...
+</code></pre></div>
 <p>Repeat on <strong>worker2</strong>.</p>
 </li>
 <li>
 <p>Return to the <strong>controller</strong>. Tag and push the <code>simpleapp</code> image to the local registry.</p>
-<p><code>bash
-cd app1
-sudo podman tag simpleapp $repo/simpleapp
-sudo podman push $repo/simpleapp
-Getting image source signatures
-Copying blob 47458fb45d99 done
-...</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nb">cd</span><span class="w"> </span>app1
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>sudo<span class="w"> </span>podman<span class="w"> </span>tag<span class="w"> </span>simpleapp<span class="w"> </span><span class="nv">$repo</span>/simpleapp
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>sudo<span class="w"> </span>podman<span class="w"> </span>push<span class="w"> </span><span class="nv">$repo</span>/simpleapp
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>Getting<span class="w"> </span>image<span class="w"> </span><span class="nb">source</span><span class="w"> </span>signatures
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>Copying<span class="w"> </span>blob<span class="w"> </span>47458fb45d99<span class="w"> </span><span class="k">done</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>...
+</code></pre></div>
 </li>
 <li>
 <p>Verify both images appear in the registry catalog from the controller.</p>
-<p><code>bash
-curl $repo/v2/_catalog
-{"repositories":["simpleapp","tagtest"]}</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>curl<span class="w"> </span><span class="nv">$repo</span>/v2/_catalog
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="o">{</span><span class="s2">&quot;repositories&quot;</span>:<span class="o">[</span><span class="s2">&quot;simpleapp&quot;</span>,<span class="s2">&quot;tagtest&quot;</span><span class="o">]}</span>
+</code></pre></div>
 </li>
 <li>
 <p>Deploy the simpleapp from the local registry and scale it to 6 replicas.</p>
-<p><code>bash
-kubectl create deployment try1 --image=$repo/simpleapp
-deployment.apps/try1 created
-kubectl scale deployment try1 --replicas=6
-deployment.apps/try1 scaled
-kubectl get pod -o wide
-NAME                   READY  STATUS   RESTARTS  AGE  IP              NODE
-try1-55f675ddd-28vgs   1/1    Running  0         17s  10.244.1.30     worker1
-try1-55f675ddd-4vzt7   1/1    Running  0         17s  10.244.2.100    worker2
-try1-55f675ddd-2nrsj   1/1    Running  0         17s  10.244.0.26     controller
-...</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>deployment<span class="w"> </span>try1<span class="w"> </span>--image<span class="o">=</span><span class="nv">$repo</span>/simpleapp
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>deployment.apps/try1<span class="w"> </span>created
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>kubectl<span class="w"> </span>scale<span class="w"> </span>deployment<span class="w"> </span>try1<span class="w"> </span>--replicas<span class="o">=</span><span class="m">6</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>deployment.apps/try1<span class="w"> </span>scaled
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-o<span class="w"> </span>wide
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>NAME<span class="w">                   </span>READY<span class="w">  </span>STATUS<span class="w">   </span>RESTARTS<span class="w">  </span>AGE<span class="w">  </span>IP<span class="w">              </span>NODE
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>try1-55f675ddd-28vgs<span class="w">   </span><span class="m">1</span>/1<span class="w">    </span>Running<span class="w">  </span><span class="m">0</span><span class="w">         </span>17s<span class="w">  </span><span class="m">10</span>.244.1.30<span class="w">     </span>worker1
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>try1-55f675ddd-4vzt7<span class="w">   </span><span class="m">1</span>/1<span class="w">    </span>Running<span class="w">  </span><span class="m">0</span><span class="w">         </span>17s<span class="w">  </span><span class="m">10</span>.244.2.100<span class="w">    </span>worker2
+<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a>try1-55f675ddd-2nrsj<span class="w">   </span><span class="m">1</span>/1<span class="w">    </span>Running<span class="w">  </span><span class="m">0</span><span class="w">         </span>17s<span class="w">  </span><span class="m">10</span>.244.0.26<span class="w">     </span>controller
+<a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a>...
+</code></pre></div>
 <p>Pods should spread across all three nodes.</p>
 </li>
 <li>
 <p>On <strong>worker1</strong>, verify the simpleapp containers are running via crictl.</p>
-<p><code>bash
-sudo crictl config \
---set runtime-endpoint=unix:///run/containerd/containerd.sock \
---set image-endpoint=unix:///run/containerd/containerd.sock
-sudo crictl ps | grep simple</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>sudo<span class="w"> </span>crictl<span class="w"> </span>config<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>--set<span class="w"> </span>runtime-endpoint<span class="o">=</span>unix:///run/containerd/containerd.sock<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>--set<span class="w"> </span>image-endpoint<span class="o">=</span>unix:///run/containerd/containerd.sock
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>sudo<span class="w"> </span>crictl<span class="w"> </span>ps<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>simple
+</code></pre></div>
 </li>
 <li>
 <p>Return to the <strong>controller</strong>. Save the try1 deployment as a YAML file.</p>
-<p><code>bash
-kubectl get deployment try1 -o yaml &gt; simpleapp.yaml</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deployment<span class="w"> </span>try1<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span>&gt;<span class="w"> </span>simpleapp.yaml
+</code></pre></div>
 </li>
 <li>
 <p>Delete and recreate the deployment from the saved YAML. Verify 6/6 replicas are running.</p>
-<p><code>bash
-kubectl delete deployment try1
-deployment.apps "try1" deleted
-kubectl create -f simpleapp.yaml
-deployment.apps/try1 created
-kubectl get deployment
-NAME       READY   UP-TO-DATE   AVAILABLE   AGE
-nginx      1/1     1            1           15m
-registry   1/1     1            1           15m
-try1       6/6     6            6           5s</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>deployment.apps<span class="w"> </span><span class="s2">&quot;try1&quot;</span><span class="w"> </span>deleted
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>simpleapp.yaml
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>deployment.apps/try1<span class="w"> </span>created
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deployment
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a>NAME<span class="w">       </span>READY<span class="w">   </span>UP-TO-DATE<span class="w">   </span>AVAILABLE<span class="w">   </span>AGE
+<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a>nginx<span class="w">      </span><span class="m">1</span>/1<span class="w">     </span><span class="m">1</span><span class="w">            </span><span class="m">1</span><span class="w">           </span>15m
+<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a>registry<span class="w">   </span><span class="m">1</span>/1<span class="w">     </span><span class="m">1</span><span class="w">            </span><span class="m">1</span><span class="w">           </span>15m
+<a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a>try1<span class="w">       </span><span class="m">6</span>/6<span class="w">     </span><span class="m">6</span><span class="w">            </span><span class="m">6</span><span class="w">           </span>5s
+</code></pre></div>
 </li>
 </ol>
 <hr />
@@ -842,24 +841,22 @@ try1       6/6     6            6           5s</code></p>
 <ol>
 <li>
 <p>Edit <code>simpleapp.yaml</code> and add a <code>readinessProbe</code> to the <code>simpleapp</code> container. The probe runs <code>cat /tmp/healthy</code> - the container is not considered ready until that file exists.</p>
-<p>```bash
-vim simpleapp.yaml
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Find the `containers:` section for the simpleapp container and add the `readinessProbe` block after the `imagePullPolicy` line:
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>```yaml
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>spec:
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  containers:
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  - image: 10.97.40.62:5000/simpleapp
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    imagePullPolicy: Always
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    name: simpleapp
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    readinessProbe:
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>      periodSeconds: 5
-<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>      exec:
-<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>        command:
-<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>        - cat
-<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>        - /tmp/healthy
-<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>    resources: {}
-</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>vim<span class="w"> </span>simpleapp.yaml
+</code></pre></div>
+<p>Find the <code>containers:</code> section for the simpleapp container and add the <code>readinessProbe</code> block after the <code>imagePullPolicy</code> line:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="w">  </span><span class="nt">containers</span><span class="p">:</span>
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.97.40.62:5000/simpleapp</span>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="w">    </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Always</span>
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simpleapp</span>
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="w">    </span><span class="nt">readinessProbe</span><span class="p">:</span>
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="w">      </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a><span class="w">      </span><span class="nt">exec</span><span class="p">:</span>
+<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a><span class="w">        </span><span class="nt">command</span><span class="p">:</span>
+<a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cat</span>
+<a id="__codelineno-29-11" name="__codelineno-29-11" href="#__codelineno-29-11"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/tmp/healthy</span>
+<a id="__codelineno-29-12" name="__codelineno-29-12" href="#__codelineno-29-12"></a><span class="w">    </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+</code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>The <code>edited-simpleapp.yaml</code> file in your working directory already has this probe added. You can reference it for the correct indentation, but remember to verify the registry IP matches your environment.</p>
@@ -867,84 +864,82 @@ vim simpleapp.yaml
 </li>
 <li>
 <p>Delete and recreate the deployment.</p>
-<p><code>bash
-kubectl delete deployment try1
-deployment.apps "try1" deleted
-kubectl create -f simpleapp.yaml
-deployment.apps/try1 created</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>deployment.apps<span class="w"> </span><span class="s2">&quot;try1&quot;</span><span class="w"> </span>deleted
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>simpleapp.yaml
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>deployment.apps/try1<span class="w"> </span>created
+</code></pre></div>
 </li>
 <li>
 <p>The deployment shows 6 pods but <strong>0 available</strong> - all are waiting for <code>/tmp/healthy</code> to exist.</p>
-<p><code>bash
-kubectl get deployment
-NAME       READY   UP-TO-DATE   AVAILABLE   AGE
-try1       0/6     6            0           15s</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deployment
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>NAME<span class="w">       </span>READY<span class="w">   </span>UP-TO-DATE<span class="w">   </span>AVAILABLE<span class="w">   </span>AGE
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>try1<span class="w">       </span><span class="m">0</span>/6<span class="w">     </span><span class="m">6</span><span class="w">            </span><span class="m">0</span><span class="w">           </span>15s
+</code></pre></div>
 </li>
 <li>
 <p>Check the pods. Each try1 pod shows <code>0/1</code> in READY - the readinessProbe is failing.</p>
-<p><code>bash
-kubectl get pods
-NAME                    READY   STATUS    RESTARTS   AGE
-try1-9869bdb88-rtchc    0/1     Running   0          26s
-try1-9869bdb88-2wfnr    0/1     Running   0          26s
-...</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>NAME<span class="w">                    </span>READY<span class="w">   </span>STATUS<span class="w">    </span>RESTARTS<span class="w">   </span>AGE
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>try1-9869bdb88-rtchc<span class="w">    </span><span class="m">0</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>26s
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>try1-9869bdb88-2wfnr<span class="w">    </span><span class="m">0</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>26s
+<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a>...
+</code></pre></div>
 </li>
 <li>
 <p>Exec into one pod and create the health check file.</p>
-<p><code>bash
-kubectl exec -it try1-9869bdb88-rtchc -- /bin/bash
-root@try1-9869bdb88-rtchc:/# touch /tmp/healthy
-root@try1-9869bdb88-rtchc:/# exit</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>try1-9869bdb88-rtchc<span class="w"> </span>--<span class="w"> </span>/bin/bash
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>root@try1-9869bdb88-rtchc:/#<span class="w"> </span>touch<span class="w"> </span>/tmp/healthy
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>root@try1-9869bdb88-rtchc:/#<span class="w"> </span><span class="nb">exit</span>
+</code></pre></div>
 </li>
 <li>
 <p>Wait at least 5 seconds (the <code>periodSeconds</code>), then check pods again. The pod you touched should now show <code>1/1</code>.</p>
-<p><code>bash
-kubectl get pods
-NAME                    READY   STATUS    RESTARTS   AGE
-try1-9869bdb88-rtchc    1/1     Running   0          4m
-try1-9869bdb88-2wfnr    0/1     Running   0          4m
-...</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>NAME<span class="w">                    </span>READY<span class="w">   </span>STATUS<span class="w">    </span>RESTARTS<span class="w">   </span>AGE
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>try1-9869bdb88-rtchc<span class="w">    </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>4m
+<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>try1-9869bdb88-2wfnr<span class="w">    </span><span class="m">0</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>4m
+<a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a>...
+</code></pre></div>
 </li>
 <li>
 <p>Use a <code>for</code> loop to touch <code>/tmp/healthy</code> in all remaining pods at once.</p>
-<p><code>bash
-for name in $(kubectl get pods -l app=try1 -o name); \
-do kubectl exec $name -- touch /tmp/healthy; done</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="k">for</span><span class="w"> </span>name<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>try1<span class="w"> </span>-o<span class="w"> </span>name<span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="k">do</span><span class="w"> </span>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span><span class="nv">$name</span><span class="w"> </span>--<span class="w"> </span>touch<span class="w"> </span>/tmp/healthy<span class="p">;</span><span class="w"> </span><span class="k">done</span>
+</code></pre></div>
 </li>
 <li>
 <p>Wait a few seconds, then verify all 6 pods are now <code>1/1 Ready</code>.</p>
-<p><code>bash
-kubectl get pods
-NAME                    READY   STATUS    RESTARTS   AGE
-try1-9869bdb88-rtchc    1/1     Running   0          22m
-try1-9869bdb88-2wfnr    1/1     Running   0          22m
-...</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>NAME<span class="w">                    </span>READY<span class="w">   </span>STATUS<span class="w">    </span>RESTARTS<span class="w">   </span>AGE
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>try1-9869bdb88-rtchc<span class="w">    </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>22m
+<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a>try1-9869bdb88-2wfnr<span class="w">    </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>22m
+<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a>...
+</code></pre></div>
 </li>
 </ol>
 <h3 id="livenessprobe-and-sidecar-container">livenessProbe and Sidecar Container<a class="headerlink" href="#livenessprobe-and-sidecar-container" title="Permanent link">&para;</a></h3>
 <ol>
 <li>
 <p>Edit <code>simpleapp.yaml</code> again to add a <code>livenessProbe</code> and a second sidecar container (<code>goproxy</code>). Find the end of the simpleapp container definition and add the goproxy container after it.</p>
-<p>```bash
-vim simpleapp.yaml
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Add after `terminationMessagePolicy: File`:
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>```yaml
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    - name: goproxy
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>      image: registry.k8s.io/goproxy:0.1
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>      ports:
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>      - containerPort: 8080
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>      readinessProbe:
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>        tcpSocket:
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>          port: 8080
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>        initialDelaySeconds: 5
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>        periodSeconds: 10
-<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>      livenessProbe:
-<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>        tcpSocket:
-<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>          port: 8080
-<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>        initialDelaySeconds: 15
-<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>        periodSeconds: 20
-</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>vim<span class="w"> </span>simpleapp.yaml
+</code></pre></div>
+<p>Add after <code>terminationMessagePolicy: File</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">goproxy</span>
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">registry.k8s.io/goproxy:0.1</span>
+<a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="w">      </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+<a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a><span class="w">      </span><span class="nt">readinessProbe</span><span class="p">:</span>
+<a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a><span class="w">        </span><span class="nt">tcpSocket</span><span class="p">:</span>
+<a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a><span class="w">          </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+<a id="__codelineno-38-8" name="__codelineno-38-8" href="#__codelineno-38-8"></a><span class="w">        </span><span class="nt">initialDelaySeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<a id="__codelineno-38-9" name="__codelineno-38-9" href="#__codelineno-38-9"></a><span class="w">        </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<a id="__codelineno-38-10" name="__codelineno-38-10" href="#__codelineno-38-10"></a><span class="w">      </span><span class="nt">livenessProbe</span><span class="p">:</span>
+<a id="__codelineno-38-11" name="__codelineno-38-11" href="#__codelineno-38-11"></a><span class="w">        </span><span class="nt">tcpSocket</span><span class="p">:</span>
+<a id="__codelineno-38-12" name="__codelineno-38-12" href="#__codelineno-38-12"></a><span class="w">          </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+<a id="__codelineno-38-13" name="__codelineno-38-13" href="#__codelineno-38-13"></a><span class="w">        </span><span class="nt">initialDelaySeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span>
+<a id="__codelineno-38-14" name="__codelineno-38-14" href="#__codelineno-38-14"></a><span class="w">        </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
+</code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>The <code>edited-later-simpleapp.yaml</code> file shows the complete deployment with both containers configured. Use it as a reference for indentation.</p>
@@ -952,63 +947,62 @@ vim simpleapp.yaml
 </li>
 <li>
 <p>Delete and recreate the deployment.</p>
-<p><code>bash
-kubectl delete deployment try1
-deployment.apps "try1" deleted
-kubectl create -f simpleapp.yaml
-deployment.apps/try1 created</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>deployment.apps<span class="w"> </span><span class="s2">&quot;try1&quot;</span><span class="w"> </span>deleted
+<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>simpleapp.yaml
+<a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a>deployment.apps/try1<span class="w"> </span>created
+</code></pre></div>
 </li>
 <li>
 <p>Check the pods. Each pod now has two containers (<code>READY 1/2</code> or <code>0/2</code>). The goproxy container starts, but simpleapp is not ready again because <code>/tmp/healthy</code> is missing.</p>
-<p><code>bash
-kubectl get pods
-NAME                      READY   STATUS    RESTARTS   AGE
-try1-76cc5ffcc6-4rjvh     1/2     Running   0          3s
-try1-76cc5ffcc6-bk5f5     1/2     Running   0          3s
-try1-76cc5ffcc6-d8n5q     0/2     Running   0          3s
-...</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>NAME<span class="w">                      </span>READY<span class="w">   </span>STATUS<span class="w">    </span>RESTARTS<span class="w">   </span>AGE
+<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a>try1-76cc5ffcc6-4rjvh<span class="w">     </span><span class="m">1</span>/2<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>3s
+<a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a>try1-76cc5ffcc6-bk5f5<span class="w">     </span><span class="m">1</span>/2<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>3s
+<a id="__codelineno-40-5" name="__codelineno-40-5" href="#__codelineno-40-5"></a>try1-76cc5ffcc6-d8n5q<span class="w">     </span><span class="m">0</span>/2<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>3s
+<a id="__codelineno-40-6" name="__codelineno-40-6" href="#__codelineno-40-6"></a>...
+</code></pre></div>
 </li>
 <li>
 <p>Create the health check file in all pods. Specify the <code>-c simpleapp</code> flag to target the correct container.</p>
-<p><code>bash
-for name in $(kubectl get pods -l app=try1 -o name); \
-do kubectl exec $name -c simpleapp -- touch /tmp/healthy; done</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="k">for</span><span class="w"> </span>name<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>try1<span class="w"> </span>-o<span class="w"> </span>name<span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="k">do</span><span class="w"> </span>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span><span class="nv">$name</span><span class="w"> </span>-c<span class="w"> </span>simpleapp<span class="w"> </span>--<span class="w"> </span>touch<span class="w"> </span>/tmp/healthy<span class="p">;</span><span class="w"> </span><span class="k">done</span>
+</code></pre></div>
 </li>
 <li>
 <p>Wait a minute and verify all pods show <code>2/2 Running</code>.</p>
-<p><code>bash
-kubectl get pods
-NAME                      READY   STATUS    RESTARTS   AGE
-try1-76cc5ffcc6-4rjvh     2/2     Running   0          ~1m
-try1-76cc5ffcc6-bk5f5     2/2     Running   0          ~1m
-...</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a>NAME<span class="w">                      </span>READY<span class="w">   </span>STATUS<span class="w">    </span>RESTARTS<span class="w">   </span>AGE
+<a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a>try1-76cc5ffcc6-4rjvh<span class="w">     </span><span class="m">2</span>/2<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>~1m
+<a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a>try1-76cc5ffcc6-bk5f5<span class="w">     </span><span class="m">2</span>/2<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>~1m
+<a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a>...
+</code></pre></div>
 </li>
 <li>
 <p>Examine the events for one of the pods. Note the <code>Readiness probe failed</code> warnings from before the file was created.</p>
-<p><code>bash
-kubectl describe pod try1-76cc5ffcc6-4rjvh | tail -20</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>try1-76cc5ffcc6-4rjvh<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-20
+</code></pre></div>
 <p>Look for <code>Warning Unhealthy</code> events showing <code>cat: /tmp/healthy: No such file or directory</code>.</p>
 </li>
 <li>
 <p>Confirm both containers in the pod show <code>State: Running</code> and <code>Ready: True</code>.</p>
-<p><code>bash
-kubectl describe pod try1-76cc5ffcc6-4rjvh | grep -E 'State|Ready'
-State:          Running
-Ready:          True
-State:          Running
-Ready:          True
-Ready:          True
-ContainersReady: True</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>try1-76cc5ffcc6-4rjvh<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;State|Ready&#39;</span>
+<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>State:<span class="w">          </span>Running
+<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a>Ready:<span class="w">          </span>True
+<a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a>State:<span class="w">          </span>Running
+<a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a>Ready:<span class="w">          </span>True
+<a id="__codelineno-44-6" name="__codelineno-44-6" href="#__codelineno-44-6"></a>Ready:<span class="w">          </span>True
+<a id="__codelineno-44-7" name="__codelineno-44-7" href="#__codelineno-44-7"></a>ContainersReady:<span class="w"> </span>True
+</code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Troubleshooting</p>
 <p>If the try1 deployment seems stuck, check the registry catalog and re-push if needed, then scale down to 0 and back to 6:</p>
-<p>```bash</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>curl<span class="w"> </span><span class="nv">$repo</span>/v2/_catalog
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>sudo<span class="w"> </span>podman<span class="w"> </span>push<span class="w"> </span><span class="nv">$repo</span>/simpleapp
+<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a>kubectl<span class="w"> </span>scale<span class="w"> </span>deployment<span class="w"> </span>try1<span class="w"> </span>--replicas<span class="w"> </span><span class="m">0</span>
+<a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a>kubectl<span class="w"> </span>scale<span class="w"> </span>deployment<span class="w"> </span>try1<span class="w"> </span>--replicas<span class="w"> </span><span class="m">6</span>
+</code></pre></div>
 </div>
-<p>curl $repo/v2/_catalog
-sudo podman push $repo/simpleapp
-kubectl scale deployment try1 --replicas 0
-kubectl scale deployment try1 --replicas 6
-    ```</p>
 </li>
 </ol>
 <hr />
@@ -1031,8 +1025,8 @@ kubectl scale deployment try1 --replicas 6
 <li>Deploy a new nginx webserver. Add both a <code>livenessProbe</code> and a <code>readinessProbe</code> on port 80. Test that both probes and the webserver are working.</li>
 <li>
 <p>Use <code>build-review1.yaml</code> to create a broken deployment. Fix it so both containers are running and in a <code>READY</code> state.</p>
-<p><code>bash
-kubectl create -f ~/build-review1.yaml</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>~/build-review1.yaml
+</code></pre></div>
 <div class="admonition hint">
 <p class="admonition-title">Hint</p>
 <p>The web server (<code>nginx</code>) listens on port 80. The proxy (<code>goproxy</code>) listens on port 8080. Examine the probe configurations carefully - one of the port numbers is wrong.</p>
@@ -1040,20 +1034,20 @@ kubectl create -f ~/build-review1.yaml</code></p>
 </li>
 <li>
 <p>Once fixed, access the default nginx page and verify the GET request appears in the container log.</p>
-<p><code>bash
-curl http://&lt;pod-ip&gt;
-kubectl logs &lt;pod-name&gt; -c brokenapp
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>You should see a line like:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>curl<span class="w"> </span>http://&lt;pod-ip&gt;
+<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-c<span class="w"> </span>brokenapp
 </code></pre></div>
-192.168.124.0 - - [21/Mar/2026:03:30:31 +0000] "GET / HTTP/1.1" 200 612 "-" "curl/7.58.0"</code></p>
+<p>You should see a line like:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>192.168.124.0 - - [21/Mar/2026:03:30:31 +0000] &quot;GET / HTTP/1.1&quot; 200 612 &quot;-&quot; &quot;curl/7.58.0&quot;
+</code></pre></div>
 </li>
 <li>
 <p>Clean up all resources created in this review before moving on.</p>
-<p><code>bash
-kubectl delete deployment try1 nginx registry break2 --ignore-not-found
-kubectl delete svc nginx registry --ignore-not-found
-kubectl delete pvc nginx-claim0 registry-claim0 --ignore-not-found
-kubectl delete pv vol1 vol2 --ignore-not-found</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1<span class="w"> </span>nginx<span class="w"> </span>registry<span class="w"> </span>break2<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>svc<span class="w"> </span>nginx<span class="w"> </span>registry<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pvc<span class="w"> </span>nginx-claim0<span class="w"> </span>registry-claim0<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-49-4" name="__codelineno-49-4" href="#__codelineno-49-4"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pv<span class="w"> </span>vol1<span class="w"> </span>vol2<span class="w"> </span>--ignore-not-found
+</code></pre></div>
 </li>
 </ul>
 
