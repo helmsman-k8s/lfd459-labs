@@ -1,3 +1,4 @@
+
 # Chapter 2 - Kubernetes Architecture
 
 ## Lab Overview
@@ -20,7 +21,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
 
     Expected output:
 
-    ```
+    ```text
     NAME         STATUS   ROLES           AGE   VERSION
     controller   Ready    control-plane   Xm    v1.33.1
     worker1      Ready    worker          Xm    v1.33.1
@@ -38,11 +39,8 @@ The cluster is already installed and ready. Your first task is to confirm everyt
 3. Verify all system pods are running.
 
     ```bash
-        ```
-
-        ```bash
     kubectl get pods -n kube-system
-        ```
+    ```
 
     You should see Calico, CoreDNS, etcd, kube-apiserver, kube-controller-manager, kube-proxy and kube-scheduler all in `Running` state.
 
@@ -71,7 +69,9 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     kubectl describe nodes | grep -i taint
     ```
 
-    ```
+    Expected output:
+
+    ```text
     Taints:             <none>
     Taints:             <none>
     Taints:             <none>
@@ -95,7 +95,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
 
     Example output (truncated):
 
-    ```
+    ```text
     NAME                SHORTNAMES   APIVERSION   NAMESPACED   KIND
     configmaps          cm           v1           true         ConfigMap
     pods                po           v1           true         Pod
@@ -144,17 +144,12 @@ The cluster is already installed and ready. Your first task is to confirm everyt
 
     ```bash
     kubectl create -f basic.yaml
-    ```
-
-    ```
-    pod/basicpod created
-    ```
-
-    ```bash
     kubectl get pod
     ```
 
-    ```
+    Expected output:
+
+    ```text
     NAME       READY   STATUS    RESTARTS   AGE
     basicpod   1/1     Running   0          23s
     ```
@@ -169,17 +164,12 @@ The cluster is already installed and ready. Your first task is to confirm everyt
 
     ```bash
     kubectl delete pod basicpod
-    ```
-
-    ```
-    pod "basicpod" deleted
-    ```
-
-    ```bash
     kubectl get pod
     ```
 
-    ```
+    Expected output:
+
+    ```text
     No resources found in default namespace.
     ```
 
@@ -208,17 +198,12 @@ The cluster is already installed and ready. Your first task is to confirm everyt
 
     ```bash
     kubectl create -f basic.yaml
-    ```
-
-    ```
-    pod/basicpod created
-    ```
-
-    ```bash
     kubectl get pod -o wide
     ```
 
-    ```
+    Expected output:
+
+    ```text
     NAME       READY   STATUS    RESTARTS   AGE   IP            NODE      ...
     basicpod   1/1     Running   0          18s   10.244.1.23   worker1   ...
     ```
@@ -227,7 +212,9 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     curl http://10.244.1.23
     ```
 
-    ```
+    Expected output:
+
+    ```html
     <!DOCTYPE html>
     <html>
     <head>
@@ -290,34 +277,21 @@ The cluster is already installed and ready. Your first task is to confirm everyt
 
     ```bash
     kubectl create -f basic.yaml
-    ```
-
-    ```
-    pod/basicpod created
-    ```
-
-    ```bash
     kubectl create -f basicservice.yaml
-    ```
-
-    ```
-    service/basicservice created
-    ```
-
-    ```bash
     kubectl get pod
+    kubectl get svc
     ```
 
-    ```
+    Expected output for `kubectl get pod`:
+
+    ```text
     NAME       READY   STATUS    RESTARTS   AGE
     basicpod   1/1     Running   0          110s
     ```
 
-    ```bash
-    kubectl get svc
-    ```
+    Expected output for `kubectl get svc`:
 
-    ```
+    ```text
     NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
     basicservice   ClusterIP   10.96.112.50    <none>        80/TCP    14s
     kubernetes     ClusterIP   10.96.0.1       <none>        443/TCP   4h
@@ -329,7 +303,9 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     curl http://10.96.112.50
     ```
 
-    ```
+    Expected output:
+
+    ```html
     <!DOCTYPE html>
     <html>
     <head>
@@ -343,7 +319,9 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     kubectl delete svc basicservice
     ```
 
-    ```
+    Expected output:
+
+    ```text
     service "basicservice" deleted
     ```
 
@@ -371,17 +349,12 @@ The cluster is already installed and ready. Your first task is to confirm everyt
 
     ```bash
     kubectl create -f basicservice-AllDone.yaml
-    ```
-
-    ```
-    service/basicservice created
-    ```
-
-    ```bash
     kubectl get svc
     ```
 
-    ```
+    Expected output:
+
+    ```text
     NAME           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
     basicservice   NodePort    10.100.139.155   <none>        80:31514/TCP   3s
     kubernetes     ClusterIP   10.96.0.1        <none>        443/TCP        47h
@@ -393,7 +366,9 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     curl http://<worker1-ip>:31514
     ```
 
-    ```
+    Expected output:
+
+    ```html
     <!DOCTYPE html>
     ...
     ```
@@ -426,18 +401,15 @@ The cluster is already installed and ready. Your first task is to confirm everyt
 
     ```bash
     kubectl delete pod basicpod ; kubectl create -f basic.yaml
-    ```
-
-    ```
-    pod "basicpod" deleted
-    pod/basicpod created
-    ```
-
-    ```bash
     kubectl get pod
     ```
 
-    ```
+    Expected output:
+
+    ```text
+    pod "basicpod" deleted
+    pod/basicpod created
+
     NAME       READY   STATUS    RESTARTS   AGE
     basicpod   2/2     Running   0          2m8s
     ```
@@ -456,7 +428,9 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     kubectl delete pod basicpod
     ```
 
-    ```
+    Expected output:
+
+    ```text
     pod "basicpod" deleted
     ```
 
@@ -470,7 +444,9 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     kubectl create deployment firstpod --image=nginx
     ```
 
-    ```
+    Expected output:
+
+    ```text
     deployment.apps/firstpod created
     ```
 
@@ -480,7 +456,9 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     kubectl get deployment,pod
     ```
 
-    ```
+    Expected output:
+
+    ```text
     NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
     deployment.apps/firstpod   1/1     1            1           10s
 
@@ -504,7 +482,9 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     kubectl get namespaces
     ```
 
-    ```
+    Expected output:
+
+    ```text
     NAME              STATUS   AGE
     default           Active   20m
     kube-node-lease   Active   20m
@@ -526,7 +506,9 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     kubectl get pod -n fakenamespace
     ```
 
-    ```
+    Expected output:
+
+    ```text
     No resources found in fakenamespaces namespace.
     ```
 
@@ -546,14 +528,13 @@ The cluster is already installed and ready. Your first task is to confirm everyt
 
     ```bash
     kubectl delete rs <replicaset-name>
-    ```
-
-    ```
-    replicaset.apps "firstpod-65c7f8b5bb" deleted
-    ```
-
-    ```bash
     kubectl get deploy,rs,po
+    ```
+
+    Expected output (for delete):
+
+    ```text
+    replicaset.apps "firstpod-65c7f8b5bb" deleted
     ```
 
     Notice the age on the new ReplicaSet and pod is only a few seconds - the Deployment reconciled immediately.
@@ -562,14 +543,13 @@ The cluster is already installed and ready. Your first task is to confirm everyt
 
     ```bash
     kubectl delete deployment firstpod
-    ```
-
-    ```
-    deployment.apps "firstpod" deleted
-    ```
-
-    ```bash
     kubectl get deployment,rs,po,svc,ep
+    ```
+
+    Expected output (for delete):
+
+    ```text
+    deployment.apps "firstpod" deleted
     ```
 
     Only the cluster services and endpoints remain.
@@ -580,7 +560,9 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     kubectl delete svc basicservice
     ```
 
-    ```
+    Expected output:
+
+    ```text
     service "basicservice" deleted
     ```
 
@@ -619,3 +601,4 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     kubectl delete pod basicpod --ignore-not-found
     kubectl delete svc basicservice --ignore-not-found
     ```
+
