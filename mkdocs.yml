@@ -1,0 +1,35 @@
+site_name: LFD459 - Kubernetes for Application Developers Lab Guide
+site_description: Student lab guide for LFD459 / CKAD preparation
+site_author: VEGA TRAINING
+theme:
+  name: material
+  palette:
+    scheme: slate
+    primary: teal
+    accent: cyan
+  features:
+    - content.code.copy
+    - navigation.sections
+    - navigation.top
+    - toc.integrate
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.details
+  - toc:
+      permalink: true
+extra:
+  generator: false
+copyright: VEGA TRAINING 2025
+nav:
+  - Home: index.md
+  - Chapter 2 - Kubernetes Architecture: ch02_labs.md
+  - Chapter 3 - Build: ch03_labs.md
+  - Chapter 4 - Design: ch04_labs.md
+  - Chapter 5 - Deployment Configuration: ch05_labs.md
+  - Chapter 6 - Understanding Security: ch06_labs.md
+  - Chapter 7 - Exposing Applications: ch07_labs.md
+  - Chapter 8 - Application Troubleshooting: ch08_labs.md
