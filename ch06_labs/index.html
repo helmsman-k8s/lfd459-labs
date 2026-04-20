@@ -560,16 +560,16 @@
 
 
 
-<h1 id="chapter-6-understanding-security">Chapter 6 ? Understanding Security<a class="headerlink" href="#chapter-6-understanding-security" title="Permanent link">&para;</a></h1>
+<h1 id="chapter-6-understanding-security">Chapter 6 - Understanding Security<a class="headerlink" href="#chapter-6-understanding-security" title="Permanent link">&para;</a></h1>
 <h2 id="lab-overview">Lab Overview<a class="headerlink" href="#lab-overview" title="Permanent link">&para;</a></h2>
 <p>In this chapter you will work with security contexts to control container UIDs and Linux capabilities, create and consume Secrets, configure ServiceAccounts with RBAC, and understand NetworkPolicies. A new working directory <code>~/app2</code> is used throughout.</p>
 <div class="admonition note">
 <p class="admonition-title">NetworkPolicy and Calico</p>
-<p>This cluster uses <strong>Calico</strong> as the CNI plugin. Calico <strong>fully enforces NetworkPolicies</strong> ? when you apply a policy in Exercises 6.4 and 6.5, traffic will actually be blocked as described. The curl and nc tests will time out as expected. This matches the behaviour you will see on the CKAD exam.</p>
+<p>This cluster uses <strong>Calico</strong> as the CNI plugin. Calico <strong>fully enforces NetworkPolicies</strong> - when you apply a policy in Exercises 6.4 and 6.5, traffic will actually be blocked as described. The curl and nc tests will time out as expected. This matches the behaviour you will see on the CKAD exam.</p>
 </div>
 <hr />
 <h2 id="exercise-61-set-securitycontext-for-a-pod-and-container">Exercise 6.1: Set SecurityContext for a Pod and Container<a class="headerlink" href="#exercise-61-set-securitycontext-for-a-pod-and-container" title="Permanent link">&para;</a></h2>
-<p>A SecurityContext restricts what a container process can do ? which UID it runs as, whether it can escalate privileges, and which Linux capabilities it has.</p>
+<p>A SecurityContext restricts what a container process can do - which UID it runs as, whether it can escalate privileges, and which Linux capabilities it has.</p>
 <ol>
 <li>
 <p>Connect to the <strong>controller</strong> node. Create a new directory for the second application and copy the chapter lab files.</p>
@@ -668,7 +668,7 @@
 </ol>
 <hr />
 <h2 id="exercise-62-create-and-consume-secrets">Exercise 6.2: Create and Consume Secrets<a class="headerlink" href="#exercise-62-create-and-consume-secrets" title="Permanent link">&para;</a></h2>
-<p>Secrets store sensitive data in base64-encoded form. They are consumed like ConfigMaps ? as environment variables or volume mounts.</p>
+<p>Secrets store sensitive data in base64-encoded form. They are consumed like ConfigMaps - as environment variables or volume mounts.</p>
 <ol>
 <li>
 <p>Generate a base64-encoded password.</p>
@@ -677,7 +677,7 @@
 </code></pre></div>
 </li>
 <li>
-<p>Review <code>secret.yaml</code> ? it already contains the encoded password.</p>
+<p>Review <code>secret.yaml</code> - it already contains the encoded password.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>guru@controller:~/app2$<span class="w"> </span>cat<span class="w"> </span>secret.yaml
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
@@ -733,7 +733,7 @@
 <a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a>
 <a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a>/<span class="w"> </span>$<span class="w"> </span><span class="nb">exit</span>
 </code></pre></div>
-<p>The mount point uses symlinks ? the actual data is in a timestamped directory, and <code>..data</code> is a symlink to it. This allows Kubernetes to atomically update secrets.</p>
+<p>The mount point uses symlinks - the actual data is in a timestamped directory, and <code>..data</code> is a symlink to it. This allows Kubernetes to atomically update secrets.</p>
 </li>
 </ol>
 <hr />
@@ -861,11 +861,11 @@
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">If only 1/2 containers start</p>
-<p>If the pod shows <code>CrashLoopBackOff</code>, check <code>kubectl logs secondapp webserver</code>. If there is a permission error about creating directories, ensure the pod-level <code>securityContext.runAsUser</code> is commented out ? nginx must run as root.</p>
+<p>If the pod shows <code>CrashLoopBackOff</code>, check <code>kubectl logs secondapp webserver</code>. If there is a permission error about creating directories, ensure the pod-level <code>securityContext.runAsUser</code> is commented out - nginx must run as root.</p>
 </div>
 </li>
 <li>
-<p>Try to expose the pod ? this will fail because the pod has no labels.</p>
+<p>Try to expose the pod - this will fail because the pod has no labels.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>guru@controller:~/app2$<span class="w"> </span>kubectl<span class="w"> </span>expose<span class="w"> </span>pod<span class="w"> </span>secondapp<span class="w"> </span>--type<span class="o">=</span>NodePort<span class="w"> </span>--port<span class="o">=</span><span class="m">80</span>
 <a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>error:<span class="w"> </span>couldn<span class="err">&#39;</span>t<span class="w"> </span>retrieve<span class="w"> </span>selectors<span class="w"> </span>via<span class="w"> </span>--selector<span class="w"> </span>flag:<span class="w"> </span>the<span class="w"> </span>pod<span class="w"> </span>has<span class="w"> </span>no<span class="w"> </span>labels
 </code></pre></div>
@@ -980,7 +980,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>guru@controller:~/app2$<span class="w"> </span>kubectl<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--rm<span class="o">=</span><span class="nb">true</span><span class="w"> </span>--image<span class="w"> </span>alpine<span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a>--<span class="w"> </span>ping<span class="w"> </span>-c5<span class="w"> </span>&lt;secondapp-pod-ip&gt;
 </code></pre></div>
-<p>With Calico this will succeed ? the ingress rule allows all pod traffic including ICMP. The next step will restrict to TCP port 80 only, at which point ping will fail.</p>
+<p>With Calico this will succeed - the ingress rule allows all pod traffic including ICMP. The next step will restrict to TCP port 80 only, at which point ping will fail.</p>
 </li>
 <li>
 <p>Update the policy to only allow TCP port 80, and block ICMP (ping).</p>
@@ -1029,7 +1029,7 @@
 <p>Create a new deployment using the <code>nginx</code> image.</p>
 </li>
 <li>
-<p>Create a <code>LoadBalancer</code> service to expose the deployment on port 80. Note the <code>EXTERNAL-IP</code> will remain <code>&lt;pending&gt;</code> without a cloud provider ? the NodePort still works.</p>
+<p>Create a <code>LoadBalancer</code> service to expose the deployment on port 80. Note the <code>EXTERNAL-IP</code> will remain <code>&lt;pending&gt;</code> without a cloud provider - the NodePort still works.</p>
 </li>
 <li>
 <p>Create a new NetworkPolicy called <code>netblock</code> that blocks all traffic to pods in this deployment only (use a <code>podSelector</code> that matches your deployment's labels, not <code>{}</code>). Verify the object is created.</p>

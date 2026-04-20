@@ -558,9 +558,9 @@
 
 
 
-<h1 id="chapter-8-application-troubleshooting">Chapter 8 ? Application Troubleshooting<a class="headerlink" href="#chapter-8-application-troubleshooting" title="Permanent link">&para;</a></h1>
+<h1 id="chapter-8-application-troubleshooting">Chapter 8 - Application Troubleshooting<a class="headerlink" href="#chapter-8-application-troubleshooting" title="Permanent link">&para;</a></h1>
 <h2 id="lab-overview">Lab Overview<a class="headerlink" href="#lab-overview" title="Permanent link">&para;</a></h2>
-<p>This final chapter covers the troubleshooting flow for Kubernetes applications ? from pod inspection to service endpoints to kube-proxy. You will work with API deprecations, use <code>kubectl debug</code> with ephemeral containers, and tackle a multi-bug deployment as a domain review.</p>
+<p>This final chapter covers the troubleshooting flow for Kubernetes applications - from pod inspection to service endpoints to kube-proxy. You will work with API deprecations, use <code>kubectl debug</code> with ephemeral containers, and tackle a multi-bug deployment as a domain review.</p>
 <hr />
 <h2 id="exercise-81-monitor-applications">Exercise 8.1: Monitor Applications<a class="headerlink" href="#exercise-81-monitor-applications" title="Permanent link">&para;</a></h2>
 <p>A systematic troubleshooting flow is more valuable than memorising specific errors. Start from the application, work outward to the cluster.</p>
@@ -571,7 +571,7 @@
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>NAME<span class="w">        </span>READY<span class="w">   </span>STATUS<span class="w">    </span>RESTARTS<span class="w">   </span>AGE
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>secondapp<span class="w">   </span><span class="m">2</span>/2<span class="w">     </span>Running<span class="w">   </span><span class="m">49</span><span class="w">         </span>2d
 </code></pre></div>
-<p>The pod is running. Note <code>busy</code> has many restarts ? this is expected, as the <code>sleep 3600</code> command completes every hour and the container is restarted. <code>webserver</code> (nginx) should have 0 restarts.</p>
+<p>The pod is running. Note <code>busy</code> has many restarts - this is expected, as the <code>sleep 3600</code> command completes every hour and the container is restarted. <code>webserver</code> (nginx) should have 0 restarts.</p>
 </li>
 <li>
 <p>Describe the pod in detail. Work through every section.</p>
@@ -594,7 +594,7 @@
 </code></pre></div>
 </li>
 <li>
-<p>Scan the Events section at the bottom of <code>describe</code> output for any <code>Warning</code> entries. Repeated <code>Pulling</code> events for <code>busybox</code> are normal ? they accompany each restart.</p>
+<p>Scan the Events section at the bottom of <code>describe</code> output for any <code>Warning</code> entries. Repeated <code>Pulling</code> events for <code>busybox</code> are normal - they accompany each restart.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>secondapp<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A20<span class="w"> </span><span class="s2">&quot;^Events:&quot;</span>
 </code></pre></div>
 </li>
@@ -619,10 +619,10 @@
 <a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>search<span class="w"> </span>default.svc.cluster.local<span class="w"> </span>svc.cluster.local<span class="w"> </span>cluster.local
 <a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>
 <a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>/<span class="w"> </span>$<span class="w"> </span>nc<span class="w"> </span>-vz<span class="w"> </span>www.linux.com<span class="w"> </span><span class="m">25</span>
-<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="c1"># If this hangs, Ctrl-C ? port 25 (SMTP) may be blocked by the lab network</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="c1"># If this hangs, Ctrl-C - port 25 (SMTP) may be blocked by the lab network</span>
 <a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>
 <a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>/<span class="w"> </span>$<span class="w"> </span>wget<span class="w"> </span>http://www.linux.com/
-<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="c1"># May get &quot;Permission denied&quot; writing index.html ? this is expected</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="c1"># May get &quot;Permission denied&quot; writing index.html - this is expected</span>
 <a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="c1"># with runAsUser: 2000. Connectivity itself works.</span>
 <a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>
 <a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>/<span class="w"> </span>$<span class="w"> </span><span class="nb">exit</span>
@@ -636,7 +636,7 @@
 <p>Confirm <code>selector.example: second</code> matches the pod label <code>example=second</code>.</p>
 </li>
 <li>
-<p>Verify the endpoint object exists and has the correct pod IP and port. An empty <code>ENDPOINTS</code> field means the selector matched nothing ? no pods are ready.</p>
+<p>Verify the endpoint object exists and has the correct pod IP and port. An empty <code>ENDPOINTS</code> field means the selector matched nothing - no pods are ready.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>ep
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>NAME<span class="w">         </span>ENDPOINTS
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>secondapp<span class="w">    </span><span class="m">192</span>.168.x.y:80
@@ -662,7 +662,7 @@
 <p>Test via localhost NodePort to confirm the proxy chain is working end-to-end.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>guru@controller:~$<span class="w"> </span>curl<span class="w"> </span>localhost:32000
 </code></pre></div>
-<p>A successful nginx response confirms the full path ? service ? endpoint ? pod ? is working.</p>
+<p>A successful nginx response confirms the full path - service - endpoint - pod - is working.</p>
 </li>
 </ol>
 <hr />
@@ -711,17 +711,13 @@
 </code></pre></div>
 </li>
 </ol>
-<details class="success">
-<summary>Fixes revealed</summary>
-<ol>
-<li><code>apiVersion: extensions/v1beta1</code> ? <code>apiVersion: apps/v1</code> (<code>extensions/v1beta1</code> was removed in Kubernetes 1.16)</li>
-<li>Add <code>selector.matchLabels: {app: broken}</code> under <code>spec:</code> ? mandatory for <code>apps/v1</code></li>
-<li>Change pod template label from <code>app: thirdpage</code> to <code>app: broken</code> so the selector matches</li>
-</ol>
-</details>
+<p>--- success "Fixes revealed"
+    1. <code>apiVersion: extensions/v1beta1</code> - <code>apiVersion: apps/v1</code> (<code>extensions/v1beta1</code> was removed in Kubernetes 1.16)
+    2. Add <code>selector.matchLabels: {app: broken}</code> under <code>spec:</code> - mandatory for <code>apps/v1</code>
+    3. Change pod template label from <code>app: thirdpage</code> to <code>app: broken</code> so the selector matches</p>
 <hr />
 <h2 id="exercise-83-troubleshooting-with-ephemeral-containers">Exercise 8.3: Troubleshooting with Ephemeral Containers<a class="headerlink" href="#exercise-83-troubleshooting-with-ephemeral-containers" title="Permanent link">&para;</a></h2>
-<p>Ephemeral containers allow you to attach a debugging shell to a running pod ? even if the original container image has no shell. This is the modern replacement for exec when the shell has been removed or was never present.</p>
+<p>Ephemeral containers allow you to attach a debugging shell to a running pod - even if the original container image has no shell. This is the modern replacement for exec when the shell has been removed or was never present.</p>
 <ol>
 <li>
 <p>Deploy the broken application.</p>
@@ -731,7 +727,7 @@
 </code></pre></div>
 </li>
 <li>
-<p>Check the pod status. It will show <code>0/1 READY</code> ? running but not ready.</p>
+<p>Check the pod status. It will show <code>0/1 READY</code> - running but not ready.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>all
 <a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>NAME<span class="w">                   </span>READY<span class="w">   </span>STATUS<span class="w">    </span>RESTARTS<span class="w">   </span>AGE
 <a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>pod/nginx-debug-pod<span class="w">    </span><span class="m">0</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>5s
@@ -741,7 +737,7 @@
 </code></pre></div>
 </li>
 <li>
-<p>Try to connect to the service. It will fail ? the pod is not ready, so it has no endpoints.</p>
+<p>Try to connect to the service. It will fail - the pod is not ready, so it has no endpoints.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>ep<span class="w"> </span>nginx-debug-svc
 <a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>NAME<span class="w">              </span>ENDPOINTS<span class="w">   </span>AGE
 <a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>nginx-debug-svc<span class="w">   </span>&lt;none&gt;<span class="w">      </span>10s
@@ -761,11 +757,11 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>guru@controller:~$<span class="w"> </span>cat<span class="w"> </span>brokenapp.yaml
 </code></pre></div>
 <p>Two things are happening:
-- The <strong>startupProbe</strong> runs <code>rm -f /bin/bash</code> ? it deletes the bash shell from the container
-- The <strong>readinessProbe</strong> checks for <code>/tmp/app.log</code> ? this file doesn't exist yet</p>
+- The <strong>startupProbe</strong> runs <code>rm -f /bin/bash</code> - it deletes the bash shell from the container
+- The <strong>readinessProbe</strong> checks for <code>/tmp/app.log</code> - this file doesn't exist yet</p>
 </li>
 <li>
-<p>Try to exec directly into the pod ? it will fail because <code>/bin/bash</code> has been removed.</p>
+<p>Try to exec directly into the pod - it will fail because <code>/bin/bash</code> has been removed.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>pod/nginx-debug-pod<span class="w"> </span>--<span class="w"> </span>bash
 <a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>error:<span class="w"> </span>Internal<span class="w"> </span>error<span class="w"> </span>occurred:<span class="w"> </span>exec:<span class="w"> </span><span class="s2">&quot;bash&quot;</span>:<span class="w"> </span>executable<span class="w"> </span>file<span class="w"> </span>not<span class="w"> </span>found<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nv">$PATH</span>
 </code></pre></div>
@@ -793,7 +789,7 @@
 </code></pre></div>
 </li>
 <li>
-<p>Create the missing <code>/tmp/app.log</code> file by writing through <code>/proc/1/root</code> ? the root filesystem of the target container (PID 1 = nginx).</p>
+<p>Create the missing <code>/tmp/app.log</code> file by writing through <code>/proc/1/root</code> - the root filesystem of the target container (PID 1 = nginx).</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="c1"># echo &quot;hello from debug&quot; &gt; /proc/1/root/tmp/app.log</span>
 <a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="c1"># ls -l /proc/1/root/tmp/</span>
 <a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>-rw-r--r--<span class="w"> </span><span class="m">1</span><span class="w"> </span>root<span class="w"> </span>root<span class="w"> </span><span class="m">17</span><span class="w"> </span>...<span class="w"> </span>app.log
@@ -813,7 +809,7 @@
 </code></pre></div>
 </li>
 <li>
-<p>Test service access ? it now works.</p>
+<p>Test service access - it now works.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>guru@controller:~$<span class="w"> </span>curl<span class="w"> </span><span class="m">10</span>.111.195.30
 <a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>&lt;!DOCTYPE<span class="w"> </span>html&gt;
 <a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>&lt;html&gt;&lt;head&gt;&lt;title&gt;Welcome<span class="w"> </span>to<span class="w"> </span>nginx!&lt;/title&gt;&lt;/head&gt;...
@@ -842,7 +838,7 @@
 <a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>guru@controller:~$<span class="w"> </span>tar<span class="w"> </span>-xvf<span class="w"> </span>sonobuoy_linux_amd64.tar.gz
 <a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a>guru@controller:~$<span class="w"> </span>sudo<span class="w"> </span>mv<span class="w"> </span>sonobuoy<span class="w"> </span>/usr/local/bin/
 <a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a>
-<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a><span class="c1"># Run tests (--wait blocks until complete ? up to 60+ minutes)</span>
+<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a><span class="c1"># Run tests (--wait blocks until complete - up to 60+ minutes)</span>
 <a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a>guru@controller:~$<span class="w"> </span>sonobuoy<span class="w"> </span>run<span class="w"> </span>--wait
 <a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a>
 <a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a><span class="c1"># In a second terminal, monitor progress</span>
@@ -896,15 +892,11 @@
 </code></pre></div>
 </li>
 </ul>
-<details class="success">
-<summary>Fixes revealed</summary>
-<ol>
-<li><code>apiVersion: extensions/v1</code> ? <code>apiVersion: apps/v1</code> (invalid group)</li>
-<li><code>replicas: 0</code> ? <code>replicas: 1</code></li>
-<li><code>selector.matchLabels: run: ugottrouble</code> ? <code>run: igottrouble</code> (typo ? doesn't match pod template label)</li>
-<li>CPU <code>requests: 2.5</code> exceeds <code>limits: 1</code> ? requests cannot exceed limits. Fix: <code>requests.cpu: "0.5"</code> (or raise the limit)</li>
-</ol>
-</details>
+<p>--- success "Fixes revealed"
+    1. <code>apiVersion: extensions/v1</code> - <code>apiVersion: apps/v1</code> (invalid group)
+    2. <code>replicas: 0</code> - <code>replicas: 1</code>
+    3. <code>selector.matchLabels: run: ugottrouble</code> - <code>run: igottrouble</code> (typo - doesn't match pod template label)
+    4. CPU <code>requests: 2.5</code> exceeds <code>limits: 1</code> - requests cannot exceed limits. Fix: <code>requests.cpu: "0.5"</code> (or raise the limit)</p>
 <hr />
 <h2 id="course-complete">Course Complete<a class="headerlink" href="#course-complete" title="Permanent link">&para;</a></h2>
 <p>Congratulations on completing all LFD459 lab chapters. Before sitting the CKAD exam, make sure you:</p>

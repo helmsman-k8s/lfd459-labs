@@ -458,7 +458,7 @@
   <a href="#clusterip-internal-access-only" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ClusterIP ? Internal Access Only
+        ClusterIP - Internal Access Only
       
     </span>
   </a>
@@ -480,7 +480,7 @@
   <a href="#nodeport-external-access" class="md-nav__link">
     <span class="md-ellipsis">
       
-        NodePort ? External Access
+        NodePort - External Access
       
     </span>
   </a>
@@ -649,7 +649,7 @@
 
 
 
-<h1 id="chapter-7-exposing-applications">Chapter 7 ? Exposing Applications<a class="headerlink" href="#chapter-7-exposing-applications" title="Permanent link">&para;</a></h1>
+<h1 id="chapter-7-exposing-applications">Chapter 7 - Exposing Applications<a class="headerlink" href="#chapter-7-exposing-applications" title="Permanent link">&para;</a></h1>
 <h2 id="lab-overview">Lab Overview<a class="headerlink" href="#lab-overview" title="Permanent link">&para;</a></h2>
 <p>In this chapter you will work with all four service types (ClusterIP, NodePort, LoadBalancer, ExternalName), explore CoreDNS service discovery across namespaces, deploy an NGINX ingress controller via Helm, configure ingress rules for multiple virtual hosts, and optionally install Linkerd as a service mesh.</p>
 <div class="admonition note">
@@ -658,7 +658,7 @@
 </div>
 <hr />
 <h2 id="exercise-71-expose-a-service">Exercise 7.1: Expose a Service<a class="headerlink" href="#exercise-71-expose-a-service" title="Permanent link">&para;</a></h2>
-<h3 id="clusterip-internal-access-only">ClusterIP ? Internal Access Only<a class="headerlink" href="#clusterip-internal-access-only" title="Permanent link">&para;</a></h3>
+<h3 id="clusterip-internal-access-only">ClusterIP - Internal Access Only<a class="headerlink" href="#clusterip-internal-access-only" title="Permanent link">&para;</a></h3>
 <ol>
 <li>
 <p>Connect to the <strong>controller</strong> node and move into the <code>app2</code> directory. View existing services.</p>
@@ -679,7 +679,7 @@
 </code></pre></div>
 </li>
 <li>
-<p>Recreate the service using <code>newservice.yaml</code>. Note that no <code>type</code> is specified ? it defaults to <code>ClusterIP</code>.</p>
+<p>Recreate the service using <code>newservice.yaml</code>. Note that no <code>type</code> is specified - it defaults to <code>ClusterIP</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>guru@controller:~/app2$<span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>newservice.yaml
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>service/secondapp<span class="w"> </span>created
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
@@ -706,7 +706,7 @@
 <p>Find the label that <code>newserver</code>'s pods use.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>guru@controller:~/app2$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>deployment<span class="w"> </span>newserver<span class="w"> </span>-o<span class="w"> </span>wide
 </code></pre></div>
-<p>Note the <code>SELECTOR</code> column ? it will be <code>app=newserver</code>.</p>
+<p>Note the <code>SELECTOR</code> column - it will be <code>app=newserver</code>.</p>
 </li>
 <li>
 <p>Edit the <code>secondapp</code> service to switch the selector to <code>newserver</code>'s label.</p>
@@ -715,18 +715,18 @@
 <p>Change <code>selector.example: second</code> to <code>selector.app: newserver</code>.</p>
 </li>
 <li>
-<p>Test ? traffic should now show the httpd default page instead of nginx.</p>
+<p>Test - traffic should now show the httpd default page instead of nginx.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>guru@controller:~/app2$<span class="w"> </span>curl<span class="w"> </span>http://10.98.148.52
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>&lt;html&gt;&lt;body&gt;&lt;h1&gt;It<span class="w"> </span>works!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;
 </code></pre></div>
 </li>
 <li>
-<p>Edit the selector back to <code>example: second</code> and test again ? nginx returns. Then delete the <code>newserver</code> deployment.</p>
+<p>Edit the selector back to <code>example: second</code> and test again - nginx returns. Then delete the <code>newserver</code> deployment.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>guru@controller:~/app2$<span class="w"> </span>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>newserver
 </code></pre></div>
 </li>
 </ol>
-<h3 id="nodeport-external-access">NodePort ? External Access<a class="headerlink" href="#nodeport-external-access" title="Permanent link">&para;</a></h3>
+<h3 id="nodeport-external-access">NodePort - External Access<a class="headerlink" href="#nodeport-external-access" title="Permanent link">&para;</a></h3>
 <ol>
 <li>
 <p>Edit <code>newservice.yaml</code> to add a NodePort type and pin the high port to <code>32000</code>.</p>
@@ -773,7 +773,7 @@
 </code></pre></div>
 </li>
 <li>
-<p>Check the service. <code>EXTERNAL-IP</code> will remain <code>&lt;pending&gt;</code> ? there is no cloud load balancer in this environment. The NodePort still works.</p>
+<p>Check the service. <code>EXTERNAL-IP</code> will remain <code>&lt;pending&gt;</code> - there is no cloud load balancer in this environment. The NodePort still works.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>guru@controller:~/app2$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>secondapp
 <a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>NAME<span class="w">        </span>TYPE<span class="w">           </span>CLUSTER-IP<span class="w">      </span>EXTERNAL-IP<span class="w">   </span>PORT<span class="o">(</span>S<span class="o">)</span>
 <a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>secondapp<span class="w">   </span>LoadBalancer<span class="w">   </span><span class="m">10</span>.109.26.21<span class="w">    </span>&lt;pending&gt;<span class="w">     </span><span class="m">80</span>:32000/TCP
@@ -790,7 +790,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>guru@controller:~/app2$<span class="w"> </span>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>secondapp<span class="w"> </span>-c<span class="w"> </span>busy<span class="w"> </span>--<span class="w"> </span>sh
 </code></pre></div>
 <p>Inside the container:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Resolve the secondapp service ? only works for services in the same namespace</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Resolve the secondapp service - only works for services in the same namespace</span>
 <a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>/<span class="w"> </span>$<span class="w"> </span>nslookup<span class="w"> </span>secondapp
 <a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>Name:<span class="w"> </span>secondapp.default.svc.cluster.local
 <a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>Address:<span class="w"> </span><span class="m">10</span>.96.214.133
@@ -836,7 +836,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>guru@controller:~/app2$<span class="w"> </span>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>secondapp<span class="w"> </span>-c<span class="w"> </span>busy<span class="w"> </span>--<span class="w"> </span>sh
 </code></pre></div>
 <p>Inside:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># Short name fails ? shopping is not in the default namespace</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># Short name fails - shopping is not in the default namespace</span>
 <a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>/<span class="w"> </span>$<span class="w"> </span>nslookup<span class="w"> </span>shopping
 <a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>**<span class="w"> </span>server<span class="w"> </span>can<span class="err">&#39;</span>t<span class="w"> </span>find<span class="w"> </span>shopping.default.svc.cluster.local:<span class="w"> </span>NXDOMAIN
 <a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>
@@ -896,7 +896,7 @@
 </code></pre></div>
 </li>
 <li>
-<p>Verify the controller pods are running ? one per node (DaemonSet).</p>
+<p>Verify the controller pods are running - one per node (DaemonSet).</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>guru@controller:~/ingress-nginx$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>--all-namespaces<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>myingress
 <a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>default<span class="w">   </span>myingress-ingress-nginx-controller-xxxxx<span class="w">   </span><span class="m">1</span>/1<span class="w">   </span>Running<span class="w">   </span><span class="m">0</span><span class="w">   </span>20s<span class="w">   </span>controller
 <a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>default<span class="w">   </span>myingress-ingress-nginx-controller-yyyyy<span class="w">   </span><span class="m">1</span>/1<span class="w">   </span>Running<span class="w">   </span><span class="m">0</span><span class="w">   </span>20s<span class="w">   </span>worker1
@@ -904,7 +904,7 @@
 </code></pre></div>
 </li>
 <li>
-<p>Check the ingress controller service. <code>EXTERNAL-IP</code> will be <code>&lt;pending&gt;</code> ? that's expected.</p>
+<p>Check the ingress controller service. <code>EXTERNAL-IP</code> will be <code>&lt;pending&gt;</code> - that's expected.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>guru@controller:~/ingress-nginx$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>myingress
 <a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>myingress-ingress-nginx-controller<span class="w">   </span>LoadBalancer<span class="w">   </span><span class="m">10</span>.104.227.79<span class="w">   </span>&lt;pending&gt;<span class="w">   </span><span class="m">80</span>:32558/TCP,443:30219/TCP
 </code></pre></div>
@@ -945,7 +945,7 @@
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Old ingress file</p>
-<p>A file called <code>ingress_rule.yaml</code> exists in the lab files ? it uses <code>apiVersion: networking.k8s.io/v1beta1</code> which was <strong>removed in Kubernetes 1.22</strong>. Do not use it. Always use <code>ingress.yaml</code> (v1).</p>
+<p>A file called <code>ingress_rule.yaml</code> exists in the lab files - it uses <code>apiVersion: networking.k8s.io/v1beta1</code> which was <strong>removed in Kubernetes 1.22</strong>. Do not use it. Always use <code>ingress.yaml</code> (v1).</p>
 </div>
 </li>
 <li>
@@ -966,11 +966,11 @@
 <a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>grep<span class="w"> </span>myingress<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>controller<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;NR==1{print $6}&#39;</span><span class="k">)</span>
 <a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="nb">echo</span><span class="w"> </span><span class="nv">$INGRESS_IP</span>
 <a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>
-<a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a><span class="c1"># Without Host header ? 404 (ingress has no default backend)</span>
+<a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a><span class="c1"># Without Host header - 404 (ingress has no default backend)</span>
 <a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a>guru@controller:~/app2$<span class="w"> </span>curl<span class="w"> </span><span class="nv">$INGRESS_IP</span>
 <a id="__codelineno-35-8" name="__codelineno-35-8" href="#__codelineno-35-8"></a>&lt;html&gt;&lt;head&gt;&lt;title&gt;404<span class="w"> </span>Not<span class="w"> </span>Found&lt;/title&gt;&lt;/head&gt;...&lt;/html&gt;
 <a id="__codelineno-35-9" name="__codelineno-35-9" href="#__codelineno-35-9"></a>
-<a id="__codelineno-35-10" name="__codelineno-35-10" href="#__codelineno-35-10"></a><span class="c1"># With matching Host header ? nginx welcome page</span>
+<a id="__codelineno-35-10" name="__codelineno-35-10" href="#__codelineno-35-10"></a><span class="c1"># With matching Host header - nginx welcome page</span>
 <a id="__codelineno-35-11" name="__codelineno-35-11" href="#__codelineno-35-11"></a>guru@controller:~/app2$<span class="w"> </span>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: www.example.com&quot;</span><span class="w"> </span>http://<span class="nv">$INGRESS_IP</span>
 <a id="__codelineno-35-12" name="__codelineno-35-12" href="#__codelineno-35-12"></a>&lt;!DOCTYPE<span class="w"> </span>html&gt;
 <a id="__codelineno-35-13" name="__codelineno-35-13" href="#__codelineno-35-13"></a>&lt;html&gt;&lt;head&gt;&lt;title&gt;Welcome<span class="w"> </span>to<span class="w"> </span>nginx!&lt;/title&gt;...
@@ -1051,14 +1051,14 @@
 </code></pre></div>
 </li>
 <li>
-<p>Consider: how would you switch <code>thirdpage.org</code> traffic to an <code>httpd</code> server by editing only the ingress rule ? without touching the pods or services?</p>
+<p>Consider: how would you switch <code>thirdpage.org</code> traffic to an <code>httpd</code> server by editing only the ingress rule - without touching the pods or services-</p>
 </li>
 </ol>
 <hr />
 <h2 id="exercise-72b-linkerd-service-mesh-optional">Exercise 7.2b: Linkerd Service Mesh (Optional)<a class="headerlink" href="#exercise-72b-linkerd-service-mesh-optional" title="Permanent link">&para;</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Optional exploration</p>
-<p>Linkerd is not tested on the CKAD exam. This exercise is provided for exploration. It takes 10?20 minutes and requires internet access. Skip it if you are focused on exam preparation.</p>
+<p>Linkerd is not tested on the CKAD exam. This exercise is provided for exploration. It takes 10-20 minutes and requires internet access. Skip it if you are focused on exam preparation.</p>
 </div>
 <p>The <code>setupLinkerd.txt</code> file in <code>~/lfd459/ch07-exposing-apps/</code> contains the install commands. Key steps:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>guru@controller:~$<span class="w"> </span>curl<span class="w"> </span>-sL<span class="w"> </span>run.linkerd.io/install<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh

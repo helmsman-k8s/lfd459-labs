@@ -610,7 +610,7 @@
 
 
 
-<h1 id="chapter-4-design">Chapter 4 ? Design<a class="headerlink" href="#chapter-4-design" title="Permanent link">&para;</a></h1>
+<h1 id="chapter-4-design">Chapter 4 - Design<a class="headerlink" href="#chapter-4-design" title="Permanent link">&para;</a></h1>
 <h2 id="lab-overview">Lab Overview<a class="headerlink" href="#lab-overview" title="Permanent link">&para;</a></h2>
 <p>In this chapter you will review CNI network plugin concepts, work with Jobs and CronJobs for time-limited workloads, use label selectors to manage pods, set CPU and memory resource limits, and explore initContainers and Custom Resource Definitions.</p>
 <hr />
@@ -643,49 +643,40 @@
 </ul>
 <p>Answer the following questions:</p>
 <ul>
-<li>Which plugins support vxlans?</li>
-<li>Which are layer 2 plugins?</li>
-<li>Which are layer 3?</li>
-<li>Which support network policies?</li>
-<li>Which can encrypt all TCP and UDP traffic?</li>
+<li>Which plugins support vxlans-</li>
+<li>Which are layer 2 plugins-</li>
+<li>Which are layer 3-</li>
+<li>Which support network policies-</li>
+<li>Which can encrypt all TCP and UDP traffic-</li>
 </ul>
 </li>
 </ol>
-<details class="success">
-<summary>Plugin Answers</summary>
-<ul>
-<li><strong>vxlans</strong>: Canal, Calico, Flannel, Weave Net, Cilium</li>
-<li><strong>Layer 2</strong>: Canal, Weave Net</li>
-<li><strong>Layer 3</strong>: Calico, Romana, Kube Router</li>
-<li><strong>Network policies</strong>: Calico, Canal, Kube Router, Weave Net, Cilium</li>
-<li><strong>Encrypt TCP/UDP</strong>: Calico, Weave Net, Cilium</li>
-</ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Flannel does <strong>not</strong> support network policies natively. Calico, which this cluster uses, does. Keep this in mind in Chapter 6.</p>
-</div>
-</details>
+<p>--- success "Plugin Answers"
+    - <strong>vxlans</strong>: Canal, Calico, Flannel, Weave Net, Cilium
+    - <strong>Layer 2</strong>: Canal, Weave Net
+    - <strong>Layer 3</strong>: Calico, Romana, Kube Router
+    - <strong>Network policies</strong>: Calico, Canal, Kube Router, Weave Net, Cilium
+    - <strong>Encrypt TCP/UDP</strong>: Calico, Weave Net, Cilium</p>
+<div class="highlight"><pre><span></span><code>!!! note
+    Flannel does **not** support network policies natively. Calico, which this cluster uses, does. Keep this in mind in Chapter 6.
+</code></pre></div>
 <h3 id="multi-container-pod-considerations">Multi-Container Pod Considerations<a class="headerlink" href="#multi-container-pod-considerations" title="Permanent link">&para;</a></h3>
 <p>Consider the following questions based on what you learned in this chapter:</p>
 <ol>
-<li>Which deployment method allows the most flexibility ? one app per pod or multiple?</li>
-<li>Which allows the most granular scalability?</li>
-<li>Which has the best inter-container performance?</li>
-<li>How many IP addresses are assigned per pod?</li>
-<li>What are some ways containers can communicate within the same pod?</li>
-<li>What are some reasons to use multiple containers per pod?</li>
+<li>Which deployment method allows the most flexibility - one app per pod or multiple-</li>
+<li>Which allows the most granular scalability-</li>
+<li>Which has the best inter-container performance-</li>
+<li>How many IP addresses are assigned per pod-</li>
+<li>What are some ways containers can communicate within the same pod-</li>
+<li>What are some reasons to use multiple containers per pod-</li>
 </ol>
-<details class="success">
-<summary>Multi-Pod Answers</summary>
-<ol>
-<li>One per pod ? most flexible</li>
-<li>One per pod ? most granular scalability</li>
-<li>Multiple per pod ? best inter-container performance</li>
-<li>One IP per pod</li>
-<li>IPC, loopback interface, shared filesystem</li>
-<li>Lean containers may lack logging or other features. Adding sidecar, ambassador, or adapter containers provides that functionality without modifying the primary container.</li>
-</ol>
-</details>
+<p>--- success "Multi-Pod Answers"
+    1. One per pod - most flexible
+    2. One per pod - most granular scalability
+    3. Multiple per pod - best inter-container performance
+    4. One IP per pod
+    5. IPC, loopback interface, shared filesystem
+    6. Lean containers may lack logging or other features. Adding sidecar, ambassador, or adapter containers provides that functionality without modifying the primary container.</p>
 <hr />
 <h2 id="exercise-42-create-a-job">Exercise 4.2: Create a Job<a class="headerlink" href="#exercise-42-create-a-job" title="Permanent link">&para;</a></h2>
 <p>Jobs run a container a set number of times to completion, rather than keeping it running continuously.</p>
@@ -813,7 +804,7 @@
 </code></pre></div>
 </li>
 <li>
-<p>Check the status message in the job YAML ? it should show <code>DeadlineExceeded</code>.</p>
+<p>Check the status message in the job YAML - it should show <code>DeadlineExceeded</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>job<span class="w"> </span>sleepy<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A8<span class="w"> </span><span class="s2">&quot;^status:&quot;</span>
 <a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>status:
 <a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">  </span>conditions:
@@ -857,7 +848,7 @@
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">batch/v1beta1 is removed</p>
-<p>A file named <code>cron-job.yaml</code> is also in your directory ? it uses <code>apiVersion: batch/v1beta1</code> which was <strong>removed in Kubernetes 1.25</strong>. Do not use it. Always use <code>batch/v1</code> for CronJobs on this cluster.</p>
+<p>A file named <code>cron-job.yaml</code> is also in your directory - it uses <code>apiVersion: batch/v1beta1</code> which was <strong>removed in Kubernetes 1.25</strong>. Do not use it. Always use <code>batch/v1</code> for CronJobs on this cluster.</p>
 </div>
 </li>
 <li>
@@ -901,7 +892,7 @@
 </code></pre></div>
 </li>
 <li>
-<p>Delete and recreate the CronJob. Wait 2 minutes, then observe that jobs are created but never complete ? they are killed by the deadline.</p>
+<p>Delete and recreate the CronJob. Wait 2 minutes, then observe that jobs are created but never complete - they are killed by the deadline.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>delete<span class="w"> </span>cronjobs.batch<span class="w"> </span>sleepy
 <a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>cronjob.yaml
 <a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>
@@ -964,7 +955,7 @@
 <a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>design2-766d48574f-5w274<span class="w">   </span><span class="m">1</span>/1<span class="w">   </span>Running<span class="w">   </span><span class="m">0</span><span class="w">   </span>82s
 <a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>design2-766d48574f-xttgg<span class="w">   </span><span class="m">1</span>/1<span class="w">   </span>Running<span class="w">   </span><span class="m">0</span><span class="w">   </span>2m12s
 </code></pre></div>
-<p>There are now <strong>two</strong> pods. The deployment noticed the edited pod no longer matched its selector (<code>app=design2</code>) and created a replacement. The edited pod is now orphaned ? no controller manages it.</p>
+<p>There are now <strong>two</strong> pods. The deployment noticed the edited pod no longer matched its selector (<code>app=design2</code>) and created a replacement. The edited pod is now orphaned - no controller manages it.</p>
 </li>
 <li>
 <p>Delete the deployment.</p>
@@ -973,7 +964,7 @@
 </code></pre></div>
 </li>
 <li>
-<p>Check for remaining pods. The orphaned pod (with the colour label) still exists ? the deployment deletion only removed pods it was managing.</p>
+<p>Check for remaining pods. The orphaned pod (with the colour label) still exists - the deployment deletion only removed pods it was managing.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>design2
 <a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>design2-766d48574f-5w274<span class="w">   </span><span class="m">1</span>/1<span class="w">   </span>Running<span class="w">   </span><span class="m">0</span><span class="w">   </span>38m
 </code></pre></div>
@@ -1025,7 +1016,7 @@
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>The <code>edited-stress.yaml</code> file already has these resources added ? use it as a reference.</p>
+<p>The <code>edited-stress.yaml</code> file already has these resources added - use it as a reference.</p>
 </div>
 </li>
 <li>
@@ -1190,7 +1181,7 @@
 <p>Determine the CPU and memory resource requirements of <code>design-pod1</code>.</p>
 </li>
 <li>
-<p>Edit the pod resource requirements such that the CPU limit is exactly twice the amount requested. (Hint: current limit is <code>2.22</code>, request is <code>0.3</code> ? subtract <code>0.22</code> from the limit to make it exactly <code>2x</code> the request.)</p>
+<p>Edit the pod resource requirements such that the CPU limit is exactly twice the amount requested. (Hint: current limit is <code>2.22</code>, request is <code>0.3</code> - subtract <code>0.22</code> from the limit to make it exactly <code>2x</code> the request.)</p>
 </li>
 <li>
 <p>Increase the memory limit until the pod achieves <code>Running</code> status and holds it for at least a minute. Find the minimum memory limit required.</p>

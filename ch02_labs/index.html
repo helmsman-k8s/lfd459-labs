@@ -560,7 +560,7 @@
 
 
 
-<h1 id="chapter-2-kubernetes-architecture">Chapter 2 ? Kubernetes Architecture<a class="headerlink" href="#chapter-2-kubernetes-architecture" title="Permanent link">&para;</a></h1>
+<h1 id="chapter-2-kubernetes-architecture">Chapter 2 - Kubernetes Architecture<a class="headerlink" href="#chapter-2-kubernetes-architecture" title="Permanent link">&para;</a></h1>
 <h2 id="lab-overview">Lab Overview<a class="headerlink" href="#lab-overview" title="Permanent link">&para;</a></h2>
 <p>In this chapter you will explore the Kubernetes cluster that has been pre-installed for you, create your first pods and services, and understand how the control plane manages workloads through deployments and ReplicaSets.</p>
 <hr />
@@ -799,7 +799,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>delete<span class="w"> </span>svc<span class="w"> </span>basicservice
 <a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>service<span class="w"> </span><span class="s2">&quot;basicservice&quot;</span><span class="w"> </span>deleted
 </code></pre></div>
-<p>Review <code>basicservice-AllDone.yaml</code> ? it already has <code>type: NodePort</code> added:</p>
+<p>Review <code>basicservice-AllDone.yaml</code> - it already has <code>type: NodePort</code> added:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>guru@controller:~$<span class="w"> </span>cat<span class="w"> </span>basicservice-AllDone.yaml
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
@@ -840,7 +840,7 @@
 <h2 id="exercise-24-multi-container-pods">Exercise 2.4: Multi-Container Pods<a class="headerlink" href="#exercise-24-multi-container-pods" title="Permanent link">&para;</a></h2>
 <ol>
 <li>
-<p>Edit <code>basic.yaml</code> to add a second container acting as a logging sidecar. Add the <code>fdlogger</code> container after the <code>webcont</code> container ? the dash should align with the previous container dash.</p>
+<p>Edit <code>basic.yaml</code> to add a second container acting as a logging sidecar. Add the <code>fdlogger</code> container after the <code>webcont</code> container - the dash should align with the previous container dash.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>guru@controller:~$<span class="w"> </span>vim<span class="w"> </span>basic.yaml
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="nn">...</span>
@@ -923,7 +923,7 @@
 <p>You should see Calico (<code>calico-system</code> or <code>kube-system</code>), CoreDNS, etcd, and other control plane components.</p>
 </li>
 <li>
-<p>Query a namespace that does not exist. Note no error is returned ? simply no resources found.</p>
+<p>Query a namespace that does not exist. Note no error is returned - simply no resources found.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-n<span class="w"> </span>fakenamespace
 <a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a>No<span class="w"> </span>resources<span class="w"> </span>found<span class="w"> </span><span class="k">in</span><span class="w"> </span>fakenamespaces<span class="w"> </span>namespace.
 </code></pre></div>
@@ -945,7 +945,7 @@
 <a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a>
 <a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>deploy,rs,po
 </code></pre></div>
-<p>Notice the age on the new ReplicaSet and pod is only a few seconds ? the Deployment reconciled immediately.</p>
+<p>Notice the age on the new ReplicaSet and pod is only a few seconds - the Deployment reconciled immediately.</p>
 </li>
 <li>
 <p>Delete the top-level Deployment. After about 30 seconds everything it manages cascades down.</p>
@@ -977,7 +977,7 @@
 <p>Open the <strong>Curriculum Overview</strong> and <strong>Candidate Handbook</strong> in separate tabs and read both in full.</p>
 </li>
 <li>
-<p>In the Curriculum Overview, find the <strong>Application Design and Build</strong> domain. Notice the sub-topics ? many will be covered in the upcoming chapters.</p>
+<p>In the Curriculum Overview, find the <strong>Application Design and Build</strong> domain. Notice the sub-topics - many will be covered in the upcoming chapters.</p>
 </li>
 <li>
 <p>In the Candidate Handbook, find the <strong>Important Instructions: CKA and CKAD</strong> section. Note the Kubernetes version for the exam and the list of allowed resources.</p>

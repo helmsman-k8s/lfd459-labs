@@ -392,7 +392,7 @@
   <a href="#exercise-51-configure-the-deployment-configmaps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Exercise 5.1: Configure the Deployment ? ConfigMaps
+        Exercise 5.1: Configure the Deployment - ConfigMaps
       
     </span>
   </a>
@@ -403,7 +403,7 @@
   <a href="#exercise-52-configure-the-deployment-attaching-storage" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Exercise 5.2: Configure the Deployment ? Attaching Storage
+        Exercise 5.2: Configure the Deployment - Attaching Storage
       
     </span>
   </a>
@@ -549,7 +549,7 @@
 
 
 
-<h1 id="chapter-5-deployment-configuration">Chapter 5 ? Deployment Configuration<a class="headerlink" href="#chapter-5-deployment-configuration" title="Permanent link">&para;</a></h1>
+<h1 id="chapter-5-deployment-configuration">Chapter 5 - Deployment Configuration<a class="headerlink" href="#chapter-5-deployment-configuration" title="Permanent link">&para;</a></h1>
 <h2 id="lab-overview">Lab Overview<a class="headerlink" href="#lab-overview" title="Permanent link">&para;</a></h2>
 <p>This chapter builds directly on Chapter 3. You will configure your existing <code>simpleapp</code> deployment with ConfigMaps (as environment variables and volume mounts), attach NFS-backed persistent storage, configure the fluentd logging sidecar with a ConfigMap, and practice rolling updates and rollbacks.</p>
 <div class="admonition warning">
@@ -560,7 +560,7 @@
 </code></pre></div></p>
 </div>
 <hr />
-<h2 id="exercise-51-configure-the-deployment-configmaps">Exercise 5.1: Configure the Deployment ? ConfigMaps<a class="headerlink" href="#exercise-51-configure-the-deployment-configmaps" title="Permanent link">&para;</a></h2>
+<h2 id="exercise-51-configure-the-deployment-configmaps">Exercise 5.1: Configure the Deployment - ConfigMaps<a class="headerlink" href="#exercise-51-configure-the-deployment-configmaps" title="Permanent link">&para;</a></h2>
 <p>ConfigMaps decouple configuration from container images. They can be created from literal values, files, or directories, and consumed as environment variables or volume mounts.</p>
 <ol>
 <li>
@@ -679,7 +679,7 @@
 </code></pre></div>
 </li>
 <li>
-<p>The deployment will show <code>0/6</code> ready because the <code>readinessProbe</code> is still checking for <code>/tmp/healthy</code>. Fix this by updating the <code>readinessProbe</code> command in the simpleapp container to check for the presence of the <code>/etc/cars</code> directory instead ? which will always exist once the ConfigMap volume is mounted.</p>
+<p>The deployment will show <code>0/6</code> ready because the <code>readinessProbe</code> is still checking for <code>/tmp/healthy</code>. Fix this by updating the <code>readinessProbe</code> command in the simpleapp container to check for the presence of the <code>/etc/cars</code> directory instead - which will always exist once the ConfigMap volume is mounted.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1
 <a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>guru@controller:~$<span class="w"> </span>vim<span class="w"> </span>~/app1/simpleapp.yaml
 </code></pre></div>
@@ -712,7 +712,7 @@
 </li>
 </ol>
 <hr />
-<h2 id="exercise-52-configure-the-deployment-attaching-storage">Exercise 5.2: Configure the Deployment ? Attaching Storage<a class="headerlink" href="#exercise-52-configure-the-deployment-attaching-storage" title="Permanent link">&para;</a></h2>
+<h2 id="exercise-52-configure-the-deployment-attaching-storage">Exercise 5.2: Configure the Deployment - Attaching Storage<a class="headerlink" href="#exercise-52-configure-the-deployment-attaching-storage" title="Permanent link">&para;</a></h2>
 <p>We will configure an NFS server on the controller node, create a PersistentVolume backed by it, and attach it to the <code>try1</code> deployment.</p>
 <ol>
 <li>
@@ -745,7 +745,7 @@
 </code></pre></div>
 </li>
 <li>
-<p>Return to the <strong>controller</strong>. Edit <code>PVol.yaml</code> ? the <code>server:</code> field currently says <code>cp</code>, change it to <code>controller</code>.</p>
+<p>Return to the <strong>controller</strong>. Edit <code>PVol.yaml</code> - the <code>server:</code> field currently says <code>cp</code>, change it to <code>controller</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>guru@controller:~$<span class="w"> </span>vim<span class="w"> </span>PVol.yaml
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="nt">nfs</span><span class="p">:</span>
@@ -771,7 +771,7 @@
 </code></pre></div>
 </li>
 <li>
-<p>Create a PVC using <code>pvc.yaml</code>. It requests 200Mi with <code>ReadWriteMany</code> access ? it will bind to <code>pvvol-1</code> since that is the only matching available volume.</p>
+<p>Create a PVC using <code>pvc.yaml</code>. It requests 200Mi with <code>ReadWriteMany</code> access - it will bind to <code>pvvol-1</code> since that is the only matching available volume.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>pvc.yaml
 <a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>persistentvolumeclaim/pvc-one<span class="w"> </span>created
 <a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>
@@ -779,7 +779,7 @@
 <a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a>NAME<span class="w">      </span>STATUS<span class="w">   </span>VOLUME<span class="w">    </span>CAPACITY<span class="w">   </span>ACCESS<span class="w"> </span>MODES
 <a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a>pvc-one<span class="w">   </span>Bound<span class="w">    </span>pvvol-1<span class="w">   </span>1Gi<span class="w">        </span>RWX
 </code></pre></div>
-<p>Note the PVC claimed 1Gi even though only 200Mi was requested ? Kubernetes uses the smallest available volume that satisfies the request.</p>
+<p>Note the PVC claimed 1Gi even though only 200Mi was requested - Kubernetes uses the smallest available volume that satisfies the request.</p>
 </li>
 <li>
 <p>Verify <code>pvvol-1</code> is now <code>Bound</code>.</p>
@@ -1003,7 +1003,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a>guru@worker1:~$<span class="w"> </span>sudo<span class="w"> </span>podman<span class="w"> </span>pull<span class="w"> </span><span class="nv">$repo</span>/simpleapp
 <a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a>guru@worker1:~$<span class="w"> </span>sudo<span class="w"> </span>podman<span class="w"> </span>pull<span class="w"> </span><span class="nv">$repo</span>/simpleapp:v2
 </code></pre></div>
-<p>Note: pulling <code>simpleapp</code> without a tag pulls <code>latest</code> ? which is the <strong>original</strong> image. <code>latest</code> is just a string label, not a guarantee of the newest image.</p>
+<p>Note: pulling <code>simpleapp</code> without a tag pulls <code>latest</code> - which is the <strong>original</strong> image. <code>latest</code> is just a string label, not a guarantee of the newest image.</p>
 </li>
 <li>
 <p>Return to the <strong>controller</strong>. Use <code>kubectl edit</code> to update the <code>try1</code> deployment to use <code>v2</code>. Find the <code>simpleapp</code> image line and append <code>:v2</code>.</p>
@@ -1017,7 +1017,7 @@ To:
 </code></pre></div></p>
 </li>
 <li>
-<p>Watch the rolling update. Pods are replaced gradually ? old pods terminate as new ones become ready.</p>
+<p>Watch the rolling update. Pods are replaced gradually - old pods terminate as new ones become ready.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a>guru@controller:~/app1$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-20
 <a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a>guru@controller:~/app1$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pods
 </code></pre></div>

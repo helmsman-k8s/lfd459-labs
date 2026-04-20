@@ -583,7 +583,7 @@
 
 
 
-<h1 id="chapter-3-build">Chapter 3 ? Build<a class="headerlink" href="#chapter-3-build" title="Permanent link">&para;</a></h1>
+<h1 id="chapter-3-build">Chapter 3 - Build<a class="headerlink" href="#chapter-3-build" title="Permanent link">&para;</a></h1>
 <h2 id="lab-overview">Lab Overview<a class="headerlink" href="#lab-overview" title="Permanent link">&para;</a></h2>
 <p>In this chapter you will containerize a simple Python application using Podman, set up a local container registry inside the cluster, push your image to it, deploy the application with multiple replicas, and configure readiness and liveness probes to manage container health.</p>
 <hr />
@@ -617,7 +617,7 @@
 <p>The script runs in an infinite loop, writing the hostname and current timestamp to a file called <code>date.out</code> every 5 seconds.</p>
 </li>
 <li>
-<p>Make the script executable and run it briefly to verify it works. Use <strong>Ctrl-C</strong> to stop it after 15?20 seconds.</p>
+<p>Make the script executable and run it briefly to verify it works. Use <strong>Ctrl-C</strong> to stop it after 15-20 seconds.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>guru@controller:~/app1$<span class="w"> </span>chmod<span class="w"> </span>+x<span class="w"> </span>simple.py
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>guru@controller:~/app1$<span class="w"> </span>./simple.py
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>^CTraceback<span class="w"> </span><span class="o">(</span>most<span class="w"> </span>recent<span class="w"> </span>call<span class="w"> </span>last<span class="o">)</span>:
@@ -648,7 +648,7 @@
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The filename must be exactly <code>Dockerfile</code> ? capital D, no extension.</p>
+<p>The filename must be exactly <code>Dockerfile</code> - capital D, no extension.</p>
 </div>
 </li>
 <li>
@@ -718,13 +718,13 @@
 </code></pre></div>
 </li>
 <li>
-<p>Note the ClusterIP assigned to the registry service. In this setup it is expected to be <code>10.97.40.62</code> ? verify this matches.</p>
+<p>Note the ClusterIP assigned to the registry service. In this setup it is expected to be <code>10.97.40.62</code> - verify this matches.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>guru@controller:~$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>registry
 <a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>registry<span class="w">   </span>ClusterIP<span class="w">   </span><span class="m">10</span>.97.40.62<span class="w">   </span>&lt;none&gt;<span class="w">   </span><span class="m">5000</span>/TCP<span class="w">   </span>5m35s
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">If the ClusterIP is different</p>
-<p>The <code>easyregistry.yaml</code> hardcodes <code>clusterIP: 10.97.40.62</code>. If a different IP was assigned, delete the service, edit the YAML to match the actual IP, and recreate it. The <code>local-repo-setup.sh</code> script also uses this same IP ? edit it before running if needed.</p>
+<p>The <code>easyregistry.yaml</code> hardcodes <code>clusterIP: 10.97.40.62</code>. If a different IP was assigned, delete the service, edit the YAML to match the actual IP, and recreate it. The <code>local-repo-setup.sh</code> script also uses this same IP - edit it before running if needed.</p>
 </div>
 </li>
 <li>
@@ -846,7 +846,7 @@
 <p>A <code>readinessProbe</code> tells Kubernetes when a container is ready to accept traffic. Until the probe succeeds, the pod is not sent any requests.</p>
 <ol>
 <li>
-<p>Edit <code>simpleapp.yaml</code> and add a <code>readinessProbe</code> to the <code>simpleapp</code> container. The probe runs <code>cat /tmp/healthy</code> ? the container is not considered ready until that file exists.</p>
+<p>Edit <code>simpleapp.yaml</code> and add a <code>readinessProbe</code> to the <code>simpleapp</code> container. The probe runs <code>cat /tmp/healthy</code> - the container is not considered ready until that file exists.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>guru@controller:~/app1$<span class="w"> </span>vim<span class="w"> </span>simpleapp.yaml
 </code></pre></div>
 <p>Find the <code>containers:</code> section for the simpleapp container and add the <code>readinessProbe</code> block after the <code>imagePullPolicy</code> line:</p>
@@ -878,14 +878,14 @@
 </code></pre></div>
 </li>
 <li>
-<p>The deployment shows 6 pods but <strong>0 available</strong> ? all are waiting for <code>/tmp/healthy</code> to exist.</p>
+<p>The deployment shows 6 pods but <strong>0 available</strong> - all are waiting for <code>/tmp/healthy</code> to exist.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>guru@controller:~/app1$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>deployment
 <a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>NAME<span class="w">       </span>READY<span class="w">   </span>UP-TO-DATE<span class="w">   </span>AVAILABLE<span class="w">   </span>AGE
 <a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>try1<span class="w">       </span><span class="m">0</span>/6<span class="w">     </span><span class="m">6</span><span class="w">            </span><span class="m">0</span><span class="w">           </span>15s
 </code></pre></div>
 </li>
 <li>
-<p>Check the pods. Each try1 pod shows <code>0/1</code> in READY ? the readinessProbe is failing.</p>
+<p>Check the pods. Each try1 pod shows <code>0/1</code> in READY - the readinessProbe is failing.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>guru@controller:~/app1$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pods
 <a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>NAME<span class="w">                    </span>READY<span class="w">   </span>STATUS<span class="w">    </span>RESTARTS<span class="w">   </span>AGE
 <a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>try1-9869bdb88-rtchc<span class="w">    </span><span class="m">0</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>26s
@@ -1040,7 +1040,7 @@
 </code></pre></div>
 <div class="admonition hint">
 <p class="admonition-title">Hint</p>
-<p>The web server (<code>nginx</code>) listens on port 80. The proxy (<code>goproxy</code>) listens on port 8080. Examine the probe configurations carefully ? one of the port numbers is wrong.</p>
+<p>The web server (<code>nginx</code>) listens on port 80. The proxy (<code>goproxy</code>) listens on port 8080. Examine the probe configurations carefully - one of the port numbers is wrong.</p>
 </div>
 </li>
 <li>
