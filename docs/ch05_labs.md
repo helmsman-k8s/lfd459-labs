@@ -42,6 +42,9 @@ ConfigMaps decouple configuration from container images. They can be created fro
 
     ```bash
     kubectl create configmap colors \
+    ```
+
+    ```
     --from-literal=text=black \
     --from-file=./favorite \
     --from-file=./primary/
@@ -88,6 +91,9 @@ ConfigMaps decouple configuration from container images. They can be created fro
     ```bash
     kubectl get pods
     kubectl exec -c simpleapp -it <try1-pod-name> \
+    ```
+
+    ```
     -- /bin/bash -c 'echo $ilike'
     blue
     ```
@@ -120,7 +126,13 @@ ConfigMaps decouple configuration from container images. They can be created fro
 
     ```bash
     kubectl create -f car-map.yaml
+    ```
+
+    ```
     configmap/fast-car created
+    ```
+
+    ```bash
     kubectl get configmap fast-car -o yaml
     ```
 
@@ -184,6 +196,9 @@ ConfigMaps decouple configuration from container images. They can be created fro
 
     ```bash
     kubectl get pods
+    ```
+
+    ```
     NAME                         READY   STATUS    RESTARTS   AGE
     try1-7865dcb948-2dzc8        2/2     Running   0          1m
     try1-7865dcb948-7fkh7        2/2     Running   0          1m
@@ -194,6 +209,9 @@ ConfigMaps decouple configuration from container images. They can be created fro
 
     ```bash
     kubectl exec -c simpleapp -it <try1-pod-name> \
+    ```
+
+    ```
     -- /bin/bash -c 'cat /etc/cars/car.trim'
     Shelby
     ```
@@ -223,6 +241,9 @@ We will configure an NFS server on the controller node, create a PersistentVolum
     ```bash
     sudo apt-get -y install nfs-common nfs-kernel-server
     showmount -e controller
+    ```
+
+    ```
     Export list for controller:
     /opt/sfw *
     ```
@@ -234,8 +255,14 @@ We will configure an NFS server on the controller node, create a PersistentVolum
     ```bash
     sudo mount controller:/opt/sfw /mnt
     ls -l /mnt
+    ```
+
+    ```
     total 4
     -rw-r--r-- 1 root root 9 ... hello.txt
+    ```
+
+    ```bash
     sudo umount /mnt
     ```
 
@@ -256,8 +283,17 @@ We will configure an NFS server on the controller node, create a PersistentVolum
 
     ```bash
     kubectl create -f PVol.yaml
+    ```
+
+    ```
     persistentvolume/pvvol-1 created
+    ```
+
+    ```bash
     kubectl get pv
+    ```
+
+    ```
     NAME       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS
     pvvol-1    1Gi        RWX            Retain           Available
     ...
@@ -273,8 +309,17 @@ We will configure an NFS server on the controller node, create a PersistentVolum
 
     ```bash
     kubectl create -f pvc.yaml
+    ```
+
+    ```
     persistentvolumeclaim/pvc-one created
+    ```
+
+    ```bash
     kubectl get pvc pvc-one
+    ```
+
+    ```
     NAME      STATUS   VOLUME    CAPACITY   ACCESS MODES
     pvc-one   Bound    pvvol-1   1Gi        RWX
     ```
@@ -285,6 +330,9 @@ We will configure an NFS server on the controller node, create a PersistentVolum
 
     ```bash
     kubectl get pv pvvol-1
+    ```
+
+    ```
     NAME      CAPACITY   ACCESS MODES   STATUS   CLAIM
     pvvol-1   1Gi        RWX            Bound    default/pvc-one
     ```
@@ -321,6 +369,9 @@ We will configure an NFS server on the controller node, create a PersistentVolum
 
     ```bash
     kubectl describe pod <try1-pod-name> | grep -A5 "Mounts:"
+    ```
+
+    ```
     Mounts:
       /etc/cars from car-vol (rw)
       /opt from nfs-vol (rw)
@@ -351,8 +402,17 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
 
     ```bash
     kubectl create -f weblog-pv.yaml
+    ```
+
+    ```
     persistentvolume/weblog-pv-volume created
+    ```
+
+    ```bash
     kubectl get pv weblog-pv-volume
+    ```
+
+    ```
     NAME               CAPACITY   ACCESS MODES   STATUS
     weblog-pv-volume   100Mi      RWO            Available
     ```
@@ -361,8 +421,17 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
 
     ```bash
     kubectl create -f weblog-pvc.yaml
+    ```
+
+    ```
     persistentvolumeclaim/weblog-pv-claim created
+    ```
+
+    ```bash
     kubectl get pvc weblog-pv-claim
+    ```
+
+    ```
     NAME             STATUS   VOLUME             CAPACITY   STORAGE CLASS
     weblog-pv-claim  Bound    weblog-pv-volume   100Mi      manual
     ```
@@ -406,8 +475,17 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
 
     ```bash
     kubectl create -f basic.yaml
+    ```
+
+    ```
     pod/basicpod created
+    ```
+
+    ```bash
     kubectl exec -c webcont -it basicpod -- /bin/bash
+    ```
+
+    ```
     root@basicpod:/# ls -l /var/log/nginx/access.log
     -rw-r--r-- 1 root root 0 ... /var/log/nginx/access.log
 
@@ -418,8 +496,14 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
 
     ```bash
     kubectl get pods -o wide
+    ```
+
+    ```
     NAME       READY   STATUS    IP               NODE
     basicpod   2/2     Running   10.244.1.23      worker1
+    ```
+
+    ```bash
     curl http://10.244.1.23
     ```
 
@@ -429,6 +513,9 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
 
     ```bash
     kubectl create -f weblog-configmap.yaml
+    ```
+
+    ```
     configmap/fluentd-config created
     ```
 
@@ -474,6 +561,9 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
     kubectl delete pod basicpod
     kubectl create -f basic.yaml
     kubectl get pod basicpod -o wide
+    ```
+
+    ```
     NAME       READY   STATUS    IP
     basicpod   2/2     Running   10.244.1.xx
     ```
@@ -534,6 +624,9 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
 
     ```bash
     curl $repo/v2/simpleapp/tags/list
+    ```
+
+    ```
     {"name":"simpleapp","tags":["latest","v2"]}
     ```
 
@@ -573,6 +666,9 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
 
     ```bash
     kubectl describe pod <try1-pod-name> | grep Image:
+    ```
+
+    ```
     Image:    10.97.40.62:5000/simpleapp:v2
     Image:    registry.k8s.io/goproxy:0.1
     ```
@@ -581,6 +677,9 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
 
     ```bash
     kubectl rollout history deployment try1
+    ```
+
+    ```
     REVISION   CHANGE-CAUSE
     1          <none>
     2          <none>
@@ -604,6 +703,9 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
 
     ```bash
     kubectl rollout undo deployment try1 --to-revision=1
+    ```
+
+    ```
     deployment.apps/try1 rolled back
     ```
 
@@ -612,6 +714,9 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
     ```bash
     kubectl get pods
     kubectl describe pod <try1-pod-name> | grep Image:
+    ```
+
+    ```
     Image:    10.97.40.62:5000/simpleapp
     ```
 

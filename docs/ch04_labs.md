@@ -110,6 +110,9 @@ Jobs run a container a set number of times to completion, rather than keeping it
 
     ```bash
     kubectl create -f job.yaml
+    ```
+
+    ```
     job.batch/sleepy created
     ```
 
@@ -117,10 +120,18 @@ Jobs run a container a set number of times to completion, rather than keeping it
 
     ```bash
     kubectl get job
+    ```
+
+    ```
     NAME     COMPLETIONS   DURATION   AGE
     sleepy   0/1           3s         3s
+    ```
 
+    ```bash
     kubectl get job
+    ```
+
+    ```
     NAME     COMPLETIONS   DURATION   AGE
     sleepy   1/1           7s         11s
     ```
@@ -141,6 +152,9 @@ Jobs run a container a set number of times to completion, rather than keeping it
 
     ```bash
     kubectl delete jobs.batch sleepy
+    ```
+
+    ```
     job.batch "sleepy" deleted
     ```
 
@@ -161,6 +175,9 @@ Jobs run a container a set number of times to completion, rather than keeping it
     ```bash
     kubectl create -f job.yaml
     kubectl get jobs.batch
+    ```
+
+    ```
     NAME     COMPLETIONS   DURATION   AGE
     sleepy   0/5           5s         5s
     ```
@@ -169,9 +186,14 @@ Jobs run a container a set number of times to completion, rather than keeping it
 
     ```bash
     kubectl get jobs.batch
+    ```
+
+    ```
     NAME     COMPLETIONS   DURATION   AGE
     sleepy   5/5           26s        10m
+    ```
 
+    ```bash
     kubectl delete jobs.batch sleepy
     ```
 
@@ -193,6 +215,9 @@ Jobs run a container a set number of times to completion, rather than keeping it
     ```bash
     kubectl create -f job.yaml
     kubectl get pods
+    ```
+
+    ```
     NAME             READY   STATUS    RESTARTS   AGE
     sleepy-8xwpc     1/1     Running   0          5s
     sleepy-xjqnf     1/1     Running   0          5s
@@ -224,6 +249,9 @@ Jobs run a container a set number of times to completion, rather than keeping it
 
     ```bash
     kubectl get jobs
+    ```
+
+    ```
     NAME     COMPLETIONS   DURATION   AGE
     sleepy   4/5           16s        16s
     ```
@@ -232,6 +260,9 @@ Jobs run a container a set number of times to completion, rather than keeping it
 
     ```bash
     kubectl get job sleepy -o yaml | grep -A8 "^status:"
+    ```
+
+    ```
     status:
       conditions:
       - message: Job was active longer than specified deadline
@@ -285,9 +316,17 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
 
     ```bash
     kubectl create -f cronjob.yaml
-    cronjob.batch/sleepy created
+    ```
 
+    ```
+    cronjob.batch/sleepy created
+    ```
+
+    ```bash
     kubectl get cronjobs.batch
+    ```
+
+    ```
     NAME     SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
     sleepy   */2 * * * *   False     0        <none>          8s
     ```
@@ -296,10 +335,18 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
 
     ```bash
     kubectl get cronjobs.batch
+    ```
+
+    ```
     NAME     SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
     sleepy   */2 * * * *   False     0        21s             2m1s
+    ```
 
+    ```bash
     kubectl get jobs.batch
+    ```
+
+    ```
     NAME                COMPLETIONS   DURATION   AGE
     sleepy-1539722040   1/1           5s         18s
     ```
@@ -333,9 +380,17 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
     ```bash
     kubectl delete cronjobs.batch sleepy
     kubectl create -f cronjob.yaml
+    ```
 
+    ```
     # After ~2 minutes:
+    ```
+
+    ```bash
     kubectl get jobs
+    ```
+
+    ```
     NAME                COMPLETIONS   DURATION   AGE
     sleepy-1539723240   0/1           61s        61s
     ```
@@ -344,6 +399,9 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
 
     ```bash
     kubectl delete cronjobs.batch sleepy
+    ```
+
+    ```
     cronjob.batch "sleepy" deleted
     ```
 
@@ -357,6 +415,9 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
 
     ```bash
     kubectl create deployment design2 --image=nginx
+    ```
+
+    ```
     deployment.apps/design2 created
     ```
 
@@ -364,6 +425,9 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
 
     ```bash
     kubectl get deployments.apps design2 -o wide
+    ```
+
+    ```
     NAME      READY   UP-TO-DATE   AVAILABLE   ...   SELECTOR
     design2   1/1     1            1           ...   app=design2
     ```
@@ -372,6 +436,9 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
 
     ```bash
     kubectl get -l app=design2 pod
+    ```
+
+    ```
     NAME                       READY   STATUS    RESTARTS   AGE
     design2-766d48574f-5w274   1/1     Running   0          3m
     ```
@@ -402,6 +469,9 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
 
     ```bash
     kubectl get pods | grep design2
+    ```
+
+    ```
     design2-766d48574f-5w274   1/1   Running   0   82s
     design2-766d48574f-xttgg   1/1   Running   0   2m12s
     ```
@@ -412,6 +482,9 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
 
     ```bash
     kubectl delete deploy design2
+    ```
+
+    ```
     deployment.apps "design2" deleted
     ```
 
@@ -419,6 +492,9 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
 
     ```bash
     kubectl get pods | grep design2
+    ```
+
+    ```
     design2-766d48574f-5w274   1/1   Running   0   38m
     ```
 
@@ -426,6 +502,9 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
 
     ```bash
     kubectl delete pod -l app=orange
+    ```
+
+    ```
     pod "design2-766d48574f-5w274" deleted
     ```
 
@@ -484,6 +563,9 @@ Resource requests tell the scheduler how much CPU/memory a pod needs. Limits cap
     ```bash
     kubectl create -f stress.yaml
     kubectl get pod
+    ```
+
+    ```
     NAME                           READY   STATUS      RESTARTS   AGE
     stressmeout-7fbbbcc887-v9kvb   0/1     OOMKilled   2          32s
     ```
@@ -518,6 +600,9 @@ Resource requests tell the scheduler how much CPU/memory a pod needs. Limits cap
     ```bash
     kubectl create -f stress.yaml
     kubectl get pod -o wide
+    ```
+
+    ```
     NAME                           READY   STATUS    NODE
     stressmeout-...                1/1     Running   worker1
     ```
@@ -570,6 +655,9 @@ An `initContainer` runs to completion before the main container starts. If it fa
     ```bash
     kubectl create -f init-tester.yaml
     kubectl get pod init-tester
+    ```
+
+    ```
     NAME           READY   STATUS       RESTARTS   AGE
     init-tester    0/1     Init:Error   2          30s
     ```
@@ -598,6 +686,9 @@ An `initContainer` runs to completion before the main container starts. If it fa
     ```bash
     kubectl create -f init-tester.yaml
     kubectl get pod init-tester
+    ```
+
+    ```
     NAME           READY   STATUS    RESTARTS   AGE
     init-tester    1/1     Running   0          10s
     ```
@@ -634,6 +725,9 @@ CRDs extend the Kubernetes API with new resource types.
 
     ```bash
     kubectl get <kind-from-crd>
+    ```
+
+    ```
     No resources found
     ```
 

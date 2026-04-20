@@ -46,8 +46,17 @@ A SecurityContext restricts what a container process can do - which UID it runs 
 
     ```bash
     kubectl create -f second.yaml
+    ```
+
+    ```
     pod/secondapp created
+    ```
+
+    ```bash
     kubectl get pod secondapp
+    ```
+
+    ```
     NAME         READY   STATUS    RESTARTS   AGE
     secondapp    1/1     Running   0          21s
     ```
@@ -131,6 +140,9 @@ Secrets store sensitive data in base64-encoded form. They are consumed like Conf
 
     ```bash
     echo LFTr@1n | base64
+    ```
+
+    ```
     TEZUckAxbgo=
     ```
 
@@ -153,6 +165,9 @@ Secrets store sensitive data in base64-encoded form. They are consumed like Conf
 
     ```bash
     kubectl create -f secret.yaml
+    ```
+
+    ```
     secret/lfsecret created
     ```
 
@@ -185,8 +200,14 @@ Secrets store sensitive data in base64-encoded form. They are consumed like Conf
     kubectl delete pod secondapp
     kubectl create -f second.yaml
     kubectl get pod secondapp
+    ```
+
+    ```
     NAME         READY   STATUS    RESTARTS   AGE
     secondapp    1/1     Running   0          34s
+    ```
+
+    ```bash
     kubectl exec -ti secondapp -- /bin/sh
     ```
 
@@ -226,8 +247,17 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
 
     ```bash
     kubectl create -f ~/app2/serviceaccount.yaml
+    ```
+
+    ```
     serviceaccount/secret-access-sa created
+    ```
+
+    ```bash
     kubectl get serviceaccounts
+    ```
+
+    ```
     NAME               SECRETS   AGE
     default            0         ...
     secret-access-sa   0         34s
@@ -247,7 +277,13 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
 
     ```bash
     kubectl create -f ~/app2/clusterrole.yaml
+    ```
+
+    ```
     clusterrole.rbac.authorization.k8s.io/secret-access-cr created
+    ```
+
+    ```bash
     kubectl get clusterrole secret-access-cr -o yaml
     ```
 
@@ -255,8 +291,17 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
 
     ```bash
     kubectl create -f ~/app2/rolebinding.yaml
+    ```
+
+    ```
     rolebinding.rbac.authorization.k8s.io/secret-rb created
+    ```
+
+    ```bash
     kubectl get rolebindings
+    ```
+
+    ```
     NAME        AGE
     secret-rb   17s
     ```
@@ -265,6 +310,9 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
 
     ```bash
     kubectl get pod secondapp -o yaml | grep serviceAccount
+    ```
+
+    ```
     serviceAccount: default
     serviceAccountName: default
     ```
@@ -288,6 +336,9 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     kubectl delete pod secondapp
     kubectl create -f ~/app2/second.yaml
     kubectl get pod secondapp -o yaml | grep serviceAccount
+    ```
+
+    ```
     serviceAccount: secret-access-sa
     serviceAccountName: secret-access-sa
     ```
@@ -349,6 +400,9 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     ```bash
     kubectl create -f second.yaml
     kubectl get pods
+    ```
+
+    ```
     NAME        READY   STATUS    RESTARTS   AGE
     secondapp   2/2     Running   0          5s
     ```
@@ -357,6 +411,9 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
 
     ```bash
     kubectl create service nodeport secondapp --tcp=80
+    ```
+
+    ```
     service/secondapp created
     ```
 
@@ -370,8 +427,14 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
 
     ```bash
     kubectl get svc secondapp
+    ```
+
+    ```
     NAME        TYPE       CLUSTER-IP      PORT(S)
     secondapp   NodePort   10.97.96.75     80:32000/TCP
+    ```
+
+    ```bash
     curl http://10.97.96.75
     ```
 
@@ -404,6 +467,9 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
 
     ```bash
     kubectl create -f ~/app2/allclosed.yaml
+    ```
+
+    ```
     networkpolicy.networking.k8s.io/deny-default created
     ```
 
@@ -412,6 +478,9 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     ```bash
     curl http://10.97.96.75
     kubectl exec -it -c busy secondapp -- sh
+    ```
+
+    ```
     / $ nc -vz www.linux.com 80
     / $ exit
     ```
@@ -432,6 +501,9 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
 
     ```bash
     kubectl replace -f ~/app2/allclosed.yaml
+    ```
+
+    ```
     networkpolicy.networking.k8s.io/deny-default replaced
     ```
 
@@ -460,6 +532,9 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
 
     ```bash
     kubectl run -it test --rm=true --image alpine \
+    ```
+
+    ```
     -- ping -c5 <secondapp-pod-ip>
     ```
 
@@ -482,12 +557,23 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     kubectl replace -f ~/app2/allclosed.yaml
     ```
 
-    ```bash
+    ```
     # HTTP allowed:
-    curl http://10.97.96.75
+    ```
 
+    ```bash
+    curl http://10.97.96.75
+    ```
+
+    ```
     # ICMP blocked:
+    ```
+
+    ```bash
     kubectl run -it test --rm=true --image alpine \
+    ```
+
+    ```
     -- ping -c5 <secondapp-pod-ip>
     ```
 
@@ -495,6 +581,9 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
 
     ```bash
     kubectl delete networkpolicies deny-default
+    ```
+
+    ```
     networkpolicy.networking.k8s.io "deny-default" deleted
     ```
 

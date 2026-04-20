@@ -14,6 +14,9 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
 
     ```bash
     kubectl get pods secondapp
+    ```
+
+    ```
     NAME        READY   STATUS    RESTARTS   AGE
     secondapp   2/2     Running   49         2d
     ```
@@ -36,6 +39,9 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
 
     ```bash
     kubectl describe pod secondapp | grep -A8 "Conditions:"
+    ```
+
+    ```
     Conditions:
       Type              Status
       Initialized       True
@@ -90,9 +96,15 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
 
     ```bash
     kubectl get ep
+    ```
+
+    ```
     NAME         ENDPOINTS
     secondapp    192.168.x.y:80
     ...
+    ```
+
+    ```bash
     kubectl get ep secondapp -o yaml
     ```
 
@@ -182,6 +194,9 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
 
     ```bash
     kubectl apply -f brokenapp.yaml
+    ```
+
+    ```
     pod/nginx-debug-pod created
     service/nginx-debug-svc created
     ```
@@ -190,6 +205,9 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
 
     ```bash
     kubectl get all
+    ```
+
+    ```
     NAME                   READY   STATUS    RESTARTS   AGE
     pod/nginx-debug-pod    0/1     Running   0          5s
 
@@ -201,8 +219,14 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
 
     ```bash
     kubectl get ep nginx-debug-svc
+    ```
+
+    ```
     NAME              ENDPOINTS   AGE
     nginx-debug-svc   <none>      10s
+    ```
+
+    ```bash
     curl 10.111.195.30
     curl: (7) Failed to connect to 10.111.195.30 port 80
     ```
@@ -222,6 +246,9 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
 
     ```bash
     kubectl exec -it pod/nginx-debug-pod -- bash
+    ```
+
+    ```
     error: Internal error occurred: exec: "bash": executable file not found in $PATH
     ```
 
@@ -229,6 +256,9 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
 
     ```bash
     kubectl debug pod/nginx-debug-pod -it \
+    ```
+
+    ```
     --image=busybox --target=nginx -- /bin/sh
     ```
 
@@ -264,6 +294,9 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
 
     ```bash
     kubectl get all
+    ```
+
+    ```
     NAME                   READY   STATUS    RESTARTS   AGE
     pod/nginx-debug-pod    1/1     Running   0          2m
 
@@ -275,6 +308,9 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
 
     ```bash
     curl 10.111.195.30
+    ```
+
+    ```
     <!DOCTYPE html>
     <html><head><title>Welcome to nginx!</title></head>...
     ```
@@ -349,6 +385,9 @@ Revisit the CKAD curriculum for topics covered in this chapter:
 
     ```bash
     kubectl get deploy igottrouble
+    ```
+
+    ```
     NAME          READY   UP-TO-DATE   AVAILABLE   AGE
     igottrouble   1/1     1            1           5m13s
     ```
