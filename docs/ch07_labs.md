@@ -13,10 +13,10 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
 
 ### ClusterIP - Internal Access Only
 
-1. Connect to the **controller** node and move into the `app2` directory. View existing services.
+1. Connect to the **controller** node and move into the chapter lab directory.
 
     ```bash
-    cd ~/app2
+    cd ~/lfd459/ch07-exposing-apps
     kubectl get svc
     ```
 
@@ -129,6 +129,9 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
         example: second
     ```
 
+    !!! tip
+        Pre-built version available: `kubectl create -f newservice-v2.yaml`
+
 2. Delete and recreate the service. Note a new ClusterIP is assigned.
 
     ```bash
@@ -146,8 +149,8 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
 
     ```bash
     curl http://10.109.134.221
-    curl http://<worker1-ip>:32000
-    curl http://<worker2-ip>:32000
+    curl http://worker1:32000
+    curl http://worker2:32000
     ```
 
 ### LoadBalancer
@@ -161,6 +164,9 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     ```yaml
     type: LoadBalancer    # <-- change from NodePort
     ```
+
+    !!! tip
+        Pre-built version available: `kubectl create -f newservice-v3.yaml`
 
     ```bash
     kubectl delete svc secondapp
@@ -181,7 +187,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     Access still works via the NodePort.
 
     ```bash
-    curl http://<worker1-ip>:32000
+    curl http://worker1:32000
     ```
 
 ### CoreDNS Service Discovery
@@ -232,6 +238,9 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     kubectl create ns multitenant
     kubectl -n multitenant create deployment mainapp --image=nginx
     kubectl -n multitenant expose deployment mainapp \
+    ```
+
+    ```
     --name=shopping --type=NodePort --port=80
     ```
 
@@ -351,11 +360,10 @@ An ingress controller allows you to route traffic to multiple services using a s
 
 ### Creating an Ingress Rule
 
-1. Return to the home directory and review `ingress.yaml`. It routes traffic for `Host: www.example.com` to the `secondapp` service.
+1. Review `ingress.yaml` in the chapter directory. It routes traffic for `Host: www.example.com` to the `secondapp` service.
 
     ```bash
-    cd ~/app2
-    cat ~/lfd459/ch07-exposing-apps/ingress.yaml
+    cat ingress.yaml
     ```
 
     ```yaml
@@ -405,24 +413,31 @@ An ingress controller allows you to route traffic to multiple services using a s
 
 3. Test the ingress. Without the correct `Host` header you get a 404. With the header, nginx responds.
 
-    ```bash
+    ```
     # Get the ingress controller pod IP on the controller node
     INGRESS_IP=$(kubectl get pods -o wide | \
     grep myingress | grep controller | awk 'NR==1{print $6}')
-    echo $INGRESS_IP
     ```
 
     ```bash
+    echo $INGRESS_IP
+    ```
+
+    ```
     # Without Host header - 404 (ingress has no default backend)
+    ```
+
+    ```bash
     curl $INGRESS_IP
     ```
 
     ```
     <html><head><title>404 Not Found</title></head>...</html>
+
+    # With matching Host header - nginx welcome page
     ```
 
     ```bash
-    # With matching Host header - nginx welcome page
     curl -H "Host: www.example.com" http://$INGRESS_IP
     ```
 
@@ -442,9 +457,12 @@ An ingress controller allows you to route traffic to multiple services using a s
 1. Deploy a third web server and customise its default page.
 
     ```bash
+        ```
+
+        ```bash
     kubectl create deployment thirdpage --image=nginx
     kubectl expose deployment thirdpage --port=80 --type=NodePort
-    ```
+        ```
 
 2. Label the pod so it can be targeted (use Tab completion for the pod name).
 
@@ -501,21 +519,25 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```
 
     !!! tip
-        The `ingress-after.yaml` reference file in `~/lfd459/ch07-exposing-apps/` shows the final ingress YAML with both rules.
+        Pre-built version available: `kubectl replace -f ingress-v2.yaml`
 
 5. Test both virtual hosts.
 
     ```bash
     # Should show "Third Page"
+    ```
+
+    ```bash
     curl -H "Host: thirdpage.org" http://$INGRESS_IP
     ```
 
     ```
     <!DOCTYPE html><html><head><title>Third Page</title>...
+
+    # Should still show nginx default
     ```
 
     ```bash
-    # Should still show nginx default
     curl -H "Host: www.example.com" http://$INGRESS_IP
     ```
 
@@ -571,4 +593,3 @@ Revisit the CKAD curriculum for topics covered in this chapter:
     kubectl delete svc webone-svc webtwo-svc --ignore-not-found
     kubectl delete ingress --all --ignore-not-found
     ```
-

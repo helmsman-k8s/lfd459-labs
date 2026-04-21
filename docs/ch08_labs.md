@@ -226,12 +226,18 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
     nginx-debug-svc   <none>      10s
     ```
 
+    Get the ClusterIP first:
+
     ```bash
-    curl 10.111.195.30
+    kubectl get svc nginx-debug-svc
+    ```
+
+    ```bash
+    curl <CLUSTER-IP>
     ```
 
     ```
-    curl: (7) Failed to connect to 10.111.195.30 port 80
+    curl: (7) Failed to connect to <CLUSTER-IP> port 80
     ```
 
 4. Review the pod's probes.
@@ -307,7 +313,7 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
 11. Test service access.
 
     ```bash
-    curl 10.111.195.30
+    curl <CLUSTER-IP>
     ```
 
     ```
@@ -416,4 +422,3 @@ Congratulations on completing all LFD459 lab chapters. Before sitting the CKAD e
 - Have reviewed the current CKAD curriculum at <https://www.cncf.io/certification/ckad/>
 
 Good luck!
-

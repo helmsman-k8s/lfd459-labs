@@ -170,6 +170,9 @@ Jobs run a container a set number of times to completion, rather than keeping it
       template:
     ```
 
+    !!! tip
+        If you prefer not to edit manually, use the pre-built version: `kubectl create -f job-v2.yaml`
+
 8. Create the job again and watch the completions count up.
 
     ```bash
@@ -210,6 +213,9 @@ Jobs run a container a set number of times to completion, rather than keeping it
       template:
     ```
 
+    !!! tip
+        Pre-built version available: `kubectl create -f job-v3.yaml`
+
 11. Create the job and verify two pods run simultaneously.
 
     ```bash
@@ -237,6 +243,9 @@ Jobs run a container a set number of times to completion, rather than keeping it
       activeDeadlineSeconds: 15   # <-- add this line
       template:
     ```
+
+    !!! tip
+        Pre-built version available: `kubectl create -f job-v4.yaml`
 
 13. Delete and recreate the job. It will stop after 15 seconds regardless of how many completions remain.
 
@@ -382,9 +391,10 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
     kubectl create -f cronjob.yaml
     ```
 
-    ```
-    # After ~2 minutes:
-    ```
+    !!! tip
+        Pre-built version available: `kubectl create -f cronjob-v2.yaml`
+
+    Wait ~2 minutes, then check:
 
     ```bash
     kubectl get jobs
@@ -411,7 +421,7 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
 
 Labels are key-value pairs attached to objects. Selectors use them to filter and manage groups of objects.
 
-1. Copy the chapter files to your home directory if not already done, then create a new `design2` deployment.
+1. Create a new `design2` deployment.
 
     ```bash
     kubectl create deployment design2 --image=nginx
@@ -521,10 +531,15 @@ Resource requests tell the scheduler how much CPU/memory a pod needs. Limits cap
     kubectl create -f stress.yaml
     ```
 
-2. On the controller and on **worker1**, run `top` to see the stress process consuming CPU. Use `q` to exit.
+2. On the **controller**, run `top` to see the stress process consuming CPU. Use `q` to exit.
 
     ```bash
     top
+    ```
+
+    Then open a separate terminal on **worker1** and run the same:
+
+    ```bash
     top
     ```
 
@@ -556,7 +571,7 @@ Resource requests tell the scheduler how much CPU/memory a pod needs. Limits cap
     ```
 
     !!! tip
-        The `edited-stress.yaml` file already has these resources added - use it as a reference.
+        Pre-built version available: `kubectl create -f stress-v2.yaml`
 
 4. Create the deployment and check the pod status. Because the stress command requests more memory than the limit, the container will be OOMKilled.
 
@@ -594,6 +609,9 @@ Resource requests tell the scheduler how much CPU/memory a pod needs. Limits cap
           cpu: "0.5"
           memory: "500Mi"
     ```
+
+    !!! tip
+        Pre-built version available: `kubectl create -f stress-v3.yaml`
 
 6. Create the deployment and verify the pod runs on `worker1` without OOMKilling.
 
@@ -680,6 +698,9 @@ An `initContainer` runs to completion before the main container starts. If it fa
     ```yaml
     command: [/bin/true]
     ```
+
+    !!! tip
+        Pre-built version available: `kubectl create -f init-tester-v2.yaml`
 
 4. Create the pod again and verify the nginx webservice container starts once the initContainer succeeds.
 
@@ -788,4 +809,3 @@ Revisit the CKAD curriculum and locate topics covered in this chapter:
     kubectl delete cronjobs.batch sleepy --ignore-not-found
     kubectl delete deploy stressmeout --ignore-not-found
     ```
-

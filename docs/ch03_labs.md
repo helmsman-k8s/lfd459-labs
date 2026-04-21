@@ -47,10 +47,10 @@ In this chapter you will containerize a simple Python application using Podman, 
 
     ```bash
     chmod +x simple.py
-    ./simple.py
     ```
 
     ```
+    ./simple.py
     ^CTraceback (most recent call last):
       File "./simple.py", line 24, in <module>
         time.sleep(5)
@@ -162,10 +162,10 @@ In this chapter you will containerize a simple Python application using Podman, 
 
 Rather than pushing to Docker Hub, we will deploy a private registry inside the cluster and make it available to all nodes.
 
-1. Return to the home directory and create the local registry using the provided YAML.
+1. Return to the chapter directory and create the local registry using the provided YAML.
 
     ```bash
-    cd $HOME
+    cd ~/lfd459/ch03-build
     kubectl create -f easyregistry.yaml
     ```
 
@@ -248,9 +248,9 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
 
     ```bash
     sudo apt-get install -y podman
-    cp ~/lfd459/ch03-build/local-repo-setup.sh .
-    chmod +x local-repo-setup.sh
-    . ./local-repo-setup.sh
+    scp guru@controller:~/lfd459/ch03-build/local-repo-setup.sh ~/
+    chmod +x ~/local-repo-setup.sh
+    . ~/local-repo-setup.sh
     ```
 
     Verify the worker can pull from the registry.
@@ -623,16 +623,27 @@ Revisit the CKAD curriculum and locate the topics covered in this chapter:
 - Use `build-review1.yaml` to create a broken deployment. Fix it so both containers are running and in a `READY` state.
 
     ```bash
-    kubectl create -f ~/build-review1.yaml
-    ```
+        ```
+
+        ```bash
+    kubectl create -f build-review1.yaml
+        ```
 
     !!! hint
         The web server (`nginx`) listens on port 80. The proxy (`goproxy`) listens on port 8080. Examine the probe configurations carefully - one of the port numbers is wrong.
 
 - Once fixed, access the default nginx page and verify the GET request appears in the container log.
 
+    Get the pod IP:
+
     ```bash
-    curl http://<pod-ip>
+    kubectl get pod -l app=break2 -o wide
+    ```
+
+    Then curl the pod IP and check the log:
+
+    ```bash
+    curl http://<pod-ip from above>
     kubectl logs <pod-name> -c brokenapp
     ```
 
@@ -650,4 +661,3 @@ Revisit the CKAD curriculum and locate the topics covered in this chapter:
     kubectl delete pvc nginx-claim0 registry-claim0 --ignore-not-found
     kubectl delete pv vol1 vol2 --ignore-not-found
     ```
-

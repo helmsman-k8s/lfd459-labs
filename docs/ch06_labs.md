@@ -109,6 +109,9 @@ A SecurityContext restricts what a container process can do - which UID it runs 
             add: ["NET_ADMIN", "SYS_TIME"]
     ```
 
+    !!! tip
+        Pre-built version available: `kubectl create -f second-v2.yaml`
+
 7. Recreate the pod and check the new capability bitmask.
 
     ```bash
@@ -194,6 +197,9 @@ Secrets store sensitive data in base64-encoded form. They are consumed like Conf
           secretName: lfsecret
     ```
 
+    !!! tip
+        Pre-built version available: `kubectl create -f second-v3.yaml`
+
 5. Delete, recreate, and verify the secret is accessible inside the container.
 
     ```bash
@@ -235,10 +241,9 @@ Secrets store sensitive data in base64-encoded form. They are consumed like Conf
 
 ServiceAccounts provide an identity for pod processes to interact with the Kubernetes API.
 
-1. Return to the home directory and view existing secrets.
+1. View existing secrets.
 
     ```bash
-    cd
     kubectl get secrets
     kubectl get secrets --all-namespaces
     ```
@@ -246,7 +251,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
 2. Create the ServiceAccount from `serviceaccount.yaml`.
 
     ```bash
-    kubectl create -f ~/app2/serviceaccount.yaml
+    kubectl create -f serviceaccount.yaml
     ```
 
     ```
@@ -276,7 +281,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
 4. Create the `secret-access-cr` ClusterRole from `clusterrole.yaml`. It grants only `get` and `list` on secrets.
 
     ```bash
-    kubectl create -f ~/app2/clusterrole.yaml
+    kubectl create -f clusterrole.yaml
     ```
 
     ```
@@ -290,7 +295,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
 5. Bind the ClusterRole to the ServiceAccount using `rolebinding.yaml`.
 
     ```bash
-    kubectl create -f ~/app2/rolebinding.yaml
+    kubectl create -f rolebinding.yaml
     ```
 
     ```
@@ -320,7 +325,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
 7. Edit `~/app2/second.yaml` and add `serviceAccountName: secret-access-sa` to the pod spec.
 
     ```bash
-    vim ~/app2/second.yaml
+    vim second.yaml
     ```
 
     ```yaml
@@ -329,6 +334,9 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
       securityContext:
         runAsUser: 1000
     ```
+
+    !!! tip
+        Pre-built version available: `kubectl create -f second-v4.yaml`
 
 8. Delete and recreate. Verify the new serviceAccount is in use.
 
@@ -353,7 +361,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
 1. Review `allclosed.yaml`. This deny-all policy matches every pod and blocks both ingress and egress.
 
     ```bash
-    cat ~/app2/allclosed.yaml
+    cat allclosed.yaml
     ```
 
     ```yaml
@@ -396,6 +404,9 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
       labels:
         example: second
     ```
+
+    !!! tip
+        Pre-built version available: `kubectl create -f second-v5.yaml`
 
     ```bash
     kubectl create -f second.yaml
@@ -466,7 +477,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
 1. Apply the deny-all policy.
 
     ```bash
-    kubectl create -f ~/app2/allclosed.yaml
+    kubectl create -f allclosed.yaml
     ```
 
     ```
@@ -488,7 +499,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
 3. Update the policy to remove the Egress restriction and replace.
 
     ```bash
-    vim ~/app2/allclosed.yaml
+    vim allclosed.yaml
     ```
 
     ```yaml
@@ -500,12 +511,15 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     ```
 
     ```bash
-    kubectl replace -f ~/app2/allclosed.yaml
+    kubectl replace -f allclosed.yaml
     ```
 
     ```
     networkpolicy.networking.k8s.io/deny-default replaced
     ```
+
+    !!! tip
+        Pre-built version available: `kubectl replace -f allclosed-v2.yaml`
 
 4. Get the pod IP, then add an ingress rule to allow traffic from any pod.
 
@@ -525,20 +539,22 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     ```
 
     ```bash
-    kubectl replace -f ~/app2/allclosed.yaml
+    kubectl replace -f allclosed.yaml
     ```
+
+    !!! tip
+        Pre-built version available: `kubectl replace -f allclosed-v3.yaml`
 
 5. Test pod-to-pod ingress with ping using a temporary alpine pod.
 
     ```bash
-    kubectl run -it test --rm=true --image alpine \
-    -- ping -c5 <secondapp-pod-ip>
+    kubectl run -it test --rm=true --image alpine -- ping -c5 <secondapp-pod-ip>
     ```
 
 6. Update the policy to only allow TCP port 80, blocking ICMP.
 
     ```bash
-    vim ~/app2/allclosed.yaml
+    vim allclosed.yaml
     ```
 
     ```yaml
@@ -551,24 +567,22 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     ```
 
     ```bash
-    kubectl replace -f ~/app2/allclosed.yaml
+    kubectl replace -f allclosed.yaml
     ```
 
-    ```
-    # HTTP allowed:
-    ```
+    !!! tip
+        Pre-built version available: `kubectl replace -f allclosed-v4.yaml`
+
+    HTTP should be allowed:
 
     ```bash
     curl http://10.97.96.75
     ```
 
-    ```
-    # ICMP blocked:
-    ```
+    ICMP should be blocked:
 
     ```bash
-    kubectl run -it test --rm=true --image alpine \
-    -- ping -c5 <secondapp-pod-ip>
+    kubectl run -it test --rm=true --image alpine -- ping -c5 <secondapp-pod-ip>
     ```
 
 7. Delete the NetworkPolicy so the registry and other pods remain accessible for future chapters.
@@ -603,7 +617,7 @@ Revisit the CKAD curriculum for topics covered in this chapter:
 - Create a pod using `security-review1.yaml`.
 
     ```bash
-    kubectl create -f ~/app2/security-review1.yaml
+    kubectl create -f security-review1.yaml
     ```
 
 - Check the pod status.
@@ -641,4 +655,3 @@ Revisit the CKAD curriculum for topics covered in this chapter:
     kubectl delete clusterrole secrole --ignore-not-found
     kubectl delete clusterrolebinding secrole --ignore-not-found
     ```
-

@@ -59,10 +59,10 @@ ConfigMaps decouple configuration from container images. They can be created fro
 
     You should see keys: `black`, `cyan`, `favorite`, `magenta`, `text`, `yellow`.
 
-5. Edit `~/app1/simpleapp.yaml` to add a single environment variable `ilike` sourced from the `colors` ConfigMap. Add the `env:` block inside the `simpleapp` container spec, after `imagePullPolicy`.
+5. Edit `simpleapp.yaml` (located at `~/lfd459/ch03-build/app1/simpleapp.yaml`) to add a single environment variable `ilike` sourced from the `colors` ConfigMap. Add the `env:` block inside the `simpleapp` container spec, after `imagePullPolicy`.
 
     ```bash
-    vim ~/app1/simpleapp.yaml
+    vim ~/lfd459/ch03-build/app1/simpleapp.yaml
     ```
 
     Find the simpleapp container section and add:
@@ -83,15 +83,17 @@ ConfigMaps decouple configuration from container images. They can be created fro
 
     ```bash
     kubectl delete deployment try1
-    kubectl create -f ~/app1/simpleapp.yaml
+    kubectl create -f ~/lfd459/ch03-build/app1/simpleapp.yaml
     ```
 
 7. Verify the `ilike` environment variable is set inside the container.
 
     ```bash
     kubectl get pods
-    kubectl exec -c simpleapp -it <try1-pod-name> \
-    -- /bin/bash -c 'echo $ilike'
+    ```
+
+    ```bash
+    kubectl exec -c simpleapp -it <try1-pod-name> -- /bin/bash -c 'echo $ilike'
     ```
 
     ```
@@ -101,7 +103,7 @@ ConfigMaps decouple configuration from container images. They can be created fro
 8. Edit `simpleapp.yaml` again to add `envFrom` so **all** keys from the `colors` ConfigMap are injected as environment variables.
 
     ```bash
-    vim ~/app1/simpleapp.yaml
+    vim ~/lfd459/ch03-build/app1/simpleapp.yaml
     ```
 
     Add after `key: favorite`:
@@ -118,7 +120,7 @@ ConfigMaps decouple configuration from container images. They can be created fro
 
     ```bash
     kubectl delete deployment try1
-    kubectl create -f ~/app1/simpleapp.yaml
+    kubectl create -f ~/lfd459/ch03-build/app1/simpleapp.yaml
     kubectl exec -it <try1-pod-name> -- /bin/bash -c 'env' | grep -E 'ilike|cyan|magenta|yellow|black|text'
     ```
 
@@ -139,7 +141,7 @@ ConfigMaps decouple configuration from container images. They can be created fro
 11. Edit `simpleapp.yaml` to mount the `fast-car` ConfigMap as a volume at `/etc/cars` inside the `simpleapp` container.
 
     ```bash
-    vim ~/app1/simpleapp.yaml
+    vim ~/lfd459/ch03-build/app1/simpleapp.yaml
     ```
 
     In the `simpleapp` container spec, add before `env:`:
@@ -161,20 +163,20 @@ ConfigMaps decouple configuration from container images. They can be created fro
     ```
 
     !!! tip
-        The `simpleapp.yaml-with-edits` file in your home directory shows the complete final state of this file after all edits in this chapter. Use it as a reference if needed.
+        Pre-built versions are available: `simpleapp-v2.yaml` through `simpleapp-v6.yaml` in `~/lfd459/ch05-deployment-config/`. Each version corresponds to the state of `simpleapp.yaml` after each major edit in this chapter.
 
 12. Delete and recreate the deployment.
 
     ```bash
     kubectl delete deployment try1
-    kubectl create -f ~/app1/simpleapp.yaml
+    kubectl create -f ~/lfd459/ch03-build/app1/simpleapp.yaml
     ```
 
 13. The deployment will show `0/6` ready because the `readinessProbe` is still checking for `/tmp/healthy`. Update the probe to check for `/etc/cars` instead.
 
     ```bash
     kubectl delete deployment try1
-    vim ~/app1/simpleapp.yaml
+    vim ~/lfd459/ch03-build/app1/simpleapp.yaml
     ```
 
     Change the `readinessProbe` exec command inside the `simpleapp` container:
@@ -189,7 +191,7 @@ ConfigMaps decouple configuration from container images. They can be created fro
     ```
 
     ```bash
-    kubectl create -f ~/app1/simpleapp.yaml
+    kubectl create -f ~/lfd459/ch03-build/app1/simpleapp.yaml
     ```
 
 14. Wait about a minute. All six pods should show `2/2 Running`.
@@ -208,8 +210,7 @@ ConfigMaps decouple configuration from container images. They can be created fro
 15. Verify the ConfigMap data is visible inside the container as a file.
 
     ```bash
-    kubectl exec -c simpleapp -it <try1-pod-name> \
-    -- /bin/bash -c 'cat /etc/cars/car.trim'
+    kubectl exec -c simpleapp -it <try1-pod-name> -- /bin/bash -c 'cat /etc/cars/car.trim'
     ```
 
     ```
@@ -266,17 +267,10 @@ We will configure an NFS server on the controller node, create a PersistentVolum
     sudo umount /mnt
     ```
 
-4. Return to the **controller**. Edit `PVol.yaml` - the `server:` field currently says `cp`, change it to `controller`.
+4. Return to the **controller**. Verify `PVol.yaml` has `server: controller`.
 
     ```bash
-    vim PVol.yaml
-    ```
-
-    ```yaml
-    nfs:
-      path: /opt/sfw
-      server: controller    # <-- change from cp to controller
-      readOnly: false
+    cat PVol.yaml
     ```
 
 5. Create the PersistentVolume and verify it shows `Available`.
@@ -340,7 +334,7 @@ We will configure an NFS server on the controller node, create a PersistentVolum
 9. Edit `~/app1/simpleapp.yaml` to add the NFS volume to the `simpleapp` container.
 
     ```bash
-    vim ~/app1/simpleapp.yaml
+    vim ~/lfd459/ch03-build/app1/simpleapp.yaml
     ```
 
     In the simpleapp `volumeMounts` section, add after the `car-vol` mount:
@@ -362,7 +356,7 @@ We will configure an NFS server on the controller node, create a PersistentVolum
 
     ```bash
     kubectl delete deployment try1
-    kubectl create -f ~/app1/simpleapp.yaml
+    kubectl create -f ~/lfd459/ch03-build/app1/simpleapp.yaml
     ```
 
 11. Verify the NFS volume is mounted under `/opt` in a pod.
@@ -384,9 +378,10 @@ We will configure an NFS server on the controller node, create a PersistentVolum
 
 Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd logging sidecar using a ConfigMap and a shared PersistentVolume.
 
-1. Review the current `basic.yaml` in your home directory.
+1. We will work with a copy of `basic.yaml` in the chapter directory. Copy it now if not already present.
 
     ```bash
+    cp ~/lfd459/ch02-architecture/basic.yaml .
     cat basic.yaml
     ```
 
@@ -442,7 +437,7 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
     vim basic.yaml
     ```
 
-    The final file should look like `basic.yaml-with-edits`:
+    The final file should look like `basic.yaml-with-edits`. A pre-built version is available as `basic-v2.yaml` in `~/lfd459/ch05-deployment-config/`.
 
     ```yaml
     apiVersion: v1
@@ -542,6 +537,10 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
 
     In the `fdlogger` container, add `env` and a second `volumeMounts` entry:
 
+    !!! tip
+        Pre-built version available: `basic-v3.yaml` in `~/lfd459/ch05-deployment-config/`
+
+
     ```yaml
       - name: fdlogger
         image: fluent/fluentd:v1.16
@@ -589,7 +588,7 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
 1. Move into the `app1` directory and add a comment to `simple.py` to produce a slightly different image.
 
     ```bash
-    cd ~/app1
+    cd ~/lfd459/ch03-build/app1
     vim simple.py
     ```
 
@@ -751,4 +750,3 @@ Revisit the CKAD curriculum for topics covered in this chapter:
     kubectl delete pvc reviewpvc --ignore-not-found
     kubectl delete pv reviewvol --ignore-not-found
     ```
-
