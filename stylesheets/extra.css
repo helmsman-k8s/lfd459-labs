@@ -1,5 +1,6 @@
-/* Output blocks - green on dark */
-.highlight:not(.language-bash):not(.language-yaml):not(.language-python):not(.language-dockerfile) code {
-  background-color: #1a2a1a;
-  color: #98c379;
+/* Output blocks only - plain ``` blocks with no language */
+.language-none code,
+code.language-none {
+  background-color: #1a2a1a !important;
+  color: #98c379 !important;
 }
