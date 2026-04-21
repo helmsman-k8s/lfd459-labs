@@ -661,8 +661,8 @@
 <h3 id="clusterip-internal-access-only">ClusterIP - Internal Access Only<a class="headerlink" href="#clusterip-internal-access-only" title="Permanent link">&para;</a></h3>
 <ol>
 <li>
-<p>Connect to the <strong>controller</strong> node and move into the <code>app2</code> directory. View existing services.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>~/app2
+<p>Connect to the <strong>controller</strong> node and move into the chapter lab directory.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>~/lfd459/ch07-exposing-apps
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>svc
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>NAME         TYPE        CLUSTER-IP       PORT(S)
@@ -748,6 +748,10 @@
 <a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
 <a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="w">    </span><span class="nt">example</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">second</span>
 </code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Pre-built version available: <code>kubectl create -f newservice-v2.yaml</code></p>
+</div>
 </li>
 <li>
 <p>Delete and recreate the service. Note a new ClusterIP is assigned.</p>
@@ -762,8 +766,8 @@
 <li>
 <p>Test via the ClusterIP (internal) and via any node IP on port 32000 (external).</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>curl<span class="w"> </span>http://10.109.134.221
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>curl<span class="w"> </span>http://&lt;worker1-ip&gt;:32000
-<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>curl<span class="w"> </span>http://&lt;worker2-ip&gt;:32000
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>curl<span class="w"> </span>http://worker1:32000
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>curl<span class="w"> </span>http://worker2:32000
 </code></pre></div>
 </li>
 </ol>
@@ -775,6 +779,10 @@
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LoadBalancer</span><span class="w">    </span><span class="c1"># &lt;-- change from NodePort</span>
 </code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Pre-built version available: <code>kubectl create -f newservice-v3.yaml</code></p>
+</div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>svc<span class="w"> </span>secondapp
 <a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>newservice.yaml
 </code></pre></div>
@@ -787,7 +795,7 @@
 <a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>secondapp   LoadBalancer   10.109.26.21    &lt;pending&gt;     80:32000/TCP
 </code></pre></div>
 <p>Access still works via the NodePort.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>curl<span class="w"> </span>http://&lt;worker1-ip&gt;:32000
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>curl<span class="w"> </span>http://worker1:32000
 </code></pre></div>
 </li>
 </ol>
@@ -836,31 +844,32 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>ns<span class="w"> </span>multitenant
 <a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>multitenant<span class="w"> </span>create<span class="w"> </span>deployment<span class="w"> </span>mainapp<span class="w"> </span>--image<span class="o">=</span>nginx
 <a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>multitenant<span class="w"> </span>expose<span class="w"> </span>deployment<span class="w"> </span>mainapp<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>--name<span class="o">=</span>shopping<span class="w"> </span>--type<span class="o">=</span>NodePort<span class="w"> </span>--port<span class="o">=</span><span class="m">80</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>--name=shopping --type=NodePort --port=80
 </code></pre></div>
 </li>
 <li>
 <p>Log back into the <code>busy</code> container and test cross-namespace DNS.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>secondapp<span class="w"> </span>-c<span class="w"> </span>busy<span class="w"> </span>--<span class="w"> </span>sh
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>secondapp<span class="w"> </span>-c<span class="w"> </span>busy<span class="w"> </span>--<span class="w"> </span>sh
 </code></pre></div>
 <p>Inside:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="c1"># Short name fails - shopping is not in the default namespace</span>
-<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>/<span class="w"> </span>$<span class="w"> </span>nslookup<span class="w"> </span>shopping
-<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>**<span class="w"> </span>server<span class="w"> </span>can<span class="err">&#39;</span>t<span class="w"> </span>find<span class="w"> </span>shopping.default.svc.cluster.local:<span class="w"> </span>NXDOMAIN
-<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>
-<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="c1"># FQDN resolves correctly</span>
-<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a>/<span class="w"> </span>$<span class="w"> </span>nslookup<span class="w"> </span>shopping.multitenant.svc.cluster.local
-<a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a>Name:<span class="w"> </span>shopping.multitenant.svc.cluster.local
-<a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a>Address:<span class="w"> </span><span class="m">10</span>.101.4.142
-<a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a>
-<a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a><span class="c1"># Partial FQDN with namespace works for wget</span>
-<a id="__codelineno-31-11" name="__codelineno-31-11" href="#__codelineno-31-11"></a>/<span class="w"> </span>$<span class="w"> </span>wget<span class="w"> </span>-O<span class="w"> </span>-<span class="w"> </span>shopping.multitenant
-<a id="__codelineno-31-12" name="__codelineno-31-12" href="#__codelineno-31-12"></a>&lt;!DOCTYPE<span class="w"> </span>html&gt;
-<a id="__codelineno-31-13" name="__codelineno-31-13" href="#__codelineno-31-13"></a>&lt;html&gt;
-<a id="__codelineno-31-14" name="__codelineno-31-14" href="#__codelineno-31-14"></a>&lt;head&gt;&lt;title&gt;Welcome<span class="w"> </span>to<span class="w"> </span>nginx!&lt;/title&gt;
-<a id="__codelineno-31-15" name="__codelineno-31-15" href="#__codelineno-31-15"></a>...
-<a id="__codelineno-31-16" name="__codelineno-31-16" href="#__codelineno-31-16"></a>
-<a id="__codelineno-31-17" name="__codelineno-31-17" href="#__codelineno-31-17"></a>/<span class="w"> </span>$<span class="w"> </span><span class="nb">exit</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="c1"># Short name fails - shopping is not in the default namespace</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>/<span class="w"> </span>$<span class="w"> </span>nslookup<span class="w"> </span>shopping
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>**<span class="w"> </span>server<span class="w"> </span>can<span class="err">&#39;</span>t<span class="w"> </span>find<span class="w"> </span>shopping.default.svc.cluster.local:<span class="w"> </span>NXDOMAIN
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>
+<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="c1"># FQDN resolves correctly</span>
+<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a>/<span class="w"> </span>$<span class="w"> </span>nslookup<span class="w"> </span>shopping.multitenant.svc.cluster.local
+<a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a>Name:<span class="w"> </span>shopping.multitenant.svc.cluster.local
+<a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a>Address:<span class="w"> </span><span class="m">10</span>.101.4.142
+<a id="__codelineno-32-9" name="__codelineno-32-9" href="#__codelineno-32-9"></a>
+<a id="__codelineno-32-10" name="__codelineno-32-10" href="#__codelineno-32-10"></a><span class="c1"># Partial FQDN with namespace works for wget</span>
+<a id="__codelineno-32-11" name="__codelineno-32-11" href="#__codelineno-32-11"></a>/<span class="w"> </span>$<span class="w"> </span>wget<span class="w"> </span>-O<span class="w"> </span>-<span class="w"> </span>shopping.multitenant
+<a id="__codelineno-32-12" name="__codelineno-32-12" href="#__codelineno-32-12"></a>&lt;!DOCTYPE<span class="w"> </span>html&gt;
+<a id="__codelineno-32-13" name="__codelineno-32-13" href="#__codelineno-32-13"></a>&lt;html&gt;
+<a id="__codelineno-32-14" name="__codelineno-32-14" href="#__codelineno-32-14"></a>&lt;head&gt;&lt;title&gt;Welcome<span class="w"> </span>to<span class="w"> </span>nginx!&lt;/title&gt;
+<a id="__codelineno-32-15" name="__codelineno-32-15" href="#__codelineno-32-15"></a>...
+<a id="__codelineno-32-16" name="__codelineno-32-16" href="#__codelineno-32-16"></a>
+<a id="__codelineno-32-17" name="__codelineno-32-17" href="#__codelineno-32-17"></a>/<span class="w"> </span>$<span class="w"> </span><span class="nb">exit</span>
 </code></pre></div>
 </li>
 </ol>
@@ -871,92 +880,91 @@
 <ol>
 <li>
 <p>Make sure Helm is available.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>helm<span class="w"> </span>version
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>helm<span class="w"> </span>version
 </code></pre></div>
 <p>If not found, install it:</p>
 <div class="admonition tip">
 <p class="admonition-title">Helm version</p>
 <p>Check the latest stable release at <a href="https://github.com/helm/helm/releases">https://github.com/helm/helm/releases</a> before downloading. Replace <code>v3.18.1</code> below with the current version if it differs.</p>
 </div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>wget<span class="w"> </span>https://get.helm.sh/helm-v3.18.1-linux-amd64.tar.gz
-<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>tar<span class="w"> </span>-xf<span class="w"> </span>helm-v3.18.1-linux-amd64.tar.gz
-<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>sudo<span class="w"> </span>cp<span class="w"> </span>linux-amd64/helm<span class="w"> </span>/usr/local/bin/
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>wget<span class="w"> </span>https://get.helm.sh/helm-v3.18.1-linux-amd64.tar.gz
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>tar<span class="w"> </span>-xf<span class="w"> </span>helm-v3.18.1-linux-amd64.tar.gz
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>sudo<span class="w"> </span>cp<span class="w"> </span>linux-amd64/helm<span class="w"> </span>/usr/local/bin/
 </code></pre></div>
 </li>
 <li>
 <p>Add the NGINX ingress Helm repository and update.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>helm<span class="w"> </span>repo<span class="w"> </span>add<span class="w"> </span>ingress-nginx<span class="w"> </span>https://kubernetes.github.io/ingress-nginx
-<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>helm<span class="w"> </span>repo<span class="w"> </span>update
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>helm<span class="w"> </span>repo<span class="w"> </span>add<span class="w"> </span>ingress-nginx<span class="w"> </span>https://kubernetes.github.io/ingress-nginx
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>helm<span class="w"> </span>repo<span class="w"> </span>update
 </code></pre></div>
 </li>
 <li>
 <p>Download the chart and edit <code>values.yaml</code> to use a <code>DaemonSet</code> instead of a <code>Deployment</code> (one ingress pod per node).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>helm<span class="w"> </span>fetch<span class="w"> </span>ingress-nginx/ingress-nginx<span class="w"> </span>--untar
-<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="nb">cd</span><span class="w"> </span>ingress-nginx
-<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>vim<span class="w"> </span>values.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>helm<span class="w"> </span>fetch<span class="w"> </span>ingress-nginx/ingress-nginx<span class="w"> </span>--untar
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="nb">cd</span><span class="w"> </span>ingress-nginx
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>vim<span class="w"> </span>values.yaml
 </code></pre></div>
 <p>Find the <code>kind:</code> line around line 150 and change it:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="c1">## DaemonSet or Deployment</span>
-<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DaemonSet</span><span class="w">    </span><span class="c1"># &lt;-- change from Deployment</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="c1">## DaemonSet or Deployment</span>
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DaemonSet</span><span class="w">    </span><span class="c1"># &lt;-- change from Deployment</span>
 </code></pre></div>
 </li>
 <li>
 <p>Install the ingress controller using the local chart.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>helm<span class="w"> </span>install<span class="w"> </span>myingress<span class="w"> </span>.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>helm<span class="w"> </span>install<span class="w"> </span>myingress<span class="w"> </span>.
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>NAME: myingress
-<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>STATUS: deployed
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>NAME: myingress
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>STATUS: deployed
 </code></pre></div>
 </li>
 <li>
 <p>Verify the controller pods are running - one per node (DaemonSet).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>--all-namespaces<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>myingress
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>--all-namespaces<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>myingress
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>default   myingress-ingress-nginx-controller-xxxxx   1/1   Running   0   20s   controller
-<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>default   myingress-ingress-nginx-controller-yyyyy   1/1   Running   0   20s   worker1
-<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a>default   myingress-ingress-nginx-controller-zzzzz   1/1   Running   0   20s   worker2
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>default   myingress-ingress-nginx-controller-xxxxx   1/1   Running   0   20s   controller
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>default   myingress-ingress-nginx-controller-yyyyy   1/1   Running   0   20s   worker1
+<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a>default   myingress-ingress-nginx-controller-zzzzz   1/1   Running   0   20s   worker2
 </code></pre></div>
 </li>
 <li>
 <p>Check the ingress controller service. <code>EXTERNAL-IP</code> will be <code>&lt;pending&gt;</code> - that's expected.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>myingress
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>myingress
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>myingress-ingress-nginx-controller   LoadBalancer   10.104.227.79   &lt;pending&gt;   80:32558/TCP,443:30219/TCP
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>myingress-ingress-nginx-controller   LoadBalancer   10.104.227.79   &lt;pending&gt;   80:32558/TCP,443:30219/TCP
 </code></pre></div>
 </li>
 <li>
 <p>Note the pod IPs of the ingress controller pods (these are the IPs you'll use directly for testing).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-o<span class="w"> </span>wide<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>myingress
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-o<span class="w"> </span>wide<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>myingress
 </code></pre></div>
 </li>
 </ol>
 <h3 id="creating-an-ingress-rule">Creating an Ingress Rule<a class="headerlink" href="#creating-an-ingress-rule" title="Permanent link">&para;</a></h3>
 <ol>
 <li>
-<p>Return to the home directory and review <code>ingress.yaml</code>. It routes traffic for <code>Host: www.example.com</code> to the <code>secondapp</code> service.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="nb">cd</span><span class="w"> </span>~/app2
-<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>cat<span class="w"> </span>~/lfd459/ch07-exposing-apps/ingress.yaml
+<p>Review <code>ingress.yaml</code> in the chapter directory. It routes traffic for <code>Host: www.example.com</code> to the <code>secondapp</code> service.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>cat<span class="w"> </span>ingress.yaml
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
-<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ingress-test</span>
-<a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
-<a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a><span class="w">    </span><span class="nt">nginx.ingress.kubernetes.io/service-upstream</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
-<a id="__codelineno-45-7" name="__codelineno-45-7" href="#__codelineno-45-7"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
-<a id="__codelineno-45-8" name="__codelineno-45-8" href="#__codelineno-45-8"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-45-9" name="__codelineno-45-9" href="#__codelineno-45-9"></a><span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span>
-<a id="__codelineno-45-10" name="__codelineno-45-10" href="#__codelineno-45-10"></a><span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
-<a id="__codelineno-45-11" name="__codelineno-45-11" href="#__codelineno-45-11"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">www.example.com</span>
-<a id="__codelineno-45-12" name="__codelineno-45-12" href="#__codelineno-45-12"></a><span class="w">    </span><span class="nt">http</span><span class="p">:</span>
-<a id="__codelineno-45-13" name="__codelineno-45-13" href="#__codelineno-45-13"></a><span class="w">      </span><span class="nt">paths</span><span class="p">:</span>
-<a id="__codelineno-45-14" name="__codelineno-45-14" href="#__codelineno-45-14"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">backend</span><span class="p">:</span>
-<a id="__codelineno-45-15" name="__codelineno-45-15" href="#__codelineno-45-15"></a><span class="w">          </span><span class="nt">service</span><span class="p">:</span>
-<a id="__codelineno-45-16" name="__codelineno-45-16" href="#__codelineno-45-16"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">secondapp</span>
-<a id="__codelineno-45-17" name="__codelineno-45-17" href="#__codelineno-45-17"></a><span class="w">            </span><span class="nt">port</span><span class="p">:</span>
-<a id="__codelineno-45-18" name="__codelineno-45-18" href="#__codelineno-45-18"></a><span class="w">              </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
-<a id="__codelineno-45-19" name="__codelineno-45-19" href="#__codelineno-45-19"></a><span class="w">        </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
-<a id="__codelineno-45-20" name="__codelineno-45-20" href="#__codelineno-45-20"></a><span class="w">        </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ImplementationSpecific</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ingress-test</span>
+<a id="__codelineno-46-5" name="__codelineno-46-5" href="#__codelineno-46-5"></a><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<a id="__codelineno-46-6" name="__codelineno-46-6" href="#__codelineno-46-6"></a><span class="w">    </span><span class="nt">nginx.ingress.kubernetes.io/service-upstream</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<a id="__codelineno-46-7" name="__codelineno-46-7" href="#__codelineno-46-7"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<a id="__codelineno-46-8" name="__codelineno-46-8" href="#__codelineno-46-8"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-46-9" name="__codelineno-46-9" href="#__codelineno-46-9"></a><span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span>
+<a id="__codelineno-46-10" name="__codelineno-46-10" href="#__codelineno-46-10"></a><span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<a id="__codelineno-46-11" name="__codelineno-46-11" href="#__codelineno-46-11"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">www.example.com</span>
+<a id="__codelineno-46-12" name="__codelineno-46-12" href="#__codelineno-46-12"></a><span class="w">    </span><span class="nt">http</span><span class="p">:</span>
+<a id="__codelineno-46-13" name="__codelineno-46-13" href="#__codelineno-46-13"></a><span class="w">      </span><span class="nt">paths</span><span class="p">:</span>
+<a id="__codelineno-46-14" name="__codelineno-46-14" href="#__codelineno-46-14"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">backend</span><span class="p">:</span>
+<a id="__codelineno-46-15" name="__codelineno-46-15" href="#__codelineno-46-15"></a><span class="w">          </span><span class="nt">service</span><span class="p">:</span>
+<a id="__codelineno-46-16" name="__codelineno-46-16" href="#__codelineno-46-16"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">secondapp</span>
+<a id="__codelineno-46-17" name="__codelineno-46-17" href="#__codelineno-46-17"></a><span class="w">            </span><span class="nt">port</span><span class="p">:</span>
+<a id="__codelineno-46-18" name="__codelineno-46-18" href="#__codelineno-46-18"></a><span class="w">              </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+<a id="__codelineno-46-19" name="__codelineno-46-19" href="#__codelineno-46-19"></a><span class="w">        </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<a id="__codelineno-46-20" name="__codelineno-46-20" href="#__codelineno-46-20"></a><span class="w">        </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ImplementationSpecific</span>
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Old ingress file</p>
@@ -965,38 +973,41 @@
 </li>
 <li>
 <p>Copy and apply the ingress rule.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>~/lfd459/ch07-exposing-apps/ingress.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>~/lfd459/ch07-exposing-apps/ingress.yaml
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>ingress.networking.k8s.io/ingress-test created
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>ingress.networking.k8s.io/ingress-test created
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>ingress
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>ingress
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>NAME           CLASS   HOSTS             ADDRESS   PORTS   AGE
-<a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a>ingress-test   nginx   www.example.com             80      5s
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>NAME           CLASS   HOSTS             ADDRESS   PORTS   AGE
+<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a>ingress-test   nginx   www.example.com             80      5s
 </code></pre></div>
 </li>
 <li>
 <p>Test the ingress. Without the correct <code>Host</code> header you get a 404. With the header, nginx responds.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="c1"># Get the ingress controller pod IP on the controller node</span>
-<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="nv">INGRESS_IP</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-o<span class="w"> </span>wide<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a>grep<span class="w"> </span>myingress<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>controller<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;NR==1{print $6}&#39;</span><span class="k">)</span>
-<a id="__codelineno-50-4" name="__codelineno-50-4" href="#__codelineno-50-4"></a><span class="nb">echo</span><span class="w"> </span><span class="nv">$INGRESS_IP</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a># Get the ingress controller pod IP on the controller node
+<a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a>INGRESS_IP=$(kubectl get pods -o wide | \
+<a id="__codelineno-51-3" name="__codelineno-51-3" href="#__codelineno-51-3"></a>grep myingress | grep controller | awk &#39;NR==1{print $6}&#39;)
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="c1"># Without Host header - 404 (ingress has no default backend)</span>
-<a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a>curl<span class="w"> </span><span class="nv">$INGRESS_IP</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="nb">echo</span><span class="w"> </span><span class="nv">$INGRESS_IP</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>&lt;html&gt;&lt;head&gt;&lt;title&gt;404 Not Found&lt;/title&gt;&lt;/head&gt;...&lt;/html&gt;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a># Without Host header - 404 (ingress has no default backend)
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a><span class="c1"># With matching Host header - nginx welcome page</span>
-<a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: www.example.com&quot;</span><span class="w"> </span>http://<span class="nv">$INGRESS_IP</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>curl<span class="w"> </span><span class="nv">$INGRESS_IP</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>&lt;!DOCTYPE html&gt;
-<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a>&lt;html&gt;&lt;head&gt;&lt;title&gt;Welcome to nginx!&lt;/title&gt;...
+<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>&lt;html&gt;&lt;head&gt;&lt;title&gt;404 Not Found&lt;/title&gt;&lt;/head&gt;...&lt;/html&gt;
+<a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a>
+<a id="__codelineno-55-3" name="__codelineno-55-3" href="#__codelineno-55-3"></a># With matching Host header - nginx welcome page
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: www.example.com&quot;</span><span class="w"> </span>http://<span class="nv">$INGRESS_IP</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>&lt;!DOCTYPE html&gt;
+<a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a>&lt;html&gt;&lt;head&gt;&lt;title&gt;Welcome to nginx!&lt;/title&gt;...
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Using ClusterIP instead</p>
 <p>You can also use the ingress controller's ClusterIP with the Host header:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: www.example.com&quot;</span><span class="w"> </span>http://10.104.227.79
+<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: www.example.com&quot;</span><span class="w"> </span>http://10.104.227.79
 </code></pre></div></p>
 </div>
 </li>
@@ -1005,69 +1016,74 @@
 <ol>
 <li>
 <p>Deploy a third web server and customise its default page.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>deployment<span class="w"> </span>thirdpage<span class="w"> </span>--image<span class="o">=</span>nginx
-<a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a>kubectl<span class="w"> </span>expose<span class="w"> </span>deployment<span class="w"> </span>thirdpage<span class="w"> </span>--port<span class="o">=</span><span class="m">80</span><span class="w"> </span>--type<span class="o">=</span>NodePort
+<p><code>bash</code></p>
+<div class="highlight"><pre><span></span><code>```bash
 </code></pre></div>
+<p>kubectl create deployment thirdpage --image=nginx
+kubectl expose deployment thirdpage --port=80 --type=NodePort
+    ```</p>
 </li>
 <li>
 <p>Label the pod so it can be targeted (use Tab completion for the pod name).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>kubectl<span class="w"> </span>label<span class="w"> </span>pod<span class="w"> </span>thirdpage-&lt;Tab&gt;<span class="w"> </span><span class="nv">example</span><span class="o">=</span>third
+<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a>kubectl<span class="w"> </span>label<span class="w"> </span>pod<span class="w"> </span>thirdpage-&lt;Tab&gt;<span class="w"> </span><span class="nv">example</span><span class="o">=</span>third
 </code></pre></div>
 </li>
 <li>
 <p>Exec into the pod and edit the nginx default page to say "Third Page".</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>thirdpage-&lt;Tab&gt;<span class="w"> </span>--<span class="w"> </span>/bin/bash
+<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>thirdpage-&lt;Tab&gt;<span class="w"> </span>--<span class="w"> </span>/bin/bash
 </code></pre></div>
 <p>Inside:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a>root@thirdpage:/#<span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span>-qq<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>vim<span class="w"> </span>-y<span class="w"> </span>-qq
-<a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a>root@thirdpage:/#<span class="w"> </span>vim<span class="w"> </span>/usr/share/nginx/html/index.html
+<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a>root@thirdpage:/#<span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span>-qq<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>vim<span class="w"> </span>-y<span class="w"> </span>-qq
+<a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a>root@thirdpage:/#<span class="w"> </span>vim<span class="w"> </span>/usr/share/nginx/html/index.html
 </code></pre></div>
 <p>Change <code>&lt;title&gt;Welcome to nginx!&lt;/title&gt;</code> to <code>&lt;title&gt;Third Page&lt;/title&gt;</code>, then exit.</p>
 </li>
 <li>
 <p>Edit the ingress resource to add a second host rule for <code>thirdpage.org</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a>kubectl<span class="w"> </span>edit<span class="w"> </span>ingress<span class="w"> </span>ingress-test
+<div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a>kubectl<span class="w"> </span>edit<span class="w"> </span>ingress<span class="w"> </span>ingress-test
 </code></pre></div>
 <p>Add a second rule block under <code>spec.rules</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a><span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
-<a id="__codelineno-61-3" name="__codelineno-61-3" href="#__codelineno-61-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">thirdpage.org</span>
-<a id="__codelineno-61-4" name="__codelineno-61-4" href="#__codelineno-61-4"></a><span class="w">    </span><span class="nt">http</span><span class="p">:</span>
-<a id="__codelineno-61-5" name="__codelineno-61-5" href="#__codelineno-61-5"></a><span class="w">      </span><span class="nt">paths</span><span class="p">:</span>
-<a id="__codelineno-61-6" name="__codelineno-61-6" href="#__codelineno-61-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">backend</span><span class="p">:</span>
-<a id="__codelineno-61-7" name="__codelineno-61-7" href="#__codelineno-61-7"></a><span class="w">          </span><span class="nt">service</span><span class="p">:</span>
-<a id="__codelineno-61-8" name="__codelineno-61-8" href="#__codelineno-61-8"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">thirdpage</span>
-<a id="__codelineno-61-9" name="__codelineno-61-9" href="#__codelineno-61-9"></a><span class="w">            </span><span class="nt">port</span><span class="p">:</span>
-<a id="__codelineno-61-10" name="__codelineno-61-10" href="#__codelineno-61-10"></a><span class="w">              </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
-<a id="__codelineno-61-11" name="__codelineno-61-11" href="#__codelineno-61-11"></a><span class="w">        </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
-<a id="__codelineno-61-12" name="__codelineno-61-12" href="#__codelineno-61-12"></a><span class="w">        </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ImplementationSpecific</span>
-<a id="__codelineno-61-13" name="__codelineno-61-13" href="#__codelineno-61-13"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">www.example.com</span>
-<a id="__codelineno-61-14" name="__codelineno-61-14" href="#__codelineno-61-14"></a><span class="w">    </span><span class="nt">http</span><span class="p">:</span>
-<a id="__codelineno-61-15" name="__codelineno-61-15" href="#__codelineno-61-15"></a><span class="w">      </span><span class="nt">paths</span><span class="p">:</span>
-<a id="__codelineno-61-16" name="__codelineno-61-16" href="#__codelineno-61-16"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">backend</span><span class="p">:</span>
-<a id="__codelineno-61-17" name="__codelineno-61-17" href="#__codelineno-61-17"></a><span class="w">          </span><span class="nt">service</span><span class="p">:</span>
-<a id="__codelineno-61-18" name="__codelineno-61-18" href="#__codelineno-61-18"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">secondapp</span>
-<a id="__codelineno-61-19" name="__codelineno-61-19" href="#__codelineno-61-19"></a><span class="w">            </span><span class="nt">port</span><span class="p">:</span>
-<a id="__codelineno-61-20" name="__codelineno-61-20" href="#__codelineno-61-20"></a><span class="w">              </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
-<a id="__codelineno-61-21" name="__codelineno-61-21" href="#__codelineno-61-21"></a><span class="w">        </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
-<a id="__codelineno-61-22" name="__codelineno-61-22" href="#__codelineno-61-22"></a><span class="w">        </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ImplementationSpecific</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a><span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<a id="__codelineno-63-3" name="__codelineno-63-3" href="#__codelineno-63-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">thirdpage.org</span>
+<a id="__codelineno-63-4" name="__codelineno-63-4" href="#__codelineno-63-4"></a><span class="w">    </span><span class="nt">http</span><span class="p">:</span>
+<a id="__codelineno-63-5" name="__codelineno-63-5" href="#__codelineno-63-5"></a><span class="w">      </span><span class="nt">paths</span><span class="p">:</span>
+<a id="__codelineno-63-6" name="__codelineno-63-6" href="#__codelineno-63-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">backend</span><span class="p">:</span>
+<a id="__codelineno-63-7" name="__codelineno-63-7" href="#__codelineno-63-7"></a><span class="w">          </span><span class="nt">service</span><span class="p">:</span>
+<a id="__codelineno-63-8" name="__codelineno-63-8" href="#__codelineno-63-8"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">thirdpage</span>
+<a id="__codelineno-63-9" name="__codelineno-63-9" href="#__codelineno-63-9"></a><span class="w">            </span><span class="nt">port</span><span class="p">:</span>
+<a id="__codelineno-63-10" name="__codelineno-63-10" href="#__codelineno-63-10"></a><span class="w">              </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+<a id="__codelineno-63-11" name="__codelineno-63-11" href="#__codelineno-63-11"></a><span class="w">        </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<a id="__codelineno-63-12" name="__codelineno-63-12" href="#__codelineno-63-12"></a><span class="w">        </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ImplementationSpecific</span>
+<a id="__codelineno-63-13" name="__codelineno-63-13" href="#__codelineno-63-13"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">www.example.com</span>
+<a id="__codelineno-63-14" name="__codelineno-63-14" href="#__codelineno-63-14"></a><span class="w">    </span><span class="nt">http</span><span class="p">:</span>
+<a id="__codelineno-63-15" name="__codelineno-63-15" href="#__codelineno-63-15"></a><span class="w">      </span><span class="nt">paths</span><span class="p">:</span>
+<a id="__codelineno-63-16" name="__codelineno-63-16" href="#__codelineno-63-16"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">backend</span><span class="p">:</span>
+<a id="__codelineno-63-17" name="__codelineno-63-17" href="#__codelineno-63-17"></a><span class="w">          </span><span class="nt">service</span><span class="p">:</span>
+<a id="__codelineno-63-18" name="__codelineno-63-18" href="#__codelineno-63-18"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">secondapp</span>
+<a id="__codelineno-63-19" name="__codelineno-63-19" href="#__codelineno-63-19"></a><span class="w">            </span><span class="nt">port</span><span class="p">:</span>
+<a id="__codelineno-63-20" name="__codelineno-63-20" href="#__codelineno-63-20"></a><span class="w">              </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+<a id="__codelineno-63-21" name="__codelineno-63-21" href="#__codelineno-63-21"></a><span class="w">        </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<a id="__codelineno-63-22" name="__codelineno-63-22" href="#__codelineno-63-22"></a><span class="w">        </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ImplementationSpecific</span>
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>The <code>ingress-after.yaml</code> reference file in <code>~/lfd459/ch07-exposing-apps/</code> shows the final ingress YAML with both rules.</p>
+<p>Pre-built version available: <code>kubectl replace -f ingress-v2.yaml</code></p>
 </div>
 </li>
 <li>
 <p>Test both virtual hosts.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a><span class="c1"># Should show &quot;Third Page&quot;</span>
-<a id="__codelineno-62-2" name="__codelineno-62-2" href="#__codelineno-62-2"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: thirdpage.org&quot;</span><span class="w"> </span>http://<span class="nv">$INGRESS_IP</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a><span class="c1"># Should show &quot;Third Page&quot;</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a>&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;Third Page&lt;/title&gt;...
+<div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: thirdpage.org&quot;</span><span class="w"> </span>http://<span class="nv">$INGRESS_IP</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a><span class="c1"># Should still show nginx default</span>
-<a id="__codelineno-64-2" name="__codelineno-64-2" href="#__codelineno-64-2"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: www.example.com&quot;</span><span class="w"> </span>http://<span class="nv">$INGRESS_IP</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a>&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;Third Page&lt;/title&gt;...
+<a id="__codelineno-66-2" name="__codelineno-66-2" href="#__codelineno-66-2"></a>
+<a id="__codelineno-66-3" name="__codelineno-66-3" href="#__codelineno-66-3"></a># Should still show nginx default
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a>&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;Welcome to nginx!&lt;/title&gt;...
+<div class="highlight"><pre><span></span><code><a id="__codelineno-67-1" name="__codelineno-67-1" href="#__codelineno-67-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: www.example.com&quot;</span><span class="w"> </span>http://<span class="nv">$INGRESS_IP</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-68-1" name="__codelineno-68-1" href="#__codelineno-68-1"></a>&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;Welcome to nginx!&lt;/title&gt;...
 </code></pre></div>
 </li>
 <li>
@@ -1113,9 +1129,9 @@
 <li>Install and configure an ingress controller so that requests for <code>webone.com</code> show the nginx default page and requests for <code>webtwo.org</code> show the <code>wlniao/website</code> default page.</li>
 <li>
 <p>Clean up all resources created in this review.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>webone<span class="w"> </span>webtwo<span class="w"> </span>--ignore-not-found
-<a id="__codelineno-66-2" name="__codelineno-66-2" href="#__codelineno-66-2"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>svc<span class="w"> </span>webone-svc<span class="w"> </span>webtwo-svc<span class="w"> </span>--ignore-not-found
-<a id="__codelineno-66-3" name="__codelineno-66-3" href="#__codelineno-66-3"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>ingress<span class="w"> </span>--all<span class="w"> </span>--ignore-not-found
+<div class="highlight"><pre><span></span><code><a id="__codelineno-69-1" name="__codelineno-69-1" href="#__codelineno-69-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>webone<span class="w"> </span>webtwo<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-69-2" name="__codelineno-69-2" href="#__codelineno-69-2"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>svc<span class="w"> </span>webone-svc<span class="w"> </span>webtwo-svc<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-69-3" name="__codelineno-69-3" href="#__codelineno-69-3"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>ingress<span class="w"> </span>--all<span class="w"> </span>--ignore-not-found
 </code></pre></div>
 </li>
 </ul>

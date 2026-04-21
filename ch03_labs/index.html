@@ -619,12 +619,12 @@
 <li>
 <p>Make the script executable and run it briefly to verify it works. Use <strong>Ctrl-C</strong> to stop it after 15-20 seconds.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>chmod<span class="w"> </span>+x<span class="w"> </span>simple.py
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>./simple.py
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>^CTraceback (most recent call last):
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  File &quot;./simple.py&quot;, line 24, in &lt;module&gt;
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    time.sleep(5)
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>KeyboardInterrupt
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>./simple.py
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>^CTraceback (most recent call last):
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  File &quot;./simple.py&quot;, line 24, in &lt;module&gt;
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    time.sleep(5)
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>KeyboardInterrupt
 </code></pre></div>
 </li>
 <li>
@@ -711,8 +711,8 @@
 <p>Rather than pushing to Docker Hub, we will deploy a private registry inside the cluster and make it available to all nodes.</p>
 <ol>
 <li>
-<p>Return to the home directory and create the local registry using the provided YAML.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>
+<p>Return to the chapter directory and create the local registry using the provided YAML.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nb">cd</span><span class="w"> </span>~/lfd459/ch03-build
 <a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>easyregistry.yaml
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>service/nginx created
@@ -778,9 +778,9 @@
 <li>
 <p>Connect to <strong>worker1</strong> in a separate terminal. Install Podman and configure the local registry on the worker node the same way.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>podman
-<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>cp<span class="w"> </span>~/lfd459/ch03-build/local-repo-setup.sh<span class="w"> </span>.
-<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>chmod<span class="w"> </span>+x<span class="w"> </span>local-repo-setup.sh
-<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>.<span class="w"> </span>./local-repo-setup.sh
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>scp<span class="w"> </span>guru@controller:~/lfd459/ch03-build/local-repo-setup.sh<span class="w"> </span>~/
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>chmod<span class="w"> </span>+x<span class="w"> </span>~/local-repo-setup.sh
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>.<span class="w"> </span>~/local-repo-setup.sh
 </code></pre></div>
 <p>Verify the worker can pull from the registry.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>sudo<span class="w"> </span>podman<span class="w"> </span>pull<span class="w"> </span><span class="nv">$repo</span>/tagtest
@@ -1066,8 +1066,11 @@
 <li>Deploy a new nginx webserver. Add both a <code>livenessProbe</code> and a <code>readinessProbe</code> on port 80. Test that both probes and the webserver are working.</li>
 <li>
 <p>Use <code>build-review1.yaml</code> to create a broken deployment. Fix it so both containers are running and in a <code>READY</code> state.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-87-1" name="__codelineno-87-1" href="#__codelineno-87-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>~/build-review1.yaml
+<p><code>bash</code></p>
+<div class="highlight"><pre><span></span><code>```bash
 </code></pre></div>
+<p>kubectl create -f build-review1.yaml
+    ```</p>
 <div class="admonition hint">
 <p class="admonition-title">Hint</p>
 <p>The web server (<code>nginx</code>) listens on port 80. The proxy (<code>goproxy</code>) listens on port 8080. Examine the probe configurations carefully - one of the port numbers is wrong.</p>
@@ -1075,7 +1078,11 @@
 </li>
 <li>
 <p>Once fixed, access the default nginx page and verify the GET request appears in the container log.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-88-1" name="__codelineno-88-1" href="#__codelineno-88-1"></a>curl<span class="w"> </span>http://&lt;pod-ip&gt;
+<p>Get the pod IP:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-87-1" name="__codelineno-87-1" href="#__codelineno-87-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>break2<span class="w"> </span>-o<span class="w"> </span>wide
+</code></pre></div>
+<p>Then curl the pod IP and check the log:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-88-1" name="__codelineno-88-1" href="#__codelineno-88-1"></a>curl<span class="w"> </span>http://&lt;pod-ip<span class="w"> </span>from<span class="w"> </span>above&gt;
 <a id="__codelineno-88-2" name="__codelineno-88-2" href="#__codelineno-88-2"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-c<span class="w"> </span>brokenapp
 </code></pre></div>
 <p>You should see a line like:</p>

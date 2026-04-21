@@ -757,6 +757,10 @@
 <a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span><span class="nt">completions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w">        </span><span class="c1"># &lt;-- add this line</span>
 <a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
 </code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you prefer not to edit manually, use the pre-built version: <code>kubectl create -f job-v2.yaml</code></p>
+</div>
 </li>
 <li>
 <p>Create the job again and watch the completions count up.</p>
@@ -786,6 +790,10 @@
 <a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">  </span><span class="nt">parallelism</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w">        </span><span class="c1"># &lt;-- add this line</span>
 <a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
 </code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Pre-built version available: <code>kubectl create -f job-v3.yaml</code></p>
+</div>
 </li>
 <li>
 <p>Create the job and verify two pods run simultaneously.</p>
@@ -808,6 +816,10 @@
 <a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="w">  </span><span class="nt">activeDeadlineSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span><span class="w">   </span><span class="c1"># &lt;-- add this line</span>
 <a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
 </code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Pre-built version available: <code>kubectl create -f job-v4.yaml</code></p>
+</div>
 </li>
 <li>
 <p>Delete and recreate the job. It will stop after 15 seconds regardless of how many completions remain.</p>
@@ -919,19 +931,22 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>cronjobs.batch<span class="w"> </span>sleepy
 <a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>cronjob.yaml
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a># After ~2 minutes:
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Pre-built version available: <code>kubectl create -f cronjob-v2.yaml</code></p>
+</div>
+<p>Wait ~2 minutes, then check:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span><span class="nb">jobs</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span><span class="nb">jobs</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>NAME                COMPLETIONS   DURATION   AGE
-<a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a>sleepy-1539723240   0/1           61s        61s
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>NAME                COMPLETIONS   DURATION   AGE
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a>sleepy-1539723240   0/1           61s        61s
 </code></pre></div>
 </li>
 <li>
 <p>Delete the CronJob and all its associated jobs.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>cronjobs.batch<span class="w"> </span>sleepy
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>cronjobs.batch<span class="w"> </span>sleepy
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>cronjob.batch &quot;sleepy&quot; deleted
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>cronjob.batch &quot;sleepy&quot; deleted
 </code></pre></div>
 </li>
 </ol>
@@ -940,72 +955,72 @@
 <p>Labels are key-value pairs attached to objects. Selectors use them to filter and manage groups of objects.</p>
 <ol>
 <li>
-<p>Copy the chapter files to your home directory if not already done, then create a new <code>design2</code> deployment.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>deployment<span class="w"> </span>design2<span class="w"> </span>--image<span class="o">=</span>nginx
+<p>Create a new <code>design2</code> deployment.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>deployment<span class="w"> </span>design2<span class="w"> </span>--image<span class="o">=</span>nginx
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>deployment.apps/design2 created
+<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>deployment.apps/design2 created
 </code></pre></div>
 </li>
 <li>
 <p>View the deployment with <code>-o wide</code> and note the <code>SELECTOR</code> column.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deployments.apps<span class="w"> </span>design2<span class="w"> </span>-o<span class="w"> </span>wide
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deployments.apps<span class="w"> </span>design2<span class="w"> </span>-o<span class="w"> </span>wide
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>NAME      READY   UP-TO-DATE   AVAILABLE   ...   SELECTOR
-<a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a>design2   1/1     1            1           ...   app=design2
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>NAME      READY   UP-TO-DATE   AVAILABLE   ...   SELECTOR
+<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a>design2   1/1     1            1           ...   app=design2
 </code></pre></div>
 </li>
 <li>
 <p>Use the <code>-l</code> option to list only pods matching the deployment selector.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>design2<span class="w"> </span>pod
+<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>design2<span class="w"> </span>pod
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>NAME                       READY   STATUS    RESTARTS   AGE
-<a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a>design2-766d48574f-5w274   1/1     Running   0          3m
+<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>NAME                       READY   STATUS    RESTARTS   AGE
+<a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a>design2-766d48574f-5w274   1/1     Running   0          3m
 </code></pre></div>
 </li>
 <li>
 <p>View the pod labels in full YAML output using <code>--selector</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>--selector<span class="w"> </span><span class="nv">app</span><span class="o">=</span>design2<span class="w"> </span>pod<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A4<span class="w"> </span><span class="s2">&quot;labels:&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>--selector<span class="w"> </span><span class="nv">app</span><span class="o">=</span>design2<span class="w"> </span>pod<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A4<span class="w"> </span><span class="s2">&quot;labels:&quot;</span>
 </code></pre></div>
 <p>You should see both <code>app: design2</code> and <code>pod-template-hash</code> labels.</p>
 </li>
 <li>
 <p>Edit the pod's <code>app</code> label and change it to your favourite colour (e.g. <code>orange</code>).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a>kubectl<span class="w"> </span>edit<span class="w"> </span>pod<span class="w"> </span>design2-766d48574f-5w274
+<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>kubectl<span class="w"> </span>edit<span class="w"> </span>pod<span class="w"> </span>design2-766d48574f-5w274
 </code></pre></div>
 <p>Find and change:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a><span class="nt">labels</span><span class="p">:</span>
-<a id="__codelineno-60-2" name="__codelineno-60-2" href="#__codelineno-60-2"></a><span class="w">  </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orange</span><span class="w">    </span><span class="c1"># &lt;-- change from design2</span>
-<a id="__codelineno-60-3" name="__codelineno-60-3" href="#__codelineno-60-3"></a><span class="w">  </span><span class="nt">pod-template-hash</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">766d48574f</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a><span class="nt">labels</span><span class="p">:</span>
+<a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a><span class="w">  </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orange</span><span class="w">    </span><span class="c1"># &lt;-- change from design2</span>
+<a id="__codelineno-59-3" name="__codelineno-59-3" href="#__codelineno-59-3"></a><span class="w">  </span><span class="nt">pod-template-hash</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">766d48574f</span>
 </code></pre></div>
 </li>
 <li>
 <p>Immediately check how many pods the deployment now manages.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>design2
+<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>design2
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a>design2-766d48574f-5w274   1/1   Running   0   82s
-<a id="__codelineno-62-2" name="__codelineno-62-2" href="#__codelineno-62-2"></a>design2-766d48574f-xttgg   1/1   Running   0   2m12s
+<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a>design2-766d48574f-5w274   1/1   Running   0   82s
+<a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a>design2-766d48574f-xttgg   1/1   Running   0   2m12s
 </code></pre></div>
 <p>There are now <strong>two</strong> pods. The deployment noticed the edited pod no longer matched its selector (<code>app=design2</code>) and created a replacement. The edited pod is now orphaned - no controller manages it.</p>
 </li>
 <li>
 <p>Delete the deployment.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deploy<span class="w"> </span>design2
+<div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deploy<span class="w"> </span>design2
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a>deployment.apps &quot;design2&quot; deleted
+<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a>deployment.apps &quot;design2&quot; deleted
 </code></pre></div>
 </li>
 <li>
 <p>Check for remaining pods. The orphaned pod (with the colour label) still exists - the deployment deletion only removed pods it was managing.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>design2
+<div class="highlight"><pre><span></span><code><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>design2
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a>design2-766d48574f-5w274   1/1   Running   0   38m
+<div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a>design2-766d48574f-5w274   1/1   Running   0   38m
 </code></pre></div>
 </li>
 <li>
 <p>Delete the orphaned pod using the colour label you assigned.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-67-1" name="__codelineno-67-1" href="#__codelineno-67-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>orange
+<div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>orange
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-68-1" name="__codelineno-68-1" href="#__codelineno-68-1"></a>pod &quot;design2-766d48574f-5w274&quot; deleted
+<div class="highlight"><pre><span></span><code><a id="__codelineno-67-1" name="__codelineno-67-1" href="#__codelineno-67-1"></a>pod &quot;design2-766d48574f-5w274&quot; deleted
 </code></pre></div>
 </li>
 </ol>
@@ -1015,14 +1030,16 @@
 <ol>
 <li>
 <p>Review and create the <code>stress.yaml</code> deployment. It runs the <code>vish/stress</code> image which deliberately consumes CPU and memory.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-69-1" name="__codelineno-69-1" href="#__codelineno-69-1"></a>cat<span class="w"> </span>stress.yaml
-<a id="__codelineno-69-2" name="__codelineno-69-2" href="#__codelineno-69-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>stress.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-68-1" name="__codelineno-68-1" href="#__codelineno-68-1"></a>cat<span class="w"> </span>stress.yaml
+<a id="__codelineno-68-2" name="__codelineno-68-2" href="#__codelineno-68-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>stress.yaml
 </code></pre></div>
 </li>
 <li>
-<p>On the controller and on <strong>worker1</strong>, run <code>top</code> to see the stress process consuming CPU. Use <code>q</code> to exit.</p>
+<p>On the <strong>controller</strong>, run <code>top</code> to see the stress process consuming CPU. Use <code>q</code> to exit.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-69-1" name="__codelineno-69-1" href="#__codelineno-69-1"></a>top
+</code></pre></div>
+<p>Then open a separate terminal on <strong>worker1</strong> and run the same:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-70-1" name="__codelineno-70-1" href="#__codelineno-70-1"></a>top
-<a id="__codelineno-70-2" name="__codelineno-70-2" href="#__codelineno-70-2"></a>top
 </code></pre></div>
 </li>
 <li>
@@ -1049,7 +1066,7 @@
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>The <code>edited-stress.yaml</code> file already has these resources added - use it as a reference.</p>
+<p>Pre-built version available: <code>kubectl create -f stress-v2.yaml</code></p>
 </div>
 </li>
 <li>
@@ -1083,6 +1100,10 @@
 <a id="__codelineno-76-11" name="__codelineno-76-11" href="#__codelineno-76-11"></a><span class="w">      </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0.5&quot;</span>
 <a id="__codelineno-76-12" name="__codelineno-76-12" href="#__codelineno-76-12"></a><span class="w">      </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;500Mi&quot;</span>
 </code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Pre-built version available: <code>kubectl create -f stress-v3.yaml</code></p>
+</div>
 </li>
 <li>
 <p>Create the deployment and verify the pod runs on <code>worker1</code> without OOMKilling.</p>
@@ -1151,6 +1172,10 @@
 <p>Change:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-87-1" name="__codelineno-87-1" href="#__codelineno-87-1"></a><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">/bin/true</span><span class="p p-Indicator">]</span>
 </code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Pre-built version available: <code>kubectl create -f init-tester-v2.yaml</code></p>
+</div>
 </li>
 <li>
 <p>Create the pod again and verify the nginx webservice container starts once the initContainer succeeds.</p>

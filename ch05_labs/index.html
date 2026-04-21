@@ -597,8 +597,8 @@
 <p>You should see keys: <code>black</code>, <code>cyan</code>, <code>favorite</code>, <code>magenta</code>, <code>text</code>, <code>yellow</code>.</p>
 </li>
 <li>
-<p>Edit <code>~/app1/simpleapp.yaml</code> to add a single environment variable <code>ilike</code> sourced from the <code>colors</code> ConfigMap. Add the <code>env:</code> block inside the <code>simpleapp</code> container spec, after <code>imagePullPolicy</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>vim<span class="w"> </span>~/app1/simpleapp.yaml
+<p>Edit <code>simpleapp.yaml</code> (located at <code>~/lfd459/ch03-build/app1/simpleapp.yaml</code>) to add a single environment variable <code>ilike</code> sourced from the <code>colors</code> ConfigMap. Add the <code>env:</code> block inside the <code>simpleapp</code> container spec, after <code>imagePullPolicy</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>vim<span class="w"> </span>~/lfd459/ch03-build/app1/simpleapp.yaml
 </code></pre></div>
 <p>Find the simpleapp container section and add:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.97.40.62:5000/simpleapp</span>
@@ -615,105 +615,104 @@
 <li>
 <p>Delete and recreate the deployment.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>~/app1/simpleapp.yaml
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>~/lfd459/ch03-build/app1/simpleapp.yaml
 </code></pre></div>
 </li>
 <li>
 <p>Verify the <code>ilike</code> environment variable is set inside the container.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-c<span class="w"> </span>simpleapp<span class="w"> </span>-it<span class="w"> </span>&lt;try1-pod-name&gt;<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>--<span class="w"> </span>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;echo $ilike&#39;</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>blue
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-c<span class="w"> </span>simpleapp<span class="w"> </span>-it<span class="w"> </span>&lt;try1-pod-name&gt;<span class="w"> </span>--<span class="w"> </span>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;echo $ilike&#39;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>blue
 </code></pre></div>
 </li>
 <li>
 <p>Edit <code>simpleapp.yaml</code> again to add <code>envFrom</code> so <strong>all</strong> keys from the <code>colors</code> ConfigMap are injected as environment variables.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>vim<span class="w"> </span>~/app1/simpleapp.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>vim<span class="w"> </span>~/lfd459/ch03-build/app1/simpleapp.yaml
 </code></pre></div>
 <p>Add after <code>key: favorite</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="w">      </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">favorite</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w"> </span><span class="w w-Error"> </span><span class="nt">envFrom</span><span class="p">:</span>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">configMapRef</span><span class="p">:</span>
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">colors</span>
-<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">  </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Always</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="w">      </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">favorite</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w"> </span><span class="w w-Error"> </span><span class="nt">envFrom</span><span class="p">:</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">configMapRef</span><span class="p">:</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">colors</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">  </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Always</span>
 </code></pre></div>
 </li>
 <li>
 <p>Delete, recreate, and verify all color keys are visible as environment variables.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>~/app1/simpleapp.yaml
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;try1-pod-name&gt;<span class="w"> </span>--<span class="w"> </span>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;env&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;ilike|cyan|magenta|yellow|black|text&#39;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>~/lfd459/ch03-build/app1/simpleapp.yaml
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;try1-pod-name&gt;<span class="w"> </span>--<span class="w"> </span>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;env&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;ilike|cyan|magenta|yellow|black|text&#39;</span>
 </code></pre></div>
 </li>
 <li>
 <p>Create the <code>fast-car</code> ConfigMap from the provided YAML file.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>car-map.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>car-map.yaml
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>configmap/fast-car created
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>configmap/fast-car created
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>configmap<span class="w"> </span>fast-car<span class="w"> </span>-o<span class="w"> </span>yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>configmap<span class="w"> </span>fast-car<span class="w"> </span>-o<span class="w"> </span>yaml
 </code></pre></div>
 </li>
 <li>
 <p>Edit <code>simpleapp.yaml</code> to mount the <code>fast-car</code> ConfigMap as a volume at <code>/etc/cars</code> inside the <code>simpleapp</code> container.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>vim<span class="w"> </span>~/app1/simpleapp.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>vim<span class="w"> </span>~/lfd459/ch03-build/app1/simpleapp.yaml
 </code></pre></div>
 <p>In the <code>simpleapp</code> container spec, add before <code>env:</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="w">    </span><span class="nt">volumeMounts</span><span class="p">:</span>
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/cars</span>
-<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">car-vol</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="w">    </span><span class="nt">volumeMounts</span><span class="p">:</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/cars</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">car-vol</span>
 </code></pre></div>
 <p>At the end of the pod <code>spec</code> (after all containers, before <code>status:</code>), add:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="w">  </span><span class="nt">volumes</span><span class="p">:</span>
-<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">car-vol</span>
-<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">    </span><span class="nt">configMap</span><span class="p">:</span>
-<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">      </span><span class="nt">defaultMode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">420</span>
-<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fast-car</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="w">  </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">car-vol</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">    </span><span class="nt">configMap</span><span class="p">:</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">      </span><span class="nt">defaultMode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">420</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fast-car</span>
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>The <code>simpleapp.yaml-with-edits</code> file in your home directory shows the complete final state of this file after all edits in this chapter. Use it as a reference if needed.</p>
+<p>Pre-built versions are available: <code>simpleapp-v2.yaml</code> through <code>simpleapp-v6.yaml</code> in <code>~/lfd459/ch05-deployment-config/</code>. Each version corresponds to the state of <code>simpleapp.yaml</code> after each major edit in this chapter.</p>
 </div>
 </li>
 <li>
 <p>Delete and recreate the deployment.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>~/app1/simpleapp.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>~/lfd459/ch03-build/app1/simpleapp.yaml
 </code></pre></div>
 </li>
 <li>
 <p>The deployment will show <code>0/6</code> ready because the <code>readinessProbe</code> is still checking for <code>/tmp/healthy</code>. Update the probe to check for <code>/etc/cars</code> instead.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1
-<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>vim<span class="w"> </span>~/app1/simpleapp.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>vim<span class="w"> </span>~/lfd459/ch03-build/app1/simpleapp.yaml
 </code></pre></div>
 <p>Change the <code>readinessProbe</code> exec command inside the <code>simpleapp</code> container:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="w">    </span><span class="nt">readinessProbe</span><span class="p">:</span>
-<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">      </span><span class="nt">exec</span><span class="p">:</span>
-<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">        </span><span class="nt">command</span><span class="p">:</span>
-<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ls</span>
-<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/cars</span>
-<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="w">      </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="w">    </span><span class="nt">readinessProbe</span><span class="p">:</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">      </span><span class="nt">exec</span><span class="p">:</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">        </span><span class="nt">command</span><span class="p">:</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ls</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/cars</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="w">      </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>~/app1/simpleapp.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>~/lfd459/ch03-build/app1/simpleapp.yaml
 </code></pre></div>
 </li>
 <li>
 <p>Wait about a minute. All six pods should show <code>2/2 Running</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>NAME                         READY   STATUS    RESTARTS   AGE
-<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>try1-7865dcb948-2dzc8        2/2     Running   0          1m
-<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>try1-7865dcb948-7fkh7        2/2     Running   0          1m
-<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>...
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>NAME                         READY   STATUS    RESTARTS   AGE
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>try1-7865dcb948-2dzc8        2/2     Running   0          1m
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>try1-7865dcb948-7fkh7        2/2     Running   0          1m
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>...
 </code></pre></div>
 </li>
 <li>
 <p>Verify the ConfigMap data is visible inside the container as a file.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-c<span class="w"> </span>simpleapp<span class="w"> </span>-it<span class="w"> </span>&lt;try1-pod-name&gt;<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>--<span class="w"> </span>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;cat /etc/cars/car.trim&#39;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-c<span class="w"> </span>simpleapp<span class="w"> </span>-it<span class="w"> </span>&lt;try1-pod-name&gt;<span class="w"> </span>--<span class="w"> </span>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;cat /etc/cars/car.trim&#39;</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>Shelby
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>Shelby
 </code></pre></div>
 </li>
 </ol>
@@ -723,43 +722,38 @@
 <ol>
 <li>
 <p>Run the <code>CreateNFS.sh</code> script to install and configure NFS on the <strong>controller</strong> node.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>bash<span class="w"> </span>CreateNFS.sh
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>bash<span class="w"> </span>CreateNFS.sh
 </code></pre></div>
 <p>The script installs <code>nfs-kernel-server</code>, creates <code>/opt/sfw/</code>, exports it, and creates <code>/opt/sfw/hello.txt</code>. At the end you should see:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>Should be ready. Test here and second node
-<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>Export list for localhost:
-<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>/opt/sfw *
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>Should be ready. Test here and second node
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>Export list for localhost:
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>/opt/sfw *
 </code></pre></div>
 </li>
 <li>
 <p>Connect to <strong>worker1</strong> and verify the NFS export is visible from the worker.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>nfs-common<span class="w"> </span>nfs-kernel-server
-<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>showmount<span class="w"> </span>-e<span class="w"> </span>controller
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>nfs-common<span class="w"> </span>nfs-kernel-server
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>showmount<span class="w"> </span>-e<span class="w"> </span>controller
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>Export list for controller:
-<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>/opt/sfw *
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>Export list for controller:
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>/opt/sfw *
 </code></pre></div>
 <p>Repeat on <strong>worker2</strong>.</p>
 </li>
 <li>
 <p>Test the mount from worker1.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>sudo<span class="w"> </span>mount<span class="w"> </span>controller:/opt/sfw<span class="w"> </span>/mnt
-<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>ls<span class="w"> </span>-l<span class="w"> </span>/mnt
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>sudo<span class="w"> </span>mount<span class="w"> </span>controller:/opt/sfw<span class="w"> </span>/mnt
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>ls<span class="w"> </span>-l<span class="w"> </span>/mnt
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>total 4
-<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>-rw-r--r-- 1 root root 9 ... hello.txt
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>total 4
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>-rw-r--r-- 1 root root 9 ... hello.txt
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>sudo<span class="w"> </span>umount<span class="w"> </span>/mnt
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>sudo<span class="w"> </span>umount<span class="w"> </span>/mnt
 </code></pre></div>
 </li>
 <li>
-<p>Return to the <strong>controller</strong>. Edit <code>PVol.yaml</code> - the <code>server:</code> field currently says <code>cp</code>, change it to <code>controller</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>vim<span class="w"> </span>PVol.yaml
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="nt">nfs</span><span class="p">:</span>
-<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/opt/sfw</span>
-<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="w">  </span><span class="nt">server</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">controller</span><span class="w">    </span><span class="c1"># &lt;-- change from cp to controller</span>
-<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="w">  </span><span class="nt">readOnly</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<p>Return to the <strong>controller</strong>. Verify <code>PVol.yaml</code> has <code>server: controller</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>cat<span class="w"> </span>PVol.yaml
 </code></pre></div>
 </li>
 <li>
@@ -803,7 +797,7 @@
 </li>
 <li>
 <p>Edit <code>~/app1/simpleapp.yaml</code> to add the NFS volume to the <code>simpleapp</code> container.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>vim<span class="w"> </span>~/app1/simpleapp.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>vim<span class="w"> </span>~/lfd459/ch03-build/app1/simpleapp.yaml
 </code></pre></div>
 <p>In the simpleapp <code>volumeMounts</code> section, add after the <code>car-vol</code> mount:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nfs-vol</span>
@@ -818,7 +812,7 @@
 <li>
 <p>Delete and recreate the deployment.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1
-<a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>~/app1/simpleapp.yaml
+<a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>~/lfd459/ch03-build/app1/simpleapp.yaml
 </code></pre></div>
 </li>
 <li>
@@ -837,8 +831,9 @@
 <p>Now we return to the <code>basicpod</code> from Chapter 2 and fully configure the fluentd logging sidecar using a ConfigMap and a shared PersistentVolume.</p>
 <ol>
 <li>
-<p>Review the current <code>basic.yaml</code> in your home directory.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>cat<span class="w"> </span>basic.yaml
+<p>We will work with a copy of <code>basic.yaml</code> in the chapter directory. Copy it now if not already present.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>cp<span class="w"> </span>~/lfd459/ch02-architecture/basic.yaml<span class="w"> </span>.
+<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a>cat<span class="w"> </span>basic.yaml
 </code></pre></div>
 <p>It should have two containers: <code>webcont</code> (nginx) and <code>fdlogger</code> (fluentd).</p>
 </li>
@@ -875,7 +870,7 @@
 <p>Edit <code>basic.yaml</code> to add the shared volume to both containers.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a>vim<span class="w"> </span>basic.yaml
 </code></pre></div>
-<p>The final file should look like <code>basic.yaml-with-edits</code>:</p>
+<p>The final file should look like <code>basic.yaml-with-edits</code>. A pre-built version is available as <code>basic-v2.yaml</code> in <code>~/lfd459/ch05-deployment-config/</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
 <a id="__codelineno-65-2" name="__codelineno-65-2" href="#__codelineno-65-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span>
 <a id="__codelineno-65-3" name="__codelineno-65-3" href="#__codelineno-65-3"></a><span class="nt">metadata</span><span class="p">:</span>
@@ -950,6 +945,10 @@
 <a id="__codelineno-77-3" name="__codelineno-77-3" href="#__codelineno-77-3"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fluentd-config</span>
 </code></pre></div>
 <p>In the <code>fdlogger</code> container, add <code>env</code> and a second <code>volumeMounts</code> entry:</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Pre-built version available: <code>basic-v3.yaml</code> in <code>~/lfd459/ch05-deployment-config/</code></p>
+</div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-78-1" name="__codelineno-78-1" href="#__codelineno-78-1"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fdlogger</span>
 <a id="__codelineno-78-2" name="__codelineno-78-2" href="#__codelineno-78-2"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fluent/fluentd:v1.16</span>
 <a id="__codelineno-78-3" name="__codelineno-78-3" href="#__codelineno-78-3"></a><span class="w">    </span><span class="nt">env</span><span class="p">:</span>
@@ -988,7 +987,7 @@
 <ol>
 <li>
 <p>Move into the <code>app1</code> directory and add a comment to <code>simple.py</code> to produce a slightly different image.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-83-1" name="__codelineno-83-1" href="#__codelineno-83-1"></a><span class="nb">cd</span><span class="w"> </span>~/app1
+<div class="highlight"><pre><span></span><code><a id="__codelineno-83-1" name="__codelineno-83-1" href="#__codelineno-83-1"></a><span class="nb">cd</span><span class="w"> </span>~/lfd459/ch03-build/app1
 <a id="__codelineno-83-2" name="__codelineno-83-2" href="#__codelineno-83-2"></a>vim<span class="w"> </span>simple.py
 </code></pre></div>
 <p>Add a comment on the last line:</p>

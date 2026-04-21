@@ -744,14 +744,17 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>NAME              ENDPOINTS   AGE
 <a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>nginx-debug-svc   &lt;none&gt;      10s
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>curl<span class="w"> </span><span class="m">10</span>.111.195.30
+<p>Get the ClusterIP first:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>nginx-debug-svc
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>curl: (7) Failed to connect to 10.111.195.30 port 80
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>curl<span class="w"> </span>&lt;CLUSTER-IP&gt;
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>curl: (7) Failed to connect to &lt;CLUSTER-IP&gt; port 80
 </code></pre></div>
 </li>
 <li>
 <p>Review the pod's probes.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>cat<span class="w"> </span>brokenapp.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>cat<span class="w"> </span>brokenapp.yaml
 </code></pre></div>
 <p>Two things are happening:</p>
 <ul>
@@ -761,64 +764,64 @@
 </li>
 <li>
 <p>Try to exec directly into the pod - it will fail because <code>/bin/bash</code> has been removed.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>pod/nginx-debug-pod<span class="w"> </span>--<span class="w"> </span>bash
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>pod/nginx-debug-pod<span class="w"> </span>--<span class="w"> </span>bash
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>error: Internal error occurred: exec: &quot;bash&quot;: executable file not found in $PATH
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>error: Internal error occurred: exec: &quot;bash&quot;: executable file not found in $PATH
 </code></pre></div>
 </li>
 <li>
 <p>Attach an <strong>ephemeral container</strong> using <code>kubectl debug</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>kubectl<span class="w"> </span>debug<span class="w"> </span>pod/nginx-debug-pod<span class="w"> </span>-it<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>--image<span class="o">=</span>busybox<span class="w"> </span>--target<span class="o">=</span>nginx<span class="w"> </span>--<span class="w"> </span>/bin/sh
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>kubectl<span class="w"> </span>debug<span class="w"> </span>pod/nginx-debug-pod<span class="w"> </span>-it<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>--image<span class="o">=</span>busybox<span class="w"> </span>--target<span class="o">=</span>nginx<span class="w"> </span>--<span class="w"> </span>/bin/sh
 </code></pre></div>
 </li>
 <li>
 <p>Inside the debug container, verify nginx is running as PID 1.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a># ps aux
-<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>PID   USER   COMMAND
-<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>1     root   nginx: master process nginx -g daemon off;
-<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>29    root   nginx: worker process
-<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>30    root   sh
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a># ps aux
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>PID   USER   COMMAND
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>1     root   nginx: master process nginx -g daemon off;
+<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>29    root   nginx: worker process
+<a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a>30    root   sh
 </code></pre></div>
 </li>
 <li>
 <p>Confirm you are inside the same pod namespace.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a># hostname
-<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>nginx-debug-pod
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a># hostname
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>nginx-debug-pod
 </code></pre></div>
 </li>
 <li>
 <p>Create the missing <code>/tmp/app.log</code> file by writing through <code>/proc/1/root</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a># echo &quot;hello from debug&quot; &gt; /proc/1/root/tmp/app.log
-<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a># ls -l /proc/1/root/tmp/
-<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>-rw-r--r-- 1 root root 17 ... app.log
-<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a># cat /proc/1/root/tmp/app.log
-<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>hello from debug
-<a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a># exit
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a># echo &quot;hello from debug&quot; &gt; /proc/1/root/tmp/app.log
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a># ls -l /proc/1/root/tmp/
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>-rw-r--r-- 1 root root 17 ... app.log
+<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a># cat /proc/1/root/tmp/app.log
+<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a>hello from debug
+<a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a># exit
 </code></pre></div>
 </li>
 <li>
 <p>The readiness probe succeeds within the next <code>periodSeconds</code>. Verify the pod is now Ready.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>all
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>all
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>NAME                   READY   STATUS    RESTARTS   AGE
-<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>pod/nginx-debug-pod    1/1     Running   0          2m
-<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>
-<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a>NAME                     TYPE        CLUSTER-IP      ENDPOINTS
-<a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a>service/nginx-debug-svc  ClusterIP   10.111.195.30   10.244.x.y:80
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>NAME                   READY   STATUS    RESTARTS   AGE
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>pod/nginx-debug-pod    1/1     Running   0          2m
+<a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a>
+<a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a>NAME                     TYPE        CLUSTER-IP      ENDPOINTS
+<a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a>service/nginx-debug-svc  ClusterIP   10.111.195.30   10.244.x.y:80
 </code></pre></div>
 </li>
 <li>
 <p>Test service access.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>curl<span class="w"> </span><span class="m">10</span>.111.195.30
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>curl<span class="w"> </span>&lt;CLUSTER-IP&gt;
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>&lt;!DOCTYPE html&gt;
-<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>&lt;html&gt;&lt;head&gt;&lt;title&gt;Welcome to nginx!&lt;/title&gt;&lt;/head&gt;...
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>&lt;!DOCTYPE html&gt;
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>&lt;html&gt;&lt;head&gt;&lt;title&gt;Welcome to nginx!&lt;/title&gt;&lt;/head&gt;...
 </code></pre></div>
 </li>
 <li>
 <p>Clean up.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>-f<span class="w"> </span>brokenapp.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>-f<span class="w"> </span>brokenapp.yaml
 </code></pre></div>
 </li>
 </ol>
@@ -832,25 +835,25 @@
 <p class="admonition-title">Optional</p>
 <p>Sonobuoy conformance testing takes 60+ minutes to complete and is not required for the CKAD exam.</p>
 </div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="c1"># Download the latest release</span>
-<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>curl<span class="w"> </span>-sLO<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a>https://github.com/vmware-tanzu/sonobuoy/releases/latest/download/sonobuoy_linux_amd64.tar.gz
-<a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a>tar<span class="w"> </span>-xvf<span class="w"> </span>sonobuoy_linux_amd64.tar.gz
-<a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a>sudo<span class="w"> </span>mv<span class="w"> </span>sonobuoy<span class="w"> </span>/usr/local/bin/
-<a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a>
-<a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a><span class="c1"># Run tests</span>
-<a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a>sonobuoy<span class="w"> </span>run<span class="w"> </span>--wait
-<a id="__codelineno-41-9" name="__codelineno-41-9" href="#__codelineno-41-9"></a>
-<a id="__codelineno-41-10" name="__codelineno-41-10" href="#__codelineno-41-10"></a><span class="c1"># Monitor progress in a second terminal</span>
-<a id="__codelineno-41-11" name="__codelineno-41-11" href="#__codelineno-41-11"></a>sonobuoy<span class="w"> </span>status
-<a id="__codelineno-41-12" name="__codelineno-41-12" href="#__codelineno-41-12"></a>sonobuoy<span class="w"> </span>logs
-<a id="__codelineno-41-13" name="__codelineno-41-13" href="#__codelineno-41-13"></a>
-<a id="__codelineno-41-14" name="__codelineno-41-14" href="#__codelineno-41-14"></a><span class="c1"># Retrieve and view results</span>
-<a id="__codelineno-41-15" name="__codelineno-41-15" href="#__codelineno-41-15"></a>sonobuoy<span class="w"> </span>retrieve
-<a id="__codelineno-41-16" name="__codelineno-41-16" href="#__codelineno-41-16"></a>sonobuoy<span class="w"> </span>results<span class="w"> </span>&lt;tarball-file&gt;
-<a id="__codelineno-41-17" name="__codelineno-41-17" href="#__codelineno-41-17"></a>
-<a id="__codelineno-41-18" name="__codelineno-41-18" href="#__codelineno-41-18"></a><span class="c1"># Clean up</span>
-<a id="__codelineno-41-19" name="__codelineno-41-19" href="#__codelineno-41-19"></a>sonobuoy<span class="w"> </span>delete<span class="w"> </span>--wait
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="c1"># Download the latest release</span>
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a>curl<span class="w"> </span>-sLO<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a>https://github.com/vmware-tanzu/sonobuoy/releases/latest/download/sonobuoy_linux_amd64.tar.gz
+<a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a>tar<span class="w"> </span>-xvf<span class="w"> </span>sonobuoy_linux_amd64.tar.gz
+<a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a>sudo<span class="w"> </span>mv<span class="w"> </span>sonobuoy<span class="w"> </span>/usr/local/bin/
+<a id="__codelineno-42-6" name="__codelineno-42-6" href="#__codelineno-42-6"></a>
+<a id="__codelineno-42-7" name="__codelineno-42-7" href="#__codelineno-42-7"></a><span class="c1"># Run tests</span>
+<a id="__codelineno-42-8" name="__codelineno-42-8" href="#__codelineno-42-8"></a>sonobuoy<span class="w"> </span>run<span class="w"> </span>--wait
+<a id="__codelineno-42-9" name="__codelineno-42-9" href="#__codelineno-42-9"></a>
+<a id="__codelineno-42-10" name="__codelineno-42-10" href="#__codelineno-42-10"></a><span class="c1"># Monitor progress in a second terminal</span>
+<a id="__codelineno-42-11" name="__codelineno-42-11" href="#__codelineno-42-11"></a>sonobuoy<span class="w"> </span>status
+<a id="__codelineno-42-12" name="__codelineno-42-12" href="#__codelineno-42-12"></a>sonobuoy<span class="w"> </span>logs
+<a id="__codelineno-42-13" name="__codelineno-42-13" href="#__codelineno-42-13"></a>
+<a id="__codelineno-42-14" name="__codelineno-42-14" href="#__codelineno-42-14"></a><span class="c1"># Retrieve and view results</span>
+<a id="__codelineno-42-15" name="__codelineno-42-15" href="#__codelineno-42-15"></a>sonobuoy<span class="w"> </span>retrieve
+<a id="__codelineno-42-16" name="__codelineno-42-16" href="#__codelineno-42-16"></a>sonobuoy<span class="w"> </span>results<span class="w"> </span>&lt;tarball-file&gt;
+<a id="__codelineno-42-17" name="__codelineno-42-17" href="#__codelineno-42-17"></a>
+<a id="__codelineno-42-18" name="__codelineno-42-18" href="#__codelineno-42-18"></a><span class="c1"># Clean up</span>
+<a id="__codelineno-42-19" name="__codelineno-42-19" href="#__codelineno-42-19"></a>sonobuoy<span class="w"> </span>delete<span class="w"> </span>--wait
 </code></pre></div>
 <hr />
 <h2 id="exercise-85-domain-review">Exercise 8.5: Domain Review<a class="headerlink" href="#exercise-85-domain-review" title="Permanent link">&para;</a></h2>
@@ -867,12 +870,12 @@
 </li>
 <li>
 <p>Use <code>troubleshoot-review1.yaml</code> to create a deployment. The create command will fail immediately.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>troubleshoot-review1.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>troubleshoot-review1.yaml
 </code></pre></div>
 </li>
 <li>
 <p>Read the error carefully. Then inspect the file and identify <strong>all</strong> the problems. There are at least four distinct issues.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>cat<span class="w"> </span>troubleshoot-review1.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>cat<span class="w"> </span>troubleshoot-review1.yaml
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Where to look</p>
@@ -881,15 +884,15 @@
 </li>
 <li>
 <p>Fix each issue and recreate until the deployment runs a single pod for at least one minute without errors.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deploy<span class="w"> </span>igottrouble
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deploy<span class="w"> </span>igottrouble
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>NAME          READY   UP-TO-DATE   AVAILABLE   AGE
-<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>igottrouble   1/1     1            1           5m13s
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a>igottrouble   1/1     1            1           5m13s
 </code></pre></div>
 </li>
 <li>
 <p>Clean up.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deploy<span class="w"> </span>igottrouble<span class="w"> </span>--ignore-not-found
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deploy<span class="w"> </span>igottrouble<span class="w"> </span>--ignore-not-found
 </code></pre></div>
 </li>
 </ul>
