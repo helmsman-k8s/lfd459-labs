@@ -47,10 +47,10 @@ In this chapter you will containerize a simple Python application using Podman, 
 
     ```bash
     chmod +x simple.py
+    ./simple.py
     ```
 
     ```
-    ./simple.py
     ^CTraceback (most recent call last):
       File "./simple.py", line 24, in <module>
         time.sleep(5)
@@ -326,9 +326,6 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
 
     ```bash
     sudo crictl config \
-    ```
-
-    ```
     --set runtime-endpoint=unix:///run/containerd/containerd.sock \
     --set image-endpoint=unix:///run/containerd/containerd.sock
     ```
@@ -476,9 +473,6 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
 
     ```bash
     for name in $(kubectl get pods -l app=try1 -o name); \
-    ```
-
-    ```
     do kubectl exec $name -- touch /tmp/healthy; done
     ```
 
@@ -561,9 +555,6 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
 
     ```bash
     for name in $(kubectl get pods -l app=try1 -o name); \
-    ```
-
-    ```
     do kubectl exec $name -c simpleapp -- touch /tmp/healthy; done
     ```
 
@@ -632,11 +623,8 @@ Revisit the CKAD curriculum and locate the topics covered in this chapter:
 - Use `build-review1.yaml` to create a broken deployment. Fix it so both containers are running and in a `READY` state.
 
     ```bash
-        ```
-
-        ```bash
     kubectl create -f ~/build-review1.yaml
-        ```
+    ```
 
     !!! hint
         The web server (`nginx`) listens on port 80. The proxy (`goproxy`) listens on port 8080. Examine the probe configurations carefully - one of the port numbers is wrong.
@@ -662,3 +650,4 @@ Revisit the CKAD curriculum and locate the topics covered in this chapter:
     kubectl delete pvc nginx-claim0 registry-claim0 --ignore-not-found
     kubectl delete pv vol1 vol2 --ignore-not-found
     ```
+

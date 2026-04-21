@@ -42,12 +42,12 @@ ConfigMaps decouple configuration from container images. They can be created fro
 
     ```bash
     kubectl create configmap colors \
-    ```
-
-    ```
     --from-literal=text=black \
     --from-file=./favorite \
     --from-file=./primary/
+    ```
+
+    ```
     configmap/colors created
     ```
 
@@ -91,10 +91,10 @@ ConfigMaps decouple configuration from container images. They can be created fro
     ```bash
     kubectl get pods
     kubectl exec -c simpleapp -it <try1-pod-name> \
+    -- /bin/bash -c 'echo $ilike'
     ```
 
     ```
-    -- /bin/bash -c 'echo $ilike'
     blue
     ```
 
@@ -209,10 +209,10 @@ ConfigMaps decouple configuration from container images. They can be created fro
 
     ```bash
     kubectl exec -c simpleapp -it <try1-pod-name> \
+    -- /bin/bash -c 'cat /etc/cars/car.trim'
     ```
 
     ```
-    -- /bin/bash -c 'cat /etc/cars/car.trim'
     Shelby
     ```
 
@@ -751,3 +751,4 @@ Revisit the CKAD curriculum for topics covered in this chapter:
     kubectl delete pvc reviewpvc --ignore-not-found
     kubectl delete pv reviewvol --ignore-not-found
     ```
+

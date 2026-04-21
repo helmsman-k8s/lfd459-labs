@@ -788,3 +788,4 @@ Revisit the CKAD curriculum and locate topics covered in this chapter:
     kubectl delete cronjobs.batch sleepy --ignore-not-found
     kubectl delete deploy stressmeout --ignore-not-found
     ```
+

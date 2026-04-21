@@ -228,6 +228,9 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
 
     ```bash
     curl 10.111.195.30
+    ```
+
+    ```
     curl: (7) Failed to connect to 10.111.195.30 port 80
     ```
 
@@ -256,9 +259,6 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
 
     ```bash
     kubectl debug pod/nginx-debug-pod -it \
-    ```
-
-    ```
     --image=busybox --target=nginx -- /bin/sh
     ```
 
@@ -416,3 +416,4 @@ Congratulations on completing all LFD459 lab chapters. Before sitting the CKAD e
 - Have reviewed the current CKAD curriculum at <https://www.cncf.io/certification/ckad/>
 
 Good luck!
+

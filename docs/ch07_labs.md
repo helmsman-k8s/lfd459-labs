@@ -232,9 +232,6 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     kubectl create ns multitenant
     kubectl -n multitenant create deployment mainapp --image=nginx
     kubectl -n multitenant expose deployment mainapp \
-    ```
-
-    ```
     --name=shopping --type=NodePort --port=80
     ```
 
@@ -408,31 +405,24 @@ An ingress controller allows you to route traffic to multiple services using a s
 
 3. Test the ingress. Without the correct `Host` header you get a 404. With the header, nginx responds.
 
-    ```
+    ```bash
     # Get the ingress controller pod IP on the controller node
     INGRESS_IP=$(kubectl get pods -o wide | \
     grep myingress | grep controller | awk 'NR==1{print $6}')
-    ```
-
-    ```bash
     echo $INGRESS_IP
     ```
 
-    ```
-    # Without Host header - 404 (ingress has no default backend)
-    ```
-
     ```bash
+    # Without Host header - 404 (ingress has no default backend)
     curl $INGRESS_IP
     ```
 
     ```
     <html><head><title>404 Not Found</title></head>...</html>
-
-    # With matching Host header - nginx welcome page
     ```
 
     ```bash
+    # With matching Host header - nginx welcome page
     curl -H "Host: www.example.com" http://$INGRESS_IP
     ```
 
@@ -452,12 +442,9 @@ An ingress controller allows you to route traffic to multiple services using a s
 1. Deploy a third web server and customise its default page.
 
     ```bash
-        ```
-
-        ```bash
     kubectl create deployment thirdpage --image=nginx
     kubectl expose deployment thirdpage --port=80 --type=NodePort
-        ```
+    ```
 
 2. Label the pod so it can be targeted (use Tab completion for the pod name).
 
@@ -520,19 +507,15 @@ An ingress controller allows you to route traffic to multiple services using a s
 
     ```bash
     # Should show "Third Page"
-    ```
-
-    ```bash
     curl -H "Host: thirdpage.org" http://$INGRESS_IP
     ```
 
     ```
     <!DOCTYPE html><html><head><title>Third Page</title>...
-
-    # Should still show nginx default
     ```
 
     ```bash
+    # Should still show nginx default
     curl -H "Host: www.example.com" http://$INGRESS_IP
     ```
 
@@ -588,3 +571,4 @@ Revisit the CKAD curriculum for topics covered in this chapter:
     kubectl delete svc webone-svc webtwo-svc --ignore-not-found
     kubectl delete ingress --all --ignore-not-found
     ```
+

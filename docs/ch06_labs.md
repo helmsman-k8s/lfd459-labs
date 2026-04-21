@@ -532,9 +532,6 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
 
     ```bash
     kubectl run -it test --rm=true --image alpine \
-    ```
-
-    ```
     -- ping -c5 <secondapp-pod-ip>
     ```
 
@@ -571,9 +568,6 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
 
     ```bash
     kubectl run -it test --rm=true --image alpine \
-    ```
-
-    ```
     -- ping -c5 <secondapp-pod-ip>
     ```
 
@@ -647,3 +641,4 @@ Revisit the CKAD curriculum for topics covered in this chapter:
     kubectl delete clusterrole secrole --ignore-not-found
     kubectl delete clusterrolebinding secrole --ignore-not-found
     ```
+
