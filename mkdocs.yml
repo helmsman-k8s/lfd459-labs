@@ -33,3 +33,6 @@ nav:
   - Chapter 6 - Understanding Security: ch06_labs.md
   - Chapter 7 - Exposing Applications: ch07_labs.md
   - Chapter 8 - Application Troubleshooting: ch08_labs.md
+
+extra_css:
+  - stylesheets/extra.css
