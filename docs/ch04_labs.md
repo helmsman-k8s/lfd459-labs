@@ -17,6 +17,7 @@ While application developers don't configure cluster networking, understanding t
     ```bash
     kubectl -n kube-system logs kube-controller-manager-controller
     ```
+    # output
 
     Look for lines referencing the network plugin initialization.
 
@@ -85,6 +86,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
     cd ~/lfd459/ch04-design
     ls
     ```
+    # output
 
 2. Review and create the basic job definition.
 
@@ -107,12 +109,14 @@ Jobs run a container a set number of times to completion, rather than keeping it
             args: ["3"]
           restartPolicy: Never
     ```
+    # output
 
     ```bash
     kubectl create -f job.yaml
     ```
 
     ```
+    # output
     job.batch/sleepy created
     ```
 
@@ -121,17 +125,20 @@ Jobs run a container a set number of times to completion, rather than keeping it
     ```bash
     kubectl get job
     ```
+    # output
 
     ```
     NAME     COMPLETIONS   DURATION   AGE
     sleepy   0/1           3s         3s
     ```
+    # output
 
     ```bash
     kubectl get job
     ```
 
     ```
+    # output
     NAME     COMPLETIONS   DURATION   AGE
     sleepy   1/1           7s         11s
     ```
@@ -141,6 +148,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
     ```bash
     kubectl describe jobs.batch sleepy
     ```
+    # output
 
 5. Inspect the default job parameters in YAML output. Note `backoffLimit: 6`, `completions: 1`, `parallelism: 1`.
 
@@ -153,10 +161,12 @@ Jobs run a container a set number of times to completion, rather than keeping it
     ```bash
     kubectl delete jobs.batch sleepy
     ```
+    # output
 
     ```
     job.batch "sleepy" deleted
     ```
+    # output
 
 7. Edit `job.yaml` and add `completions: 5` to run the job five times sequentially.
 
@@ -169,6 +179,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
       completions: 5        # <-- add this line
       template:
     ```
+    # output
 
     !!! tip
         If you prefer not to edit manually, use the pre-built version: `kubectl create -f job-v2.yaml`
@@ -181,6 +192,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
     ```
 
     ```
+    # output
     NAME     COMPLETIONS   DURATION   AGE
     sleepy   0/5           5s         5s
     ```
@@ -190,11 +202,13 @@ Jobs run a container a set number of times to completion, rather than keeping it
     ```bash
     kubectl get jobs.batch
     ```
+    # output
 
     ```
     NAME     COMPLETIONS   DURATION   AGE
     sleepy   5/5           26s        10m
     ```
+    # output
 
     ```bash
     kubectl delete jobs.batch sleepy
@@ -205,6 +219,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
     ```bash
     vim job.yaml
     ```
+    # output
 
     ```yaml
     spec:
@@ -222,6 +237,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
     kubectl create -f job.yaml
     kubectl get pods
     ```
+    # output
 
     ```
     NAME             READY   STATUS    RESTARTS   AGE
@@ -229,6 +245,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
     sleepy-xjqnf     1/1     Running   0          5s
     ...
     ```
+    # output
 
 12. Edit `job.yaml` again and add `activeDeadlineSeconds: 15` to forcibly stop the job after 15 seconds.
 
@@ -243,6 +260,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
       activeDeadlineSeconds: 15   # <-- add this line
       template:
     ```
+    # output
 
     !!! tip
         Pre-built version available: `kubectl create -f job-v4.yaml`
@@ -259,11 +277,13 @@ Jobs run a container a set number of times to completion, rather than keeping it
     ```bash
     kubectl get jobs
     ```
+    # output
 
     ```
     NAME     COMPLETIONS   DURATION   AGE
     sleepy   4/5           16s        16s
     ```
+    # output
 
 14. Check the status message in the job YAML - it should show `DeadlineExceeded`.
 
@@ -272,6 +292,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
     ```
 
     ```
+    # output
     status:
       conditions:
       - message: Job was active longer than specified deadline
@@ -286,6 +307,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
     ```bash
     kubectl delete jobs.batch sleepy
     ```
+    # output
 
 ---
 
@@ -317,6 +339,7 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
                 args: ["3"]
               restartPolicy: Never
     ```
+    # output
 
     !!! warning "batch/v1beta1 is removed"
         A file named `cron-job.yaml` is also in your directory - it uses `apiVersion: batch/v1beta1` which was **removed in Kubernetes 1.25**. Do not use it. Always use `batch/v1` for CronJobs on this cluster.
@@ -328,17 +351,20 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
     ```
 
     ```
+    # output
     cronjob.batch/sleepy created
     ```
 
     ```bash
     kubectl get cronjobs.batch
     ```
+    # output
 
     ```
     NAME     SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
     sleepy   */2 * * * *   False     0        <none>          8s
     ```
+    # output
 
 3. After 2 minutes, verify a Job was created by the CronJob.
 
@@ -347,6 +373,7 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
     ```
 
     ```
+    # output
     NAME     SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
     sleepy   */2 * * * *   False     0        21s             2m1s
     ```
@@ -354,11 +381,13 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
     ```bash
     kubectl get jobs.batch
     ```
+    # output
 
     ```
     NAME                COMPLETIONS   DURATION   AGE
     sleepy-1539722040   1/1           5s         18s
     ```
+    # output
 
     Let it run for a few more cycles and you will see multiple completed Jobs listed.
 
@@ -383,6 +412,7 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
               args: ["30"]              # <-- change from "3" to "30"
             restartPolicy: Never
     ```
+    # output
 
 5. Delete and recreate the CronJob. Wait 2 minutes, then observe that jobs are created but never complete - they are killed by the deadline.
 
@@ -399,11 +429,13 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
     ```bash
     kubectl get jobs
     ```
+    # output
 
     ```
     NAME                COMPLETIONS   DURATION   AGE
     sleepy-1539723240   0/1           61s        61s
     ```
+    # output
 
 6. Delete the CronJob and all its associated jobs.
 
@@ -412,6 +444,7 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
     ```
 
     ```
+    # output
     cronjob.batch "sleepy" deleted
     ```
 
@@ -426,10 +459,12 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
     ```bash
     kubectl create deployment design2 --image=nginx
     ```
+    # output
 
     ```
     deployment.apps/design2 created
     ```
+    # output
 
 2. View the deployment with `-o wide` and note the `SELECTOR` column.
 
@@ -438,6 +473,7 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
     ```
 
     ```
+    # output
     NAME      READY   UP-TO-DATE   AVAILABLE   ...   SELECTOR
     design2   1/1     1            1           ...   app=design2
     ```
@@ -447,11 +483,13 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
     ```bash
     kubectl get -l app=design2 pod
     ```
+    # output
 
     ```
     NAME                       READY   STATUS    RESTARTS   AGE
     design2-766d48574f-5w274   1/1     Running   0          3m
     ```
+    # output
 
 4. View the pod labels in full YAML output using `--selector`.
 
@@ -466,6 +504,7 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
     ```bash
     kubectl edit pod design2-766d48574f-5w274
     ```
+    # output
 
     Find and change:
 
@@ -480,11 +519,13 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
     ```bash
     kubectl get pods | grep design2
     ```
+    # output
 
     ```
     design2-766d48574f-5w274   1/1   Running   0   82s
     design2-766d48574f-xttgg   1/1   Running   0   2m12s
     ```
+    # output
 
     There are now **two** pods. The deployment noticed the edited pod no longer matched its selector (`app=design2`) and created a replacement. The edited pod is now orphaned - no controller manages it.
 
@@ -495,6 +536,7 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
     ```
 
     ```
+    # output
     deployment.apps "design2" deleted
     ```
 
@@ -503,10 +545,12 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
     ```bash
     kubectl get pods | grep design2
     ```
+    # output
 
     ```
     design2-766d48574f-5w274   1/1   Running   0   38m
     ```
+    # output
 
 9. Delete the orphaned pod using the colour label you assigned.
 
@@ -515,6 +559,7 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
     ```
 
     ```
+    # output
     pod "design2-766d48574f-5w274" deleted
     ```
 
@@ -530,6 +575,7 @@ Resource requests tell the scheduler how much CPU/memory a pod needs. Limits cap
     cat stress.yaml
     kubectl create -f stress.yaml
     ```
+    # output
 
 2. On the **controller**, run `top` to see the stress process consuming CPU. Use `q` to exit.
 
@@ -542,6 +588,7 @@ Resource requests tell the scheduler how much CPU/memory a pod needs. Limits cap
     ```bash
     top
     ```
+    # output
 
 3. Delete the deployment, then edit `stress.yaml` to add resource limits and requests.
 
@@ -569,6 +616,7 @@ Resource requests tell the scheduler how much CPU/memory a pod needs. Limits cap
       - -mem-total
       - "1950Mi"
     ```
+    # output
 
     !!! tip
         Pre-built version available: `kubectl create -f stress-v2.yaml`
@@ -581,6 +629,7 @@ Resource requests tell the scheduler how much CPU/memory a pod needs. Limits cap
     ```
 
     ```
+    # output
     NAME                           READY   STATUS      RESTARTS   AGE
     stressmeout-7fbbbcc887-v9kvb   0/1     OOMKilled   2          32s
     ```
@@ -594,6 +643,7 @@ Resource requests tell the scheduler how much CPU/memory a pod needs. Limits cap
     kubectl delete -f stress.yaml
     vim stress.yaml
     ```
+    # output
 
     ```yaml
     spec:
@@ -619,11 +669,13 @@ Resource requests tell the scheduler how much CPU/memory a pod needs. Limits cap
     kubectl create -f stress.yaml
     kubectl get pod -o wide
     ```
+    # output
 
     ```
     NAME                           READY   STATUS    NODE
     stressmeout-...                1/1     Running   worker1
     ```
+    # output
 
 7. Use `kubectl describe node worker1` to view how much of worker1's CPU and memory is now being consumed.
 
@@ -638,6 +690,7 @@ Resource requests tell the scheduler how much CPU/memory a pod needs. Limits cap
     ```bash
     kubectl delete deploy stressmeout
     ```
+    # output
 
 ---
 
@@ -667,6 +720,7 @@ An `initContainer` runs to completion before the main container starts. If it fa
         image: busybox
         command: [/bin/false]
     ```
+    # output
 
 2. Create the pod and observe the failure.
 
@@ -676,6 +730,7 @@ An `initContainer` runs to completion before the main container starts. If it fa
     ```
 
     ```
+    # output
     NAME           READY   STATUS       RESTARTS   AGE
     init-tester    0/1     Init:Error   2          30s
     ```
@@ -685,6 +740,7 @@ An `initContainer` runs to completion before the main container starts. If it fa
     ```bash
     kubectl describe pod init-tester
     ```
+    # output
 
 3. Delete the pod, fix the command from `/bin/false` to `/bin/true`, and recreate it.
 
@@ -698,6 +754,7 @@ An `initContainer` runs to completion before the main container starts. If it fa
     ```yaml
     command: [/bin/true]
     ```
+    # output
 
     !!! tip
         Pre-built version available: `kubectl create -f init-tester-v2.yaml`
@@ -710,6 +767,7 @@ An `initContainer` runs to completion before the main container starts. If it fa
     ```
 
     ```
+    # output
     NAME           READY   STATUS    RESTARTS   AGE
     init-tester    1/1     Running   0          10s
     ```
@@ -719,6 +777,7 @@ An `initContainer` runs to completion before the main container starts. If it fa
     ```bash
     kubectl delete pod init-tester
     ```
+    # output
 
 ---
 
@@ -739,6 +798,7 @@ CRDs extend the Kubernetes API with new resource types.
     ```bash
     kubectl get crd <crd-name> -o yaml
     ```
+    # output
 
     Note the `group`, `kind`, `plural`, `scope`, and available `versions`.
 
@@ -749,6 +809,7 @@ CRDs extend the Kubernetes API with new resource types.
     ```
 
     ```
+    # output
     No resources found
     ```
 
@@ -757,6 +818,7 @@ CRDs extend the Kubernetes API with new resource types.
     ```bash
     kubectl get crd | wc -l
     ```
+    # output
 
 ---
 
@@ -787,6 +849,7 @@ Revisit the CKAD curriculum and locate topics covered in this chapter:
     ```bash
     kubectl create -f design-review2.yaml
     ```
+    # output
 
     View all pods and their labels.
 
@@ -799,6 +862,7 @@ Revisit the CKAD curriculum and locate topics covered in this chapter:
     ```bash
     kubectl delete pod --selector review=tux
     ```
+    # output
 
 - Create a new CronJob that runs `busybox` with the `sleep 30` command every 3 minutes. Verify it runs correctly. Then update the schedule so it runs at a specific time 10 minutes from now, every week (e.g. if it's 14:14, set it to run at `24 14 * * 1`).
 

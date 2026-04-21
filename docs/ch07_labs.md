@@ -19,6 +19,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     cd ~/lfd459/ch07-exposing-apps
     kubectl get svc
     ```
+    # output
 
     ```
     NAME         TYPE        CLUSTER-IP       PORT(S)
@@ -27,6 +28,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     registry     ClusterIP   10.105.119.236   5000/TCP
     secondapp    NodePort    10.111.26.8      80:32000/TCP
     ```
+    # output
 
 2. Save the existing `secondapp` service definition and delete it.
 
@@ -36,6 +38,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     ```
 
     ```
+    # output
     service "secondapp" deleted
     ```
 
@@ -44,16 +47,19 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     ```bash
     kubectl create -f newservice.yaml
     ```
+    # output
 
     ```
     service/secondapp created
     ```
+    # output
 
     ```bash
     kubectl get svc secondapp
     ```
 
     ```
+    # output
     NAME        TYPE        CLUSTER-IP      PORT(S)   AGE
     secondapp   ClusterIP   10.98.148.52    80/TCP    14s
     ```
@@ -63,6 +69,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     ```bash
     curl http://10.98.148.52
     ```
+    # output
 
 ### Service Update Pattern
 
@@ -73,6 +80,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     ```
 
     ```
+    # output
     deployment.apps/newserver created
     ```
 
@@ -81,6 +89,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     ```bash
     kubectl get deployment newserver -o wide
     ```
+    # output
 
     Note the `SELECTOR` column - it will be `app=newserver`.
 
@@ -97,10 +106,12 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     ```bash
     curl http://10.98.148.52
     ```
+    # output
 
     ```
     <html><body><h1>It works!</h1></body></html>
     ```
+    # output
 
 5. Edit the selector back to `example: second` and test again - nginx returns. Then delete the `newserver` deployment.
 
@@ -115,6 +126,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     ```bash
     vim newservice.yaml
     ```
+    # output
 
     Add the `nodePort` and `type` fields inside `ports`:
 
@@ -139,11 +151,13 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     kubectl create -f newservice.yaml
     kubectl get svc secondapp
     ```
+    # output
 
     ```
     NAME        TYPE       CLUSTER-IP       PORT(S)
     secondapp   NodePort   10.109.134.221   80:32000/TCP
     ```
+    # output
 
 3. Test via the ClusterIP (internal) and via any node IP on port 32000 (external).
 
@@ -160,6 +174,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     ```bash
     vim newservice.yaml
     ```
+    # output
 
     ```yaml
     type: LoadBalancer    # <-- change from NodePort
@@ -172,6 +187,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     kubectl delete svc secondapp
     kubectl create -f newservice.yaml
     ```
+    # output
 
 2. Check the service. `EXTERNAL-IP` will remain `<pending>` - there is no cloud load balancer in this environment. The NodePort still works.
 
@@ -180,6 +196,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     ```
 
     ```
+    # output
     NAME        TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)
     secondapp   LoadBalancer   10.109.26.21    <pending>     80:32000/TCP
     ```
@@ -189,6 +206,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     ```bash
     curl http://worker1:32000
     ```
+    # output
 
 ### CoreDNS Service Discovery
 
@@ -226,6 +244,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
 
     / $ exit
     ```
+    # output
 
     !!! note
         CoreDNS appends `.default.svc.cluster.local` when resolving short names. Services in other namespaces require the FQDN: `<service>.<namespace>.svc.cluster.local`.
@@ -241,6 +260,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     ```
 
     ```
+    # output
     --name=shopping --type=NodePort --port=80
     ```
 
@@ -249,6 +269,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     ```bash
     kubectl exec -it secondapp -c busy -- sh
     ```
+    # output
 
     Inside:
 
@@ -285,6 +306,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```bash
     helm version
     ```
+    # output
 
     If not found, install it:
 
@@ -303,6 +325,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
     helm repo update
     ```
+    # output
 
 3. Download the chart and edit `values.yaml` to use a `DaemonSet` instead of a `Deployment` (one ingress pod per node).
 
@@ -318,6 +341,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     ## DaemonSet or Deployment
     kind: DaemonSet    # <-- change from Deployment
     ```
+    # output
 
 4. Install the ingress controller using the local chart.
 
@@ -326,6 +350,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```
 
     ```
+    # output
     NAME: myingress
     STATUS: deployed
     ```
@@ -335,12 +360,14 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```bash
     kubectl get pods --all-namespaces | grep myingress
     ```
+    # output
 
     ```
     default   myingress-ingress-nginx-controller-xxxxx   1/1   Running   0   20s   controller
     default   myingress-ingress-nginx-controller-yyyyy   1/1   Running   0   20s   worker1
     default   myingress-ingress-nginx-controller-zzzzz   1/1   Running   0   20s   worker2
     ```
+    # output
 
 6. Check the ingress controller service. `EXTERNAL-IP` will be `<pending>` - that's expected.
 
@@ -349,6 +376,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```
 
     ```
+    # output
     myingress-ingress-nginx-controller   LoadBalancer   10.104.227.79   <pending>   80:32558/TCP,443:30219/TCP
     ```
 
@@ -357,6 +385,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```bash
     kubectl get pod -o wide | grep myingress
     ```
+    # output
 
 ### Creating an Ingress Rule
 
@@ -388,6 +417,7 @@ An ingress controller allows you to route traffic to multiple services using a s
             path: /
             pathType: ImplementationSpecific
     ```
+    # output
 
     !!! warning "Old ingress file"
         A file called `ingress_rule.yaml` exists in the lab files - it uses `apiVersion: networking.k8s.io/v1beta1` which was **removed in Kubernetes 1.22**. Do not use it. Always use `ingress.yaml` (v1).
@@ -399,17 +429,20 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```
 
     ```
+    # output
     ingress.networking.k8s.io/ingress-test created
     ```
 
     ```bash
     kubectl get ingress
     ```
+    # output
 
     ```
     NAME           CLASS   HOSTS             ADDRESS   PORTS   AGE
     ingress-test   nginx   www.example.com             80      5s
     ```
+    # output
 
 3. Test the ingress. Without the correct `Host` header you get a 404. With the header, nginx responds.
 
@@ -418,30 +451,35 @@ An ingress controller allows you to route traffic to multiple services using a s
     INGRESS_IP=$(kubectl get pods -o wide | \
     grep myingress | grep controller | awk 'NR==1{print $6}')
     ```
+    # output
 
     ```bash
     echo $INGRESS_IP
     ```
 
     ```
+    # output
     # Without Host header - 404 (ingress has no default backend)
     ```
 
     ```bash
     curl $INGRESS_IP
     ```
+    # output
 
     ```
     <html><head><title>404 Not Found</title></head>...</html>
 
     # With matching Host header - nginx welcome page
     ```
+    # output
 
     ```bash
     curl -H "Host: www.example.com" http://$INGRESS_IP
     ```
 
     ```
+    # output
     <!DOCTYPE html>
     <html><head><title>Welcome to nginx!</title>...
     ```
@@ -469,6 +507,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```bash
     kubectl label pod thirdpage-<Tab> example=third
     ```
+    # output
 
 3. Exec into the pod and edit the nginx default page to say "Third Page".
 
@@ -482,6 +521,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     root@thirdpage:/# apt-get update -qq && apt-get install vim -y -qq
     root@thirdpage:/# vim /usr/share/nginx/html/index.html
     ```
+    # output
 
     Change `<title>Welcome to nginx!</title>` to `<title>Third Page</title>`, then exit.
 
@@ -517,6 +557,7 @@ An ingress controller allows you to route traffic to multiple services using a s
             path: /
             pathType: ImplementationSpecific
     ```
+    # output
 
     !!! tip
         Pre-built version available: `kubectl replace -f ingress-v2.yaml`
@@ -530,18 +571,21 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```bash
     curl -H "Host: thirdpage.org" http://$INGRESS_IP
     ```
+    # output
 
     ```
     <!DOCTYPE html><html><head><title>Third Page</title>...
 
     # Should still show nginx default
     ```
+    # output
 
     ```bash
     curl -H "Host: www.example.com" http://$INGRESS_IP
     ```
 
     ```
+    # output
     <!DOCTYPE html><html><head><title>Welcome to nginx!</title>...
     ```
 
@@ -593,3 +637,4 @@ Revisit the CKAD curriculum for topics covered in this chapter:
     kubectl delete svc webone-svc webtwo-svc --ignore-not-found
     kubectl delete ingress --all --ignore-not-found
     ```
+    # output

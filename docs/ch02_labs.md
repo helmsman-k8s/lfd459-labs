@@ -17,6 +17,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```bash
     kubectl get nodes
     ```
+    # output
 
     Expected output:
 
@@ -26,6 +27,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     worker1      Ready    worker          Xm    v1.33.1
     worker2      Ready    worker          Xm    v1.33.1
     ```
+    # output
 
     !!! note "Worker node roles"
         By default, worker nodes show `<none>` for the ROLES column. If your output shows `<none>`, label them with:
@@ -36,13 +38,13 @@ The cluster is already installed and ready. Your first task is to confirm everyt
         ```
 
 3. Verify all system pods are running.
-
+    
+    
     ```bash
-        ```
-
-        ```bash
     kubectl get pods -n kube-system
-        ```
+    ```
+    # output
+
 
     You should see Calico, CoreDNS, etcd, kube-apiserver, kube-controller-manager, kube-proxy and kube-scheduler all in `Running` state.
 
@@ -58,6 +60,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```bash
     kubectl describe nodes | grep -i taint
     ```
+    # output
 
     If you see `node-role.kubernetes.io/control-plane:NoSchedule` on the controller node, remove it:
 
@@ -70,12 +73,14 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```bash
     kubectl describe nodes | grep -i taint
     ```
+    # output
 
     ```
     Taints:             <none>
     Taints:             <none>
     Taints:             <none>
     ```
+    # output
 
 ---
 
@@ -92,6 +97,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```bash
     kubectl api-resources
     ```
+    # output
 
     Example output (truncated):
 
@@ -103,6 +109,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     deployments         deploy       apps/v1      true         Deployment
     replicasets         rs           apps/v1      true         ReplicaSet
     ```
+    # output
 
 3. Explore a specific sub-command using `--help`. For example, inspect the `taint` command.
 
@@ -120,6 +127,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     cd ~/lfd459/ch02-architecture
     ls
     ```
+    # output
 
     You should see: `basic.yaml`, `basic-later.yaml`, `basicservice.yaml`, `basicservice-AllDone.yaml`, `architecture-review1.yaml`
 
@@ -139,6 +147,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
       - name: webcont
         image: nginx
     ```
+    # output
 
 3. Create the pod and verify it is running.
 
@@ -147,17 +156,20 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```
 
     ```
+    # output
     pod/basicpod created
     ```
 
     ```bash
     kubectl get pod
     ```
+    # output
 
     ```
     NAME       READY   STATUS    RESTARTS   AGE
     basicpod   1/1     Running   0          23s
     ```
+    # output
 
 4. Inspect the pod details using `describe`. Look for the container image name and node assignment.
 
@@ -170,16 +182,19 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```bash
     kubectl delete pod basicpod
     ```
+    # output
 
     ```
     pod "basicpod" deleted
     ```
+    # output
 
     ```bash
     kubectl get pod
     ```
 
     ```
+    # output
     No resources found in default namespace.
     ```
 
@@ -188,6 +203,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```bash
     vim basic.yaml
     ```
+    # output
 
     The file should now look like this:
 
@@ -209,16 +225,19 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```bash
     kubectl create -f basic.yaml
     ```
+    # output
 
     ```
     pod/basicpod created
     ```
+    # output
 
     ```bash
     kubectl get pod -o wide
     ```
 
     ```
+    # output
     NAME       READY   STATUS    RESTARTS   AGE   IP            NODE      ...
     basicpod   1/1     Running   0          18s   10.244.1.23   worker1   ...
     ```
@@ -226,6 +245,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```bash
     curl http://10.244.1.23
     ```
+    # output
 
     ```
     <!DOCTYPE html>
@@ -234,6 +254,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     <title>Welcome to nginx!</title>
     ...
     ```
+    # output
 
     !!! note
         The pod IP comes from the Calico CNI CIDR (`10.244.0.0/16`). The exact address will differ in your environment.
@@ -249,6 +270,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```bash
     cat basicservice.yaml
     ```
+    # output
 
     ```yaml
     apiVersion: v1
@@ -268,6 +290,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```bash
     vim basic.yaml
     ```
+    # output
 
     Add the `labels` section under `metadata`:
 
@@ -291,33 +314,39 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```bash
     kubectl create -f basic.yaml
     ```
+    # output
 
     ```
     pod/basicpod created
     ```
+    # output
 
     ```bash
     kubectl create -f basicservice.yaml
     ```
 
     ```
+    # output
     service/basicservice created
     ```
 
     ```bash
     kubectl get pod
     ```
+    # output
 
     ```
     NAME       READY   STATUS    RESTARTS   AGE
     basicpod   1/1     Running   0          110s
     ```
+    # output
 
     ```bash
     kubectl get svc
     ```
 
     ```
+    # output
     NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
     basicservice   ClusterIP   10.96.112.50    <none>        80/TCP    14s
     kubernetes     ClusterIP   10.96.0.1       <none>        443/TCP   4h
@@ -328,6 +357,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```bash
     curl http://10.96.112.50
     ```
+    # output
 
     ```
     <!DOCTYPE html>
@@ -336,6 +366,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     <title>Welcome to nginx!</title>
     ...
     ```
+    # output
 
 12. Now expose the service outside the cluster using `NodePort`. Delete the existing service and update the YAML.
 
@@ -344,6 +375,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```
 
     ```
+    # output
     service "basicservice" deleted
     ```
 
@@ -352,6 +384,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```bash
     cat basicservice-AllDone.yaml
     ```
+    # output
 
     ```yaml
     apiVersion: v1
@@ -372,16 +405,19 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```bash
     kubectl create -f basicservice-AllDone.yaml
     ```
+    # output
 
     ```
     service/basicservice created
     ```
+    # output
 
     ```bash
     kubectl get svc
     ```
 
     ```
+    # output
     NAME           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
     basicservice   NodePort    10.100.139.155   <none>        80:31514/TCP   3s
     kubernetes     ClusterIP   10.96.0.1        <none>        443/TCP        47h
@@ -392,11 +428,13 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```bash
     curl http://worker1:31514
     ```
+    # output
 
     ```
     <!DOCTYPE html>
     ...
     ```
+    # output
 
     !!! tip
         Use `kubectl get nodes -o wide` to find the node IPs.
@@ -421,6 +459,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     - name: fdlogger
       image: fluentd
     ```
+    # output
 
 2. Delete and recreate the pod. This time `READY` should show `2/2`.
 
@@ -429,6 +468,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```
 
     ```
+    # output
     pod "basicpod" deleted
     pod/basicpod created
     ```
@@ -436,11 +476,13 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```bash
     kubectl get pod
     ```
+    # output
 
     ```
     NAME       READY   STATUS    RESTARTS   AGE
     basicpod   2/2     Running   0          2m8s
     ```
+    # output
 
 3. Verify the `fdlogger` container is present in the describe output.
 
@@ -455,10 +497,12 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```bash
     kubectl delete pod basicpod
     ```
+    # output
 
     ```
     pod "basicpod" deleted
     ```
+    # output
 
 ---
 
@@ -471,6 +515,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```
 
     ```
+    # output
     deployment.apps/firstpod created
     ```
 
@@ -479,6 +524,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```bash
     kubectl get deployment,pod
     ```
+    # output
 
     ```
     NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
@@ -487,6 +533,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     NAME                            READY   STATUS    RESTARTS   AGE
     pod/firstpod-65c7f8b5bb-zmlp8   1/1     Running   0          10s
     ```
+    # output
 
 3. Describe the Deployment, then the Pod. Note the labels, replica count, strategy type, and the node the pod is scheduled on.
 
@@ -503,6 +550,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```bash
     kubectl get namespaces
     ```
+    # output
 
     ```
     NAME              STATUS   AGE
@@ -511,6 +559,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     kube-public       Active   20m
     kube-system       Active   20m
     ```
+    # output
 
 5. View all pods in the `kube-system` namespace.
 
@@ -525,10 +574,12 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```bash
     kubectl get pod -n fakenamespace
     ```
+    # output
 
     ```
     No resources found in fakenamespaces namespace.
     ```
+    # output
 
 7. View pods across all namespaces at once.
 
@@ -541,6 +592,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```bash
     kubectl get deploy,rs,po,svc,ep
     ```
+    # output
 
 9. Delete the ReplicaSet and immediately check the resources again. You will see a **new** ReplicaSet and pod created automatically by the Deployment operator.
 
@@ -549,12 +601,14 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```
 
     ```
+    # output
     replicaset.apps "firstpod-65c7f8b5bb" deleted
     ```
 
     ```bash
     kubectl get deploy,rs,po
     ```
+    # output
 
     Notice the age on the new ReplicaSet and pod is only a few seconds - the Deployment reconciled immediately.
 
@@ -565,12 +619,14 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```
 
     ```
+    # output
     deployment.apps "firstpod" deleted
     ```
 
     ```bash
     kubectl get deployment,rs,po,svc,ep
     ```
+    # output
 
     Only the cluster services and endpoints remain.
 
@@ -581,6 +637,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```
 
     ```
+    # output
     service "basicservice" deleted
     ```
 
@@ -608,6 +665,7 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     kubectl get pod
     kubectl describe pod break1
     ```
+    # output
 
     !!! hint
         Look carefully at the image name in the YAML. Use `kubectl describe` to read the event messages.
