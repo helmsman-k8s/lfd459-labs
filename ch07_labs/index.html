@@ -467,135 +467,8 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#service-update-pattern" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Service Update Pattern
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#nodeport-external-access" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        NodePort - External Access
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#loadbalancer" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        LoadBalancer
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#coredns-service-discovery" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CoreDNS Service Discovery
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#cross-namespace-dns" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cross-Namespace DNS
-      
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#exercise-72-service-mesh-and-ingress-controller" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Exercise 7.2: Service Mesh and Ingress Controller
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Exercise 7.2: Service Mesh and Ingress Controller">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#nginx-ingress-controller-via-helm" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        NGINX Ingress Controller via Helm
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#creating-an-ingress-rule" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Creating an Ingress Rule
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adding-a-second-virtual-host" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Adding a Second Virtual Host
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#service-mesh" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Service Mesh
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#exercise-73-domain-review" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Exercise 7.3: Domain Review
-      
-    </span>
-  </a>
   
 </li>
       
@@ -667,37 +540,44 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>~/lfd459/ch07-exposing-apps
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>svc
 </code></pre></div>
+<h1 id="output">output<a class="headerlink" href="#output" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>NAME         TYPE        CLUSTER-IP       PORT(S)
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>kubernetes   ClusterIP   10.96.0.1        443/TCP
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>nginx        ClusterIP   10.108.95.67     443/TCP
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>registry     ClusterIP   10.105.119.236   5000/TCP
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>secondapp    NodePort    10.111.26.8      80:32000/TCP
 </code></pre></div>
+<h1 id="output_1">output<a class="headerlink" href="#output_1" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Save the existing <code>secondapp</code> service definition and delete it.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>secondapp<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span>&gt;<span class="w"> </span>oldservice.yaml
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>svc<span class="w"> </span>secondapp
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>service &quot;secondapp&quot; deleted
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a># output
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>service &quot;secondapp&quot; deleted
 </code></pre></div>
 </li>
 <li>
 <p>Recreate the service using <code>newservice.yaml</code>. Note that no <code>type</code> is specified - it defaults to <code>ClusterIP</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>newservice.yaml
 </code></pre></div>
+<h1 id="output_2">output<a class="headerlink" href="#output_2" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>service/secondapp created
 </code></pre></div>
+<h1 id="output_3">output<a class="headerlink" href="#output_3" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>secondapp
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>NAME        TYPE        CLUSTER-IP      PORT(S)   AGE
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>secondapp   ClusterIP   10.98.148.52    80/TCP    14s
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a># output
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>NAME        TYPE        CLUSTER-IP      PORT(S)   AGE
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>secondapp   ClusterIP   10.98.148.52    80/TCP    14s
 </code></pre></div>
 </li>
 <li>
 <p>Test access to the ClusterIP. You should see the nginx welcome page.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>curl<span class="w"> </span>http://10.98.148.52
 </code></pre></div>
+<h1 id="output_4">output<a class="headerlink" href="#output_4" title="Permanent link">&para;</a></h1>
 </li>
 </ol>
 <h3 id="service-update-pattern">Service Update Pattern<a class="headerlink" href="#service-update-pattern" title="Permanent link">&para;</a></h3>
@@ -706,13 +586,15 @@
 <p>Create a second web server using the <code>httpd</code> image. Its default page differs from nginx.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>deployment<span class="w"> </span>newserver<span class="w"> </span>--image<span class="o">=</span>httpd
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>deployment.apps/newserver created
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a># output
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>deployment.apps/newserver created
 </code></pre></div>
 </li>
 <li>
 <p>Find the label that <code>newserver</code>'s pods use.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deployment<span class="w"> </span>newserver<span class="w"> </span>-o<span class="w"> </span>wide
 </code></pre></div>
+<h1 id="output_5">output<a class="headerlink" href="#output_5" title="Permanent link">&para;</a></h1>
 <p>Note the <code>SELECTOR</code> column - it will be <code>app=newserver</code>.</p>
 </li>
 <li>
@@ -725,8 +607,10 @@
 <p>Test - traffic should now show the httpd default page instead of nginx.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>curl<span class="w"> </span>http://10.98.148.52
 </code></pre></div>
+<h1 id="output_6">output<a class="headerlink" href="#output_6" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>&lt;html&gt;&lt;body&gt;&lt;h1&gt;It works!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;
 </code></pre></div>
+<h1 id="output_7">output<a class="headerlink" href="#output_7" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Edit the selector back to <code>example: second</code> and test again - nginx returns. Then delete the <code>newserver</code> deployment.</p>
@@ -740,6 +624,7 @@
 <p>Edit <code>newservice.yaml</code> to add a NodePort type and pin the high port to <code>32000</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>vim<span class="w"> </span>newservice.yaml
 </code></pre></div>
+<h1 id="output_8">output<a class="headerlink" href="#output_8" title="Permanent link">&para;</a></h1>
 <p>Add the <code>nodePort</code> and <code>type</code> fields inside <code>ports</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nt">spec</span><span class="p">:</span>
 <a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span><span class="nt">ports</span><span class="p">:</span>
@@ -761,9 +646,11 @@
 <a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>newservice.yaml
 <a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>secondapp
 </code></pre></div>
+<h1 id="output_9">output<a class="headerlink" href="#output_9" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>NAME        TYPE       CLUSTER-IP       PORT(S)
 <a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>secondapp   NodePort   10.109.134.221   80:32000/TCP
 </code></pre></div>
+<h1 id="output_10">output<a class="headerlink" href="#output_10" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Test via the ClusterIP (internal) and via any node IP on port 32000 (external).</p>
@@ -779,6 +666,7 @@
 <p>Edit <code>newservice.yaml</code> and change <code>type: NodePort</code> to <code>type: LoadBalancer</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>vim<span class="w"> </span>newservice.yaml
 </code></pre></div>
+<h1 id="output_11">output<a class="headerlink" href="#output_11" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LoadBalancer</span><span class="w">    </span><span class="c1"># &lt;-- change from NodePort</span>
 </code></pre></div>
 <div class="admonition tip">
@@ -788,17 +676,20 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>svc<span class="w"> </span>secondapp
 <a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>newservice.yaml
 </code></pre></div>
+<h1 id="output_12">output<a class="headerlink" href="#output_12" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Check the service. <code>EXTERNAL-IP</code> will remain <code>&lt;pending&gt;</code> - there is no cloud load balancer in this environment. The NodePort still works.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>secondapp
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>NAME        TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)
-<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>secondapp   LoadBalancer   10.109.26.21    &lt;pending&gt;     80:32000/TCP
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a># output
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>NAME        TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>secondapp   LoadBalancer   10.109.26.21    &lt;pending&gt;     80:32000/TCP
 </code></pre></div>
 <p>Access still works via the NodePort.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>curl<span class="w"> </span>http://worker1:32000
 </code></pre></div>
+<h1 id="output_13">output<a class="headerlink" href="#output_13" title="Permanent link">&para;</a></h1>
 </li>
 </ol>
 <h3 id="coredns-service-discovery">CoreDNS Service Discovery<a class="headerlink" href="#coredns-service-discovery" title="Permanent link">&para;</a></h3>
@@ -833,6 +724,7 @@
 <a id="__codelineno-28-23" name="__codelineno-28-23" href="#__codelineno-28-23"></a>
 <a id="__codelineno-28-24" name="__codelineno-28-24" href="#__codelineno-28-24"></a>/<span class="w"> </span>$<span class="w"> </span><span class="nb">exit</span>
 </code></pre></div>
+<h1 id="output_14">output<a class="headerlink" href="#output_14" title="Permanent link">&para;</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>CoreDNS appends <code>.default.svc.cluster.local</code> when resolving short names. Services in other namespaces require the FQDN: <code>&lt;service&gt;.&lt;namespace&gt;.svc.cluster.local</code>.</p>
@@ -847,13 +739,15 @@
 <a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>multitenant<span class="w"> </span>create<span class="w"> </span>deployment<span class="w"> </span>mainapp<span class="w"> </span>--image<span class="o">=</span>nginx
 <a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>multitenant<span class="w"> </span>expose<span class="w"> </span>deployment<span class="w"> </span>mainapp<span class="w"> </span><span class="se">\</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>--name=shopping --type=NodePort --port=80
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a># output
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>--name=shopping --type=NodePort --port=80
 </code></pre></div>
 </li>
 <li>
 <p>Log back into the <code>busy</code> container and test cross-namespace DNS.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>secondapp<span class="w"> </span>-c<span class="w"> </span>busy<span class="w"> </span>--<span class="w"> </span>sh
 </code></pre></div>
+<h1 id="output_15">output<a class="headerlink" href="#output_15" title="Permanent link">&para;</a></h1>
 <p>Inside:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="c1"># Short name fails - shopping is not in the default namespace</span>
 <a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>/<span class="w"> </span>$<span class="w"> </span>nslookup<span class="w"> </span>shopping
@@ -884,6 +778,7 @@
 <p>Make sure Helm is available.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>helm<span class="w"> </span>version
 </code></pre></div>
+<h1 id="output_16">output<a class="headerlink" href="#output_16" title="Permanent link">&para;</a></h1>
 <p>If not found, install it:</p>
 <div class="admonition tip">
 <p class="admonition-title">Helm version</p>
@@ -899,6 +794,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>helm<span class="w"> </span>repo<span class="w"> </span>add<span class="w"> </span>ingress-nginx<span class="w"> </span>https://kubernetes.github.io/ingress-nginx
 <a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>helm<span class="w"> </span>repo<span class="w"> </span>update
 </code></pre></div>
+<h1 id="output_17">output<a class="headerlink" href="#output_17" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Download the chart and edit <code>values.yaml</code> to use a <code>DaemonSet</code> instead of a <code>Deployment</code> (one ingress pod per node).</p>
@@ -910,35 +806,41 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="c1">## DaemonSet or Deployment</span>
 <a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DaemonSet</span><span class="w">    </span><span class="c1"># &lt;-- change from Deployment</span>
 </code></pre></div>
+<h1 id="output_18">output<a class="headerlink" href="#output_18" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Install the ingress controller using the local chart.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>helm<span class="w"> </span>install<span class="w"> </span>myingress<span class="w"> </span>.
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>NAME: myingress
-<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>STATUS: deployed
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a># output
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>NAME: myingress
+<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a>STATUS: deployed
 </code></pre></div>
 </li>
 <li>
 <p>Verify the controller pods are running - one per node (DaemonSet).</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>--all-namespaces<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>myingress
 </code></pre></div>
+<h1 id="output_19">output<a class="headerlink" href="#output_19" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>default   myingress-ingress-nginx-controller-xxxxx   1/1   Running   0   20s   controller
 <a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>default   myingress-ingress-nginx-controller-yyyyy   1/1   Running   0   20s   worker1
 <a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a>default   myingress-ingress-nginx-controller-zzzzz   1/1   Running   0   20s   worker2
 </code></pre></div>
+<h1 id="output_20">output<a class="headerlink" href="#output_20" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Check the ingress controller service. <code>EXTERNAL-IP</code> will be <code>&lt;pending&gt;</code> - that's expected.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>myingress
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>myingress-ingress-nginx-controller   LoadBalancer   10.104.227.79   &lt;pending&gt;   80:32558/TCP,443:30219/TCP
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a># output
+<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a>myingress-ingress-nginx-controller   LoadBalancer   10.104.227.79   &lt;pending&gt;   80:32558/TCP,443:30219/TCP
 </code></pre></div>
 </li>
 <li>
 <p>Note the pod IPs of the ingress controller pods (these are the IPs you'll use directly for testing).</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-o<span class="w"> </span>wide<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>myingress
 </code></pre></div>
+<h1 id="output_21">output<a class="headerlink" href="#output_21" title="Permanent link">&para;</a></h1>
 </li>
 </ol>
 <h3 id="creating-an-ingress-rule">Creating an Ingress Rule<a class="headerlink" href="#creating-an-ingress-rule" title="Permanent link">&para;</a></h3>
@@ -968,6 +870,7 @@
 <a id="__codelineno-46-19" name="__codelineno-46-19" href="#__codelineno-46-19"></a><span class="w">        </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
 <a id="__codelineno-46-20" name="__codelineno-46-20" href="#__codelineno-46-20"></a><span class="w">        </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ImplementationSpecific</span>
 </code></pre></div>
+<h1 id="output_22">output<a class="headerlink" href="#output_22" title="Permanent link">&para;</a></h1>
 <div class="admonition warning">
 <p class="admonition-title">Old ingress file</p>
 <p>A file called <code>ingress_rule.yaml</code> exists in the lab files - it uses <code>apiVersion: networking.k8s.io/v1beta1</code> which was <strong>removed in Kubernetes 1.22</strong>. Do not use it. Always use <code>ingress.yaml</code> (v1).</p>
@@ -977,13 +880,16 @@
 <p>Copy and apply the ingress rule.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>~/lfd459/ch07-exposing-apps/ingress.yaml
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>ingress.networking.k8s.io/ingress-test created
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a># output
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a>ingress.networking.k8s.io/ingress-test created
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>ingress
 </code></pre></div>
+<h1 id="output_23">output<a class="headerlink" href="#output_23" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>NAME           CLASS   HOSTS             ADDRESS   PORTS   AGE
 <a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a>ingress-test   nginx   www.example.com             80      5s
 </code></pre></div>
+<h1 id="output_24">output<a class="headerlink" href="#output_24" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Test the ingress. Without the correct <code>Host</code> header you get a 404. With the header, nginx responds.</p>
@@ -991,20 +897,25 @@
 <a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a>INGRESS_IP=$(kubectl get pods -o wide | \
 <a id="__codelineno-51-3" name="__codelineno-51-3" href="#__codelineno-51-3"></a>grep myingress | grep controller | awk &#39;NR==1{print $6}&#39;)
 </code></pre></div>
+<h1 id="output_25">output<a class="headerlink" href="#output_25" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="nb">echo</span><span class="w"> </span><span class="nv">$INGRESS_IP</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a># Without Host header - 404 (ingress has no default backend)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a># output
+<a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a># Without Host header - 404 (ingress has no default backend)
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>curl<span class="w"> </span><span class="nv">$INGRESS_IP</span>
 </code></pre></div>
+<h1 id="output_26">output<a class="headerlink" href="#output_26" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>&lt;html&gt;&lt;head&gt;&lt;title&gt;404 Not Found&lt;/title&gt;&lt;/head&gt;...&lt;/html&gt;
 <a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a>
 <a id="__codelineno-55-3" name="__codelineno-55-3" href="#__codelineno-55-3"></a># With matching Host header - nginx welcome page
 </code></pre></div>
+<h1 id="output_27">output<a class="headerlink" href="#output_27" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: www.example.com&quot;</span><span class="w"> </span>http://<span class="nv">$INGRESS_IP</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>&lt;!DOCTYPE html&gt;
-<a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a>&lt;html&gt;&lt;head&gt;&lt;title&gt;Welcome to nginx!&lt;/title&gt;...
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a># output
+<a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a>&lt;!DOCTYPE html&gt;
+<a id="__codelineno-57-3" name="__codelineno-57-3" href="#__codelineno-57-3"></a>&lt;html&gt;&lt;head&gt;&lt;title&gt;Welcome to nginx!&lt;/title&gt;...
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Using ClusterIP instead</p>
@@ -1029,6 +940,7 @@ kubectl expose deployment thirdpage --port=80 --type=NodePort
 <p>Label the pod so it can be targeted (use Tab completion for the pod name).</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a>kubectl<span class="w"> </span>label<span class="w"> </span>pod<span class="w"> </span>thirdpage-&lt;Tab&gt;<span class="w"> </span><span class="nv">example</span><span class="o">=</span>third
 </code></pre></div>
+<h1 id="output_28">output<a class="headerlink" href="#output_28" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Exec into the pod and edit the nginx default page to say "Third Page".</p>
@@ -1038,6 +950,7 @@ kubectl expose deployment thirdpage --port=80 --type=NodePort
 <div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a>root@thirdpage:/#<span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span>-qq<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>vim<span class="w"> </span>-y<span class="w"> </span>-qq
 <a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a>root@thirdpage:/#<span class="w"> </span>vim<span class="w"> </span>/usr/share/nginx/html/index.html
 </code></pre></div>
+<h1 id="output_29">output<a class="headerlink" href="#output_29" title="Permanent link">&para;</a></h1>
 <p>Change <code>&lt;title&gt;Welcome to nginx!&lt;/title&gt;</code> to <code>&lt;title&gt;Third Page&lt;/title&gt;</code>, then exit.</p>
 </li>
 <li>
@@ -1068,6 +981,7 @@ kubectl expose deployment thirdpage --port=80 --type=NodePort
 <a id="__codelineno-63-21" name="__codelineno-63-21" href="#__codelineno-63-21"></a><span class="w">        </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
 <a id="__codelineno-63-22" name="__codelineno-63-22" href="#__codelineno-63-22"></a><span class="w">        </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ImplementationSpecific</span>
 </code></pre></div>
+<h1 id="output_30">output<a class="headerlink" href="#output_30" title="Permanent link">&para;</a></h1>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>Pre-built version available: <code>kubectl replace -f ingress-v2.yaml</code></p>
@@ -1079,13 +993,16 @@ kubectl expose deployment thirdpage --port=80 --type=NodePort
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: thirdpage.org&quot;</span><span class="w"> </span>http://<span class="nv">$INGRESS_IP</span>
 </code></pre></div>
+<h1 id="output_31">output<a class="headerlink" href="#output_31" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a>&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;Third Page&lt;/title&gt;...
 <a id="__codelineno-66-2" name="__codelineno-66-2" href="#__codelineno-66-2"></a>
 <a id="__codelineno-66-3" name="__codelineno-66-3" href="#__codelineno-66-3"></a># Should still show nginx default
 </code></pre></div>
+<h1 id="output_32">output<a class="headerlink" href="#output_32" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-67-1" name="__codelineno-67-1" href="#__codelineno-67-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: www.example.com&quot;</span><span class="w"> </span>http://<span class="nv">$INGRESS_IP</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-68-1" name="__codelineno-68-1" href="#__codelineno-68-1"></a>&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;Welcome to nginx!&lt;/title&gt;...
+<div class="highlight"><pre><span></span><code><a id="__codelineno-68-1" name="__codelineno-68-1" href="#__codelineno-68-1"></a># output
+<a id="__codelineno-68-2" name="__codelineno-68-2" href="#__codelineno-68-2"></a>&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;Welcome to nginx!&lt;/title&gt;...
 </code></pre></div>
 </li>
 <li>
@@ -1135,6 +1052,7 @@ kubectl expose deployment thirdpage --port=80 --type=NodePort
 <a id="__codelineno-69-2" name="__codelineno-69-2" href="#__codelineno-69-2"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>svc<span class="w"> </span>webone-svc<span class="w"> </span>webtwo-svc<span class="w"> </span>--ignore-not-found
 <a id="__codelineno-69-3" name="__codelineno-69-3" href="#__codelineno-69-3"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>ingress<span class="w"> </span>--all<span class="w"> </span>--ignore-not-found
 </code></pre></div>
+<h1 id="output_33">output<a class="headerlink" href="#output_33" title="Permanent link">&para;</a></h1>
 </li>
 </ul>
 

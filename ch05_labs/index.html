@@ -390,61 +390,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#exercise-51-configure-the-deployment-configmaps" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Exercise 5.1: Configure the Deployment - ConfigMaps
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#exercise-52-configure-the-deployment-attaching-storage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Exercise 5.2: Configure the Deployment - Attaching Storage
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#exercise-53-using-configmaps-to-configure-containers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Exercise 5.3: Using ConfigMaps to Configure Containers
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#exercise-54-rolling-updates-and-rollbacks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Exercise 5.4: Rolling Updates and Rollbacks
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#exercise-55-domain-review" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Exercise 5.5: Domain Review
-      
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -560,6 +505,7 @@
 <p><strong>Save a backup of your simpleapp.yaml before starting:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>cp<span class="w"> </span>~/app1/simpleapp.yaml<span class="w"> </span>~/beforeLab5.yaml
 </code></pre></div>
+<h1 id="output">output<a class="headerlink" href="#output" title="Permanent link">&para;</a></h1>
 </div>
 <hr />
 <h2 id="exercise-51-configure-the-deployment-configmaps">Exercise 5.1: Configure the Deployment - ConfigMaps<a class="headerlink" href="#exercise-51-configure-the-deployment-configmaps" title="Permanent link">&para;</a></h2>
@@ -581,6 +527,7 @@
 <a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;known as key&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>primary/black
 <a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="nb">echo</span><span class="w"> </span>blue<span class="w"> </span>&gt;<span class="w"> </span>favorite
 </code></pre></div>
+<h1 id="output_1">output<a class="headerlink" href="#output_1" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Create a ConfigMap called <code>colors</code> using all three ingestion methods at once: a literal, a single file, and a directory.</p>
@@ -589,13 +536,15 @@
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>--from-file<span class="o">=</span>./favorite<span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>--from-file<span class="o">=</span>./primary/
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>configmap/colors created
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a># output
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>configmap/colors created
 </code></pre></div>
 </li>
 <li>
 <p>View the ConfigMap and verify all six keys are present.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>configmap<span class="w"> </span>colors<span class="w"> </span>-o<span class="w"> </span>yaml
 </code></pre></div>
+<h1 id="output_2">output<a class="headerlink" href="#output_2" title="Permanent link">&para;</a></h1>
 <p>You should see keys: <code>black</code>, <code>cyan</code>, <code>favorite</code>, <code>magenta</code>, <code>text</code>, <code>yellow</code>.</p>
 </li>
 <li>
@@ -613,6 +562,7 @@
 <a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">colors</span>
 <a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">        </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">favorite</span>
 </code></pre></div>
+<h1 id="output_3">output<a class="headerlink" href="#output_3" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Delete and recreate the deployment.</p>
@@ -624,15 +574,18 @@
 <p>Verify the <code>ilike</code> environment variable is set inside the container.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
 </code></pre></div>
+<h1 id="output_4">output<a class="headerlink" href="#output_4" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-c<span class="w"> </span>simpleapp<span class="w"> </span>-it<span class="w"> </span>&lt;try1-pod-name&gt;<span class="w"> </span>--<span class="w"> </span>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;echo $ilike&#39;</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>blue
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a># output
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>blue
 </code></pre></div>
 </li>
 <li>
 <p>Edit <code>simpleapp.yaml</code> again to add <code>envFrom</code> so <strong>all</strong> keys from the <code>colors</code> ConfigMap are injected as environment variables.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>vim<span class="w"> </span>~/lfd459/ch03-build/app1/simpleapp.yaml
 </code></pre></div>
+<h1 id="output_5">output<a class="headerlink" href="#output_5" title="Permanent link">&para;</a></h1>
 <p>Add after <code>key: favorite</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="w">      </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">favorite</span>
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w"> </span><span class="w w-Error"> </span><span class="nt">envFrom</span><span class="p">:</span>
@@ -647,15 +600,18 @@
 <a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>~/lfd459/ch03-build/app1/simpleapp.yaml
 <a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;try1-pod-name&gt;<span class="w"> </span>--<span class="w"> </span>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;env&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;ilike|cyan|magenta|yellow|black|text&#39;</span>
 </code></pre></div>
+<h1 id="output_6">output<a class="headerlink" href="#output_6" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Create the <code>fast-car</code> ConfigMap from the provided YAML file.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>car-map.yaml
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>configmap/fast-car created
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a># output
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>configmap/fast-car created
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>configmap<span class="w"> </span>fast-car<span class="w"> </span>-o<span class="w"> </span>yaml
 </code></pre></div>
+<h1 id="output_7">output<a class="headerlink" href="#output_7" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Edit <code>simpleapp.yaml</code> to mount the <code>fast-car</code> ConfigMap as a volume at <code>/etc/cars</code> inside the <code>simpleapp</code> container.</p>
@@ -666,6 +622,7 @@
 <a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/cars</span>
 <a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">car-vol</span>
 </code></pre></div>
+<h1 id="output_8">output<a class="headerlink" href="#output_8" title="Permanent link">&para;</a></h1>
 <p>At the end of the pod <code>spec</code> (after all containers, before <code>status:</code>), add:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="w">  </span><span class="nt">volumes</span><span class="p">:</span>
 <a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">car-vol</span>
@@ -683,6 +640,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1
 <a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>~/lfd459/ch03-build/app1/simpleapp.yaml
 </code></pre></div>
+<h1 id="output_9">output<a class="headerlink" href="#output_9" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>The deployment will show <code>0/6</code> ready because the <code>readinessProbe</code> is still checking for <code>/tmp/healthy</code>. Update the probe to check for <code>/etc/cars</code> instead.</p>
@@ -697,6 +655,7 @@
 <a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/cars</span>
 <a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="w">      </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
 </code></pre></div>
+<h1 id="output_10">output<a class="headerlink" href="#output_10" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>~/lfd459/ch03-build/app1/simpleapp.yaml
 </code></pre></div>
 </li>
@@ -704,17 +663,20 @@
 <p>Wait about a minute. All six pods should show <code>2/2 Running</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
 </code></pre></div>
+<h1 id="output_11">output<a class="headerlink" href="#output_11" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>NAME                         READY   STATUS    RESTARTS   AGE
 <a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>try1-7865dcb948-2dzc8        2/2     Running   0          1m
 <a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>try1-7865dcb948-7fkh7        2/2     Running   0          1m
 <a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>...
 </code></pre></div>
+<h1 id="output_12">output<a class="headerlink" href="#output_12" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Verify the ConfigMap data is visible inside the container as a file.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-c<span class="w"> </span>simpleapp<span class="w"> </span>-it<span class="w"> </span>&lt;try1-pod-name&gt;<span class="w"> </span>--<span class="w"> </span>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;cat /etc/cars/car.trim&#39;</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>Shelby
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a># output
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>Shelby
 </code></pre></div>
 </li>
 </ol>
@@ -726,19 +688,22 @@
 <p>Run the <code>CreateNFS.sh</code> script to install and configure NFS on the <strong>controller</strong> node.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>bash<span class="w"> </span>CreateNFS.sh
 </code></pre></div>
+<h1 id="output_13">output<a class="headerlink" href="#output_13" title="Permanent link">&para;</a></h1>
 <p>The script installs <code>nfs-kernel-server</code>, creates <code>/opt/sfw/</code>, exports it, and creates <code>/opt/sfw/hello.txt</code>. At the end you should see:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>Should be ready. Test here and second node
 <a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>Export list for localhost:
 <a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>/opt/sfw *
 </code></pre></div>
+<h1 id="output_14">output<a class="headerlink" href="#output_14" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Connect to <strong>worker1</strong> and verify the NFS export is visible from the worker.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>nfs-common<span class="w"> </span>nfs-kernel-server
 <a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>showmount<span class="w"> </span>-e<span class="w"> </span>controller
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>Export list for controller:
-<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>/opt/sfw *
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a># output
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>Export list for controller:
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>/opt/sfw *
 </code></pre></div>
 <p>Repeat on <strong>worker2</strong>.</p>
 </li>
@@ -747,9 +712,11 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>sudo<span class="w"> </span>mount<span class="w"> </span>controller:/opt/sfw<span class="w"> </span>/mnt
 <a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>ls<span class="w"> </span>-l<span class="w"> </span>/mnt
 </code></pre></div>
+<h1 id="output_15">output<a class="headerlink" href="#output_15" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>total 4
 <a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>-rw-r--r-- 1 root root 9 ... hello.txt
 </code></pre></div>
+<h1 id="output_16">output<a class="headerlink" href="#output_16" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>sudo<span class="w"> </span>umount<span class="w"> </span>/mnt
 </code></pre></div>
 </li>
@@ -757,19 +724,23 @@
 <p>Return to the <strong>controller</strong>. Verify <code>PVol.yaml</code> has <code>server: controller</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>cat<span class="w"> </span>PVol.yaml
 </code></pre></div>
+<h1 id="output_17">output<a class="headerlink" href="#output_17" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Create the PersistentVolume and verify it shows <code>Available</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>PVol.yaml
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>persistentvolume/pvvol-1 created
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a># output
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>persistentvolume/pvvol-1 created
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pv
 </code></pre></div>
+<h1 id="output_18">output<a class="headerlink" href="#output_18" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>NAME       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS
 <a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>pvvol-1    1Gi        RWX            Retain           Available
 <a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a>...
 </code></pre></div>
+<h1 id="output_19">output<a class="headerlink" href="#output_19" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Check any existing PVCs (from the registry deployment in Chapter 3).</p>
@@ -780,12 +751,15 @@
 <p>Create a PVC using <code>pvc.yaml</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>pvc.yaml
 </code></pre></div>
+<h1 id="output_20">output<a class="headerlink" href="#output_20" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>persistentvolumeclaim/pvc-one created
 </code></pre></div>
+<h1 id="output_21">output<a class="headerlink" href="#output_21" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </span>pvc-one
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>NAME      STATUS   VOLUME    CAPACITY   ACCESS MODES
-<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>pvc-one   Bound    pvvol-1   1Gi        RWX
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a># output
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>NAME      STATUS   VOLUME    CAPACITY   ACCESS MODES
+<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a>pvc-one   Bound    pvvol-1   1Gi        RWX
 </code></pre></div>
 <p>Note the PVC claimed 1Gi even though only 200Mi was requested - Kubernetes uses the smallest available volume that satisfies the request.</p>
 </li>
@@ -793,9 +767,11 @@
 <p>Verify <code>pvvol-1</code> is now <code>Bound</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pv<span class="w"> </span>pvvol-1
 </code></pre></div>
+<h1 id="output_22">output<a class="headerlink" href="#output_22" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>NAME      CAPACITY   ACCESS MODES   STATUS   CLAIM
 <a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a>pvvol-1   1Gi        RWX            Bound    default/pvc-one
 </code></pre></div>
+<h1 id="output_23">output<a class="headerlink" href="#output_23" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Edit <code>~/app1/simpleapp.yaml</code> to add the NFS volume to the <code>simpleapp</code> container.</p>
@@ -805,6 +781,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nfs-vol</span>
 <a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a><span class="w">      </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/opt</span>
 </code></pre></div>
+<h1 id="output_24">output<a class="headerlink" href="#output_24" title="Permanent link">&para;</a></h1>
 <p>In the <code>volumes</code> section, add after the <code>car-vol</code> volume:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nfs-vol</span>
 <a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="w">    </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
@@ -816,15 +793,17 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1
 <a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>~/lfd459/ch03-build/app1/simpleapp.yaml
 </code></pre></div>
+<h1 id="output_25">output<a class="headerlink" href="#output_25" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Verify the NFS volume is mounted under <code>/opt</code> in a pod.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>&lt;try1-pod-name&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A5<span class="w"> </span><span class="s2">&quot;Mounts:&quot;</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>Mounts:
-<a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a>  /etc/cars from car-vol (rw)
-<a id="__codelineno-53-3" name="__codelineno-53-3" href="#__codelineno-53-3"></a>  /opt from nfs-vol (rw)
-<a id="__codelineno-53-4" name="__codelineno-53-4" href="#__codelineno-53-4"></a>  ...
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a># output
+<a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a>Mounts:
+<a id="__codelineno-53-3" name="__codelineno-53-3" href="#__codelineno-53-3"></a>  /etc/cars from car-vol (rw)
+<a id="__codelineno-53-4" name="__codelineno-53-4" href="#__codelineno-53-4"></a>  /opt from nfs-vol (rw)
+<a id="__codelineno-53-5" name="__codelineno-53-5" href="#__codelineno-53-5"></a>  ...
 </code></pre></div>
 </li>
 </ol>
@@ -837,6 +816,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>cp<span class="w"> </span>~/lfd459/ch02-architecture/basic.yaml<span class="w"> </span>.
 <a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a>cat<span class="w"> </span>basic.yaml
 </code></pre></div>
+<h1 id="output_26">output<a class="headerlink" href="#output_26" title="Permanent link">&para;</a></h1>
 <p>It should have two containers: <code>webcont</code> (nginx) and <code>fdlogger</code> (fluentd).</p>
 </li>
 <li>
@@ -848,30 +828,37 @@
 <p>Create the PV using <code>weblog-pv.yaml</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>weblog-pv.yaml
 </code></pre></div>
+<h1 id="output_27">output<a class="headerlink" href="#output_27" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>persistentvolume/weblog-pv-volume created
 </code></pre></div>
+<h1 id="output_28">output<a class="headerlink" href="#output_28" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pv<span class="w"> </span>weblog-pv-volume
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a>NAME               CAPACITY   ACCESS MODES   STATUS
-<a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a>weblog-pv-volume   100Mi      RWO            Available
+<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a># output
+<a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a>NAME               CAPACITY   ACCESS MODES   STATUS
+<a id="__codelineno-59-3" name="__codelineno-59-3" href="#__codelineno-59-3"></a>weblog-pv-volume   100Mi      RWO            Available
 </code></pre></div>
 </li>
 <li>
 <p>Create the PVC using <code>weblog-pvc.yaml</code> and verify it binds to <code>weblog-pv-volume</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>weblog-pvc.yaml
 </code></pre></div>
+<h1 id="output_29">output<a class="headerlink" href="#output_29" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a>persistentvolumeclaim/weblog-pv-claim created
 </code></pre></div>
+<h1 id="output_30">output<a class="headerlink" href="#output_30" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </span>weblog-pv-claim
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a>NAME             STATUS   VOLUME             CAPACITY   STORAGE CLASS
-<a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a>weblog-pv-claim  Bound    weblog-pv-volume   100Mi      manual
+<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a># output
+<a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a>NAME             STATUS   VOLUME             CAPACITY   STORAGE CLASS
+<a id="__codelineno-63-3" name="__codelineno-63-3" href="#__codelineno-63-3"></a>weblog-pv-claim  Bound    weblog-pv-volume   100Mi      manual
 </code></pre></div>
 </li>
 <li>
 <p>Edit <code>basic.yaml</code> to add the shared volume to both containers.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a>vim<span class="w"> </span>basic.yaml
 </code></pre></div>
+<h1 id="output_31">output<a class="headerlink" href="#output_31" title="Permanent link">&para;</a></h1>
 <p>The final file should look like <code>basic.yaml-with-edits</code>. A pre-built version is available as <code>basic-v2.yaml</code> in <code>~/lfd459/ch05-deployment-config/</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
 <a id="__codelineno-65-2" name="__codelineno-65-2" href="#__codelineno-65-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span>
@@ -903,23 +890,28 @@
 <p>Create the pod and open a shell into the <code>webcont</code> container. Verify the nginx access log is a real file and start tailing it.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>basic.yaml
 </code></pre></div>
+<h1 id="output_32">output<a class="headerlink" href="#output_32" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-67-1" name="__codelineno-67-1" href="#__codelineno-67-1"></a>pod/basicpod created
 </code></pre></div>
+<h1 id="output_33">output<a class="headerlink" href="#output_33" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-68-1" name="__codelineno-68-1" href="#__codelineno-68-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-c<span class="w"> </span>webcont<span class="w"> </span>-it<span class="w"> </span>basicpod<span class="w"> </span>--<span class="w"> </span>/bin/bash
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-69-1" name="__codelineno-69-1" href="#__codelineno-69-1"></a>root@basicpod:/# ls -l /var/log/nginx/access.log
-<a id="__codelineno-69-2" name="__codelineno-69-2" href="#__codelineno-69-2"></a>-rw-r--r-- 1 root root 0 ... /var/log/nginx/access.log
-<a id="__codelineno-69-3" name="__codelineno-69-3" href="#__codelineno-69-3"></a>
-<a id="__codelineno-69-4" name="__codelineno-69-4" href="#__codelineno-69-4"></a>root@basicpod:/# tail -f /var/log/nginx/access.log
+<div class="highlight"><pre><span></span><code><a id="__codelineno-69-1" name="__codelineno-69-1" href="#__codelineno-69-1"></a># output
+<a id="__codelineno-69-2" name="__codelineno-69-2" href="#__codelineno-69-2"></a>root@basicpod:/# ls -l /var/log/nginx/access.log
+<a id="__codelineno-69-3" name="__codelineno-69-3" href="#__codelineno-69-3"></a>-rw-r--r-- 1 root root 0 ... /var/log/nginx/access.log
+<a id="__codelineno-69-4" name="__codelineno-69-4" href="#__codelineno-69-4"></a>
+<a id="__codelineno-69-5" name="__codelineno-69-5" href="#__codelineno-69-5"></a>root@basicpod:/# tail -f /var/log/nginx/access.log
 </code></pre></div>
 </li>
 <li>
 <p>Open a <strong>second terminal</strong> on the controller. Get the pod IP and curl the nginx default page.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-70-1" name="__codelineno-70-1" href="#__codelineno-70-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-o<span class="w"> </span>wide
 </code></pre></div>
+<h1 id="output_34">output<a class="headerlink" href="#output_34" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-71-1" name="__codelineno-71-1" href="#__codelineno-71-1"></a>NAME       READY   STATUS    IP               NODE
 <a id="__codelineno-71-2" name="__codelineno-71-2" href="#__codelineno-71-2"></a>basicpod   2/2     Running   10.244.1.23      worker1
 </code></pre></div>
+<h1 id="output_35">output<a class="headerlink" href="#output_35" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-72-1" name="__codelineno-72-1" href="#__codelineno-72-1"></a>curl<span class="w"> </span>http://10.244.1.23
 </code></pre></div>
 <p>You should see a new log entry appear in the tail window in your first terminal. Use <code>Ctrl-C</code> and <code>exit</code> to return to the host.</p>
@@ -928,8 +920,10 @@
 <p>Create the fluentd ConfigMap from <code>weblog-configmap.yaml</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-73-1" name="__codelineno-73-1" href="#__codelineno-73-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>weblog-configmap.yaml
 </code></pre></div>
+<h1 id="output_36">output<a class="headerlink" href="#output_36" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-74-1" name="__codelineno-74-1" href="#__codelineno-74-1"></a>configmap/fluentd-config created
 </code></pre></div>
+<h1 id="output_37">output<a class="headerlink" href="#output_37" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Check the current logs for both containers.</p>
@@ -941,6 +935,7 @@
 <p>Edit <code>basic.yaml</code> to configure the <code>fdlogger</code> container to use the ConfigMap.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-76-1" name="__codelineno-76-1" href="#__codelineno-76-1"></a>vim<span class="w"> </span>basic.yaml
 </code></pre></div>
+<h1 id="output_38">output<a class="headerlink" href="#output_38" title="Permanent link">&para;</a></h1>
 <p>In the <code>volumes</code> section, add after <code>weblog-pv-storage</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-77-1" name="__codelineno-77-1" href="#__codelineno-77-1"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">log-config</span>
 <a id="__codelineno-77-2" name="__codelineno-77-2" href="#__codelineno-77-2"></a><span class="w">    </span><span class="nt">configMap</span><span class="p">:</span>
@@ -962,6 +957,7 @@
 <a id="__codelineno-78-9" name="__codelineno-78-9" href="#__codelineno-78-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">log-config</span>
 <a id="__codelineno-78-10" name="__codelineno-78-10" href="#__codelineno-78-10"></a><span class="w">      </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/fluentd/etc&quot;</span>
 </code></pre></div>
+<h1 id="output_39">output<a class="headerlink" href="#output_39" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Delete and recreate the pod.</p>
@@ -969,8 +965,9 @@
 <a id="__codelineno-79-2" name="__codelineno-79-2" href="#__codelineno-79-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>basic.yaml
 <a id="__codelineno-79-3" name="__codelineno-79-3" href="#__codelineno-79-3"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>basicpod<span class="w"> </span>-o<span class="w"> </span>wide
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-80-1" name="__codelineno-80-1" href="#__codelineno-80-1"></a>NAME       READY   STATUS    IP
-<a id="__codelineno-80-2" name="__codelineno-80-2" href="#__codelineno-80-2"></a>basicpod   2/2     Running   10.244.1.xx
+<div class="highlight"><pre><span></span><code><a id="__codelineno-80-1" name="__codelineno-80-1" href="#__codelineno-80-1"></a># output
+<a id="__codelineno-80-2" name="__codelineno-80-2" href="#__codelineno-80-2"></a>NAME       READY   STATUS    IP
+<a id="__codelineno-80-3" name="__codelineno-80-3" href="#__codelineno-80-3"></a>basicpod   2/2     Running   10.244.1.xx
 </code></pre></div>
 </li>
 <li>
@@ -979,9 +976,11 @@
 <a id="__codelineno-81-2" name="__codelineno-81-2" href="#__codelineno-81-2"></a>curl<span class="w"> </span>http://&lt;basicpod-ip&gt;
 <a id="__codelineno-81-3" name="__codelineno-81-3" href="#__codelineno-81-3"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>basicpod<span class="w"> </span>fdlogger<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-10
 </code></pre></div>
+<h1 id="output_40">output<a class="headerlink" href="#output_40" title="Permanent link">&para;</a></h1>
 <p>Look for lines like:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-82-1" name="__codelineno-82-1" href="#__codelineno-82-1"></a>count.format1: {&quot;message&quot;:&quot;10.244.x.x - - [date] \&quot;GET / HTTP/1.1\&quot; 200 612 ...&quot;}
 </code></pre></div>
+<h1 id="output_41">output<a class="headerlink" href="#output_41" title="Permanent link">&para;</a></h1>
 </li>
 </ol>
 <hr />
@@ -997,6 +996,7 @@
 <a id="__codelineno-84-2" name="__codelineno-84-2" href="#__codelineno-84-2"></a><span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <a id="__codelineno-84-3" name="__codelineno-84-3" href="#__codelineno-84-3"></a><span class="c1">## Adding a new comment so image is different.</span>
 </code></pre></div>
+<h1 id="output_42">output<a class="headerlink" href="#output_42" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Check the current images.</p>
@@ -1007,6 +1007,7 @@
 <p>Build the updated image.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-86-1" name="__codelineno-86-1" href="#__codelineno-86-1"></a>sudo<span class="w"> </span>podman<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>simpleapp<span class="w"> </span>.
 </code></pre></div>
+<h1 id="output_43">output<a class="headerlink" href="#output_43" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Tag and push the updated image as <code>v2</code>.</p>
@@ -1018,8 +1019,10 @@
 <p>Verify the registry now has both <code>latest</code> and <code>v2</code> tagged images.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-88-1" name="__codelineno-88-1" href="#__codelineno-88-1"></a>curl<span class="w"> </span><span class="nv">$repo</span>/v2/simpleapp/tags/list
 </code></pre></div>
+<h1 id="output_44">output<a class="headerlink" href="#output_44" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-89-1" name="__codelineno-89-1" href="#__codelineno-89-1"></a>{&quot;name&quot;:&quot;simpleapp&quot;,&quot;tags&quot;:[&quot;latest&quot;,&quot;v2&quot;]}
 </code></pre></div>
+<h1 id="output_45">output<a class="headerlink" href="#output_45" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Connect to <strong>worker1</strong> and pull both versions to confirm the worker can access them.</p>
@@ -1031,12 +1034,14 @@
 <p>Return to the <strong>controller</strong>. Use <code>kubectl edit</code> to update the <code>try1</code> deployment to use <code>v2</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-91-1" name="__codelineno-91-1" href="#__codelineno-91-1"></a>kubectl<span class="w"> </span>edit<span class="w"> </span>deployment<span class="w"> </span>try1
 </code></pre></div>
+<h1 id="output_46">output<a class="headerlink" href="#output_46" title="Permanent link">&para;</a></h1>
 <p>Change:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-92-1" name="__codelineno-92-1" href="#__codelineno-92-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.97.40.62:5000/simpleapp</span>
 </code></pre></div>
 <p>To:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-93-1" name="__codelineno-93-1" href="#__codelineno-93-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.97.40.62:5000/simpleapp:v2</span>
 </code></pre></div>
+<h1 id="output_47">output<a class="headerlink" href="#output_47" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Watch the rolling update.</p>
@@ -1048,17 +1053,20 @@
 <p>Verify the new pods are using <code>v2</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-95-1" name="__codelineno-95-1" href="#__codelineno-95-1"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>&lt;try1-pod-name&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>Image:
 </code></pre></div>
+<h1 id="output_48">output<a class="headerlink" href="#output_48" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-96-1" name="__codelineno-96-1" href="#__codelineno-96-1"></a>Image:    10.97.40.62:5000/simpleapp:v2
 <a id="__codelineno-96-2" name="__codelineno-96-2" href="#__codelineno-96-2"></a>Image:    registry.k8s.io/goproxy:0.1
 </code></pre></div>
+<h1 id="output_49">output<a class="headerlink" href="#output_49" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>View the rollout history.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-97-1" name="__codelineno-97-1" href="#__codelineno-97-1"></a>kubectl<span class="w"> </span>rollout<span class="w"> </span><span class="nb">history</span><span class="w"> </span>deployment<span class="w"> </span>try1
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-98-1" name="__codelineno-98-1" href="#__codelineno-98-1"></a>REVISION   CHANGE-CAUSE
-<a id="__codelineno-98-2" name="__codelineno-98-2" href="#__codelineno-98-2"></a>1          &lt;none&gt;
-<a id="__codelineno-98-3" name="__codelineno-98-3" href="#__codelineno-98-3"></a>2          &lt;none&gt;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-98-1" name="__codelineno-98-1" href="#__codelineno-98-1"></a># output
+<a id="__codelineno-98-2" name="__codelineno-98-2" href="#__codelineno-98-2"></a>REVISION   CHANGE-CAUSE
+<a id="__codelineno-98-3" name="__codelineno-98-3" href="#__codelineno-98-3"></a>1          &lt;none&gt;
+<a id="__codelineno-98-4" name="__codelineno-98-4" href="#__codelineno-98-4"></a>2          &lt;none&gt;
 </code></pre></div>
 </li>
 <li>
@@ -1067,6 +1075,7 @@
 <a id="__codelineno-99-2" name="__codelineno-99-2" href="#__codelineno-99-2"></a>kubectl<span class="w"> </span>rollout<span class="w"> </span><span class="nb">history</span><span class="w"> </span>deployment<span class="w"> </span>try1<span class="w"> </span>--revision<span class="o">=</span><span class="m">2</span><span class="w"> </span>&gt;<span class="w"> </span>two.out
 <a id="__codelineno-99-3" name="__codelineno-99-3" href="#__codelineno-99-3"></a>diff<span class="w"> </span>one.out<span class="w"> </span>two.out
 </code></pre></div>
+<h1 id="output_50">output<a class="headerlink" href="#output_50" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Preview the rollback without applying it.</p>
@@ -1077,15 +1086,18 @@
 <p>Roll back to revision 1.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-101-1" name="__codelineno-101-1" href="#__codelineno-101-1"></a>kubectl<span class="w"> </span>rollout<span class="w"> </span>undo<span class="w"> </span>deployment<span class="w"> </span>try1<span class="w"> </span>--to-revision<span class="o">=</span><span class="m">1</span>
 </code></pre></div>
+<h1 id="output_51">output<a class="headerlink" href="#output_51" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-102-1" name="__codelineno-102-1" href="#__codelineno-102-1"></a>deployment.apps/try1 rolled back
 </code></pre></div>
+<h1 id="output_52">output<a class="headerlink" href="#output_52" title="Permanent link">&para;</a></h1>
 </li>
 <li>
 <p>Wait for all pods to cycle and verify they are back to the original image.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-103-1" name="__codelineno-103-1" href="#__codelineno-103-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
 <a id="__codelineno-103-2" name="__codelineno-103-2" href="#__codelineno-103-2"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>&lt;try1-pod-name&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>Image:
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-104-1" name="__codelineno-104-1" href="#__codelineno-104-1"></a>Image:    10.97.40.62:5000/simpleapp
+<div class="highlight"><pre><span></span><code><a id="__codelineno-104-1" name="__codelineno-104-1" href="#__codelineno-104-1"></a># output
+<a id="__codelineno-104-2" name="__codelineno-104-2" href="#__codelineno-104-2"></a>Image:    10.97.40.62:5000/simpleapp
 </code></pre></div>
 </li>
 </ol>
@@ -1121,6 +1133,7 @@
 <a id="__codelineno-105-3" name="__codelineno-105-3" href="#__codelineno-105-3"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pvc<span class="w"> </span>reviewpvc<span class="w"> </span>--ignore-not-found
 <a id="__codelineno-105-4" name="__codelineno-105-4" href="#__codelineno-105-4"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pv<span class="w"> </span>reviewvol<span class="w"> </span>--ignore-not-found
 </code></pre></div>
+<h1 id="output_53">output<a class="headerlink" href="#output_53" title="Permanent link">&para;</a></h1>
 </li>
 </ul>
 
