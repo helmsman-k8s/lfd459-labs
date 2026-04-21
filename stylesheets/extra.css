@@ -1,0 +1,5 @@
+/* Output blocks - green on dark */
+.highlight:not(.language-bash):not(.language-yaml):not(.language-python):not(.language-dockerfile) code {
+  background-color: #1a2a1a;
+  color: #98c379;
+}
