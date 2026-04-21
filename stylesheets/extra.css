@@ -1,6 +1,5 @@
-/* Output blocks only - plain ``` blocks with no language */
-.language-none code,
-code.language-none {
+/* Output blocks labeled ```output */
+.language-output code {
   background-color: #1a2a1a !important;
   color: #98c379 !important;
 }
