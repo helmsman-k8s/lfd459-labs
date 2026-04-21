@@ -745,12 +745,13 @@
 <a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>nginx-debug-svc   &lt;none&gt;      10s
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>curl<span class="w"> </span><span class="m">10</span>.111.195.30
-<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>curl:<span class="w"> </span><span class="o">(</span><span class="m">7</span><span class="o">)</span><span class="w"> </span>Failed<span class="w"> </span>to<span class="w"> </span>connect<span class="w"> </span>to<span class="w"> </span><span class="m">10</span>.111.195.30<span class="w"> </span>port<span class="w"> </span><span class="m">80</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>curl: (7) Failed to connect to 10.111.195.30 port 80
 </code></pre></div>
 </li>
 <li>
 <p>Review the pod's probes.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>cat<span class="w"> </span>brokenapp.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>cat<span class="w"> </span>brokenapp.yaml
 </code></pre></div>
 <p>Two things are happening:</p>
 <ul>
@@ -760,16 +761,15 @@
 </li>
 <li>
 <p>Try to exec directly into the pod - it will fail because <code>/bin/bash</code> has been removed.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>pod/nginx-debug-pod<span class="w"> </span>--<span class="w"> </span>bash
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>pod/nginx-debug-pod<span class="w"> </span>--<span class="w"> </span>bash
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>error: Internal error occurred: exec: &quot;bash&quot;: executable file not found in $PATH
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>error: Internal error occurred: exec: &quot;bash&quot;: executable file not found in $PATH
 </code></pre></div>
 </li>
 <li>
 <p>Attach an <strong>ephemeral container</strong> using <code>kubectl debug</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>kubectl<span class="w"> </span>debug<span class="w"> </span>pod/nginx-debug-pod<span class="w"> </span>-it<span class="w"> </span><span class="se">\</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>--image=busybox --target=nginx -- /bin/sh
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>kubectl<span class="w"> </span>debug<span class="w"> </span>pod/nginx-debug-pod<span class="w"> </span>-it<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>--image<span class="o">=</span>busybox<span class="w"> </span>--target<span class="o">=</span>nginx<span class="w"> </span>--<span class="w"> </span>/bin/sh
 </code></pre></div>
 </li>
 <li>
