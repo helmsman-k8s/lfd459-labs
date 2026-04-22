@@ -49,7 +49,7 @@ A SecurityContext restricts what a container process can do - which UID it runs 
     ```
 
     ```
-#output
+    #output
     pod/secondapp created
     ```
 
@@ -58,7 +58,7 @@ A SecurityContext restricts what a container process can do - which UID it runs 
     ```
 
     ```
-#output
+    #output
     NAME         READY   STATUS    RESTARTS   AGE
     secondapp    1/1     Running   0          21s
     ```
@@ -72,7 +72,7 @@ A SecurityContext restricts what a container process can do - which UID it runs 
     Inside the container:
 
     ```
-#output
+    #output
     / $ ps aux
     PID   USER     COMMAND
     1     2000     sleep 3600
@@ -125,7 +125,7 @@ A SecurityContext restricts what a container process can do - which UID it runs 
     Inside:
 
     ```
-#output
+    #output
     / $ grep Cap /proc/1/status
     CapBnd: 00000000aa0435fb
     / $ exit
@@ -150,7 +150,7 @@ Secrets store sensitive data in base64-encoded form. They are consumed like Conf
     ```
 
     ```
-#output
+    #output
     TEZUckAxbgo=
     ```
 
@@ -176,7 +176,7 @@ Secrets store sensitive data in base64-encoded form. They are consumed like Conf
     ```
 
     ```
-#output
+    #output
     secret/lfsecret created
     ```
 
@@ -215,7 +215,7 @@ Secrets store sensitive data in base64-encoded form. They are consumed like Conf
     ```
 
     ```
-#output
+    #output
     NAME         READY   STATUS    RESTARTS   AGE
     secondapp    1/1     Running   0          34s
     ```
@@ -227,7 +227,7 @@ Secrets store sensitive data in base64-encoded form. They are consumed like Conf
     Inside:
 
     ```
-#output
+    #output
     / $ cat /mysqlpassword/password
     LFTr@1n
 
@@ -263,7 +263,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     ```
 
     ```
-#output
+    #output
     serviceaccount/secret-access-sa created
     ```
 
@@ -272,7 +272,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     ```
 
     ```
-#output
+    #output
     NAME               SECRETS   AGE
     default            0         ...
     secret-access-sa   0         34s
@@ -295,7 +295,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     ```
 
     ```
-#output
+    #output
     clusterrole.rbac.authorization.k8s.io/secret-access-cr created
     ```
 
@@ -310,7 +310,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     ```
 
     ```
-#output
+    #output
     rolebinding.rbac.authorization.k8s.io/secret-rb created
     ```
 
@@ -319,7 +319,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     ```
 
     ```
-#output
+    #output
     NAME        AGE
     secret-rb   17s
     ```
@@ -331,7 +331,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     ```
 
     ```
-#output
+    #output
     serviceAccount: default
     serviceAccountName: default
     ```
@@ -361,7 +361,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     ```
 
     ```
-#output
+    #output
     serviceAccount: secret-access-sa
     serviceAccountName: secret-access-sa
     ```
@@ -429,7 +429,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     ```
 
     ```
-#output
+    #output
     NAME        READY   STATUS    RESTARTS   AGE
     secondapp   2/2     Running   0          5s
     ```
@@ -441,7 +441,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     ```
 
     ```
-#output
+    #output
     service/secondapp created
     ```
 
@@ -458,7 +458,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     ```
 
     ```
-#output
+    #output
     NAME        TYPE       CLUSTER-IP      PORT(S)
     secondapp   NodePort   10.97.96.75     80:32000/TCP
     ```
@@ -476,7 +476,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     Inside:
 
     ```
-#output
+    #output
     / $ nc -vz 127.0.0.1 80
     127.0.0.1 (127.0.0.1:80) open
 
@@ -500,7 +500,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     ```
 
     ```
-#output
+    #output
     networkpolicy.networking.k8s.io/deny-default created
     ```
 
@@ -512,7 +512,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     ```
 
     ```
-#output
+    #output
     / $ nc -vz www.linux.com 80
     / $ exit
     ```
@@ -536,7 +536,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     ```
 
     ```
-#output
+    #output
     networkpolicy.networking.k8s.io/deny-default replaced
     ```
 
@@ -614,7 +614,7 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     ```
 
     ```
-#output
+    #output
     networkpolicy.networking.k8s.io "deny-default" deleted
     ```
 

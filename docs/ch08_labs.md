@@ -17,7 +17,7 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
     ```
 
     ```
-#output
+    #output
     NAME        READY   STATUS    RESTARTS   AGE
     secondapp   2/2     Running   49         2d
     ```
@@ -43,7 +43,7 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
     ```
 
     ```
-#output
+    #output
     Conditions:
       Type              Status
       Initialized       True
@@ -73,7 +73,7 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
     Inside:
 
     ```
-#output
+    #output
     / $ nslookup www.linuxfoundation.org
     Server:     10.96.0.10
     Name:       www.linuxfoundation.org
@@ -102,7 +102,7 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
     ```
 
     ```
-#output
+    #output
     NAME         ENDPOINTS
     secondapp    192.168.x.y:80
     ...
@@ -201,7 +201,7 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
     ```
 
     ```
-#output
+    #output
     pod/nginx-debug-pod created
     service/nginx-debug-svc created
     ```
@@ -213,7 +213,7 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
     ```
 
     ```
-#output
+    #output
     NAME                   READY   STATUS    RESTARTS   AGE
     pod/nginx-debug-pod    0/1     Running   0          5s
 
@@ -228,7 +228,7 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
     ```
 
     ```
-#output
+    #output
     NAME              ENDPOINTS   AGE
     nginx-debug-svc   <none>      10s
     ```
@@ -244,7 +244,7 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
     ```
 
     ```
-#output
+    #output
     curl: (7) Failed to connect to <CLUSTER-IP> port 80
     ```
 
@@ -266,7 +266,7 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
     ```
 
     ```
-#output
+    #output
     error: Internal error occurred: exec: "bash": executable file not found in $PATH
     ```
 
@@ -280,7 +280,7 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
 7. Inside the debug container, verify nginx is running as PID 1.
 
     ```
-#output
+    #output
     # ps aux
     PID   USER   COMMAND
     1     root   nginx: master process nginx -g daemon off;
@@ -313,7 +313,7 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
     ```
 
     ```
-#output
+    #output
     NAME                   READY   STATUS    RESTARTS   AGE
     pod/nginx-debug-pod    1/1     Running   0          2m
 
@@ -328,7 +328,7 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
     ```
 
     ```
-#output
+    #output
     <!DOCTYPE html>
     <html><head><title>Welcome to nginx!</title></head>...
     ```
@@ -406,7 +406,7 @@ Revisit the CKAD curriculum for topics covered in this chapter:
     ```
 
     ```
-#output
+    #output
     NAME          READY   UP-TO-DATE   AVAILABLE   AGE
     igottrouble   1/1     1            1           5m13s
     ```

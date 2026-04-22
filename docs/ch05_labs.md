@@ -48,7 +48,7 @@ ConfigMaps decouple configuration from container images. They can be created fro
     ```
 
     ```
-#output
+    #output
     configmap/colors created
     ```
 
@@ -98,7 +98,7 @@ ConfigMaps decouple configuration from container images. They can be created fro
     ```
 
     ```
-#output
+    #output
     blue
     ```
 
@@ -133,7 +133,7 @@ ConfigMaps decouple configuration from container images. They can be created fro
     ```
 
     ```
-#output
+    #output
     configmap/fast-car created
     ```
 
@@ -204,7 +204,7 @@ ConfigMaps decouple configuration from container images. They can be created fro
     ```
 
     ```
-#output
+    #output
     NAME                         READY   STATUS    RESTARTS   AGE
     try1-7865dcb948-2dzc8        2/2     Running   0          1m
     try1-7865dcb948-7fkh7        2/2     Running   0          1m
@@ -218,7 +218,7 @@ ConfigMaps decouple configuration from container images. They can be created fro
     ```
 
     ```
-#output
+    #output
     Shelby
     ```
 
@@ -237,7 +237,7 @@ We will configure an NFS server on the controller node, create a PersistentVolum
     The script installs `nfs-kernel-server`, creates `/opt/sfw/`, exports it, and creates `/opt/sfw/hello.txt`. At the end you should see:
 
     ```
-#output
+    #output
     Should be ready. Test here and second node
     Export list for localhost:
     /opt/sfw *
@@ -251,7 +251,7 @@ We will configure an NFS server on the controller node, create a PersistentVolum
     ```
 
     ```
-#output
+    #output
     Export list for controller:
     /opt/sfw *
     ```
@@ -266,7 +266,7 @@ We will configure an NFS server on the controller node, create a PersistentVolum
     ```
 
     ```
-#output
+    #output
     total 4
     -rw-r--r-- 1 root root 9 ... hello.txt
     ```
@@ -288,7 +288,7 @@ We will configure an NFS server on the controller node, create a PersistentVolum
     ```
 
     ```
-#output
+    #output
     persistentvolume/pvvol-1 created
     ```
 
@@ -297,7 +297,7 @@ We will configure an NFS server on the controller node, create a PersistentVolum
     ```
 
     ```
-#output
+    #output
     NAME       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS
     pvvol-1    1Gi        RWX            Retain           Available
     ...
@@ -316,7 +316,7 @@ We will configure an NFS server on the controller node, create a PersistentVolum
     ```
 
     ```
-#output
+    #output
     persistentvolumeclaim/pvc-one created
     ```
 
@@ -325,7 +325,7 @@ We will configure an NFS server on the controller node, create a PersistentVolum
     ```
 
     ```
-#output
+    #output
     NAME      STATUS   VOLUME    CAPACITY   ACCESS MODES
     pvc-one   Bound    pvvol-1   1Gi        RWX
     ```
@@ -339,7 +339,7 @@ We will configure an NFS server on the controller node, create a PersistentVolum
     ```
 
     ```
-#output
+    #output
     NAME      CAPACITY   ACCESS MODES   STATUS   CLAIM
     pvvol-1   1Gi        RWX            Bound    default/pvc-one
     ```
@@ -379,7 +379,7 @@ We will configure an NFS server on the controller node, create a PersistentVolum
     ```
 
     ```
-#output
+    #output
     Mounts:
       /etc/cars from car-vol (rw)
       /opt from nfs-vol (rw)
@@ -414,7 +414,7 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
     ```
 
     ```
-#output
+    #output
     persistentvolume/weblog-pv-volume created
     ```
 
@@ -423,7 +423,7 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
     ```
 
     ```
-#output
+    #output
     NAME               CAPACITY   ACCESS MODES   STATUS
     weblog-pv-volume   100Mi      RWO            Available
     ```
@@ -435,7 +435,7 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
     ```
 
     ```
-#output
+    #output
     persistentvolumeclaim/weblog-pv-claim created
     ```
 
@@ -444,7 +444,7 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
     ```
 
     ```
-#output
+    #output
     NAME             STATUS   VOLUME             CAPACITY   STORAGE CLASS
     weblog-pv-claim  Bound    weblog-pv-volume   100Mi      manual
     ```
@@ -491,17 +491,17 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
     ```
 
     ```
-#output
+    #output
     pod/basicpod created
     ```
 
     ```bash
     kubectl exec -c webcont -it basicpod -- /bin/bash
+    root@basicpod:/# ls -l /var/log/nginx/access.log
     ```
 
     ```
-#output
-    root@basicpod:/# ls -l /var/log/nginx/access.log
+    #output
     -rw-r--r-- 1 root root 0 ... /var/log/nginx/access.log
 
     root@basicpod:/# tail -f /var/log/nginx/access.log
@@ -514,7 +514,7 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
     ```
 
     ```
-#output
+    #output
     NAME       READY   STATUS    IP               NODE
     basicpod   2/2     Running   10.244.1.23      worker1
     ```
@@ -532,7 +532,7 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
     ```
 
     ```
-#output
+    #output
     configmap/fluentd-config created
     ```
 
@@ -585,7 +585,7 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
     ```
 
     ```
-#output
+    #output
     NAME       READY   STATUS    IP
     basicpod   2/2     Running   10.244.1.xx
     ```
@@ -601,7 +601,7 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
     Look for lines like:
 
     ```
-#output
+    #output
     count.format1: {"message":"10.244.x.x - - [date] \"GET / HTTP/1.1\" 200 612 ..."}
     ```
 
@@ -650,7 +650,7 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
     ```
 
     ```
-#output
+    #output
     {"name":"simpleapp","tags":["latest","v2"]}
     ```
 
@@ -693,7 +693,7 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
     ```
 
     ```
-#output
+    #output
     Image:    10.97.40.62:5000/simpleapp:v2
     Image:    registry.k8s.io/goproxy:0.1
     ```
@@ -705,7 +705,7 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
     ```
 
     ```
-#output
+    #output
     REVISION   CHANGE-CAUSE
     1          <none>
     2          <none>
@@ -732,7 +732,7 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
     ```
 
     ```
-#output
+    #output
     deployment.apps/try1 rolled back
     ```
 
@@ -744,7 +744,7 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
     ```
 
     ```
-#output
+    #output
     Image:    10.97.40.62:5000/simpleapp
     ```
 

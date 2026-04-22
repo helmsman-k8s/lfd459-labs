@@ -21,7 +21,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     ```
 
     ```
-#output
+    #output
     NAME         TYPE        CLUSTER-IP       PORT(S)
     kubernetes   ClusterIP   10.96.0.1        443/TCP
     nginx        ClusterIP   10.108.95.67     443/TCP
@@ -37,7 +37,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     ```
 
     ```
-#output
+    #output
     service "secondapp" deleted
     ```
 
@@ -48,7 +48,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     ```
 
     ```
-#output
+    #output
     service/secondapp created
     ```
 
@@ -57,7 +57,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     ```
 
     ```
-#output
+    #output
     NAME        TYPE        CLUSTER-IP      PORT(S)   AGE
     secondapp   ClusterIP   10.98.148.52    80/TCP    14s
     ```
@@ -77,7 +77,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     ```
 
     ```
-#output
+    #output
     deployment.apps/newserver created
     ```
 
@@ -104,7 +104,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     ```
 
     ```
-#output
+    #output
     <html><body><h1>It works!</h1></body></html>
     ```
 
@@ -147,7 +147,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     ```
 
     ```
-#output
+    #output
     NAME        TYPE       CLUSTER-IP       PORT(S)
     secondapp   NodePort   10.109.134.221   80:32000/TCP
     ```
@@ -187,7 +187,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     ```
 
     ```
-#output
+    #output
     NAME        TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)
     secondapp   LoadBalancer   10.109.26.21    <pending>     80:32000/TCP
     ```
@@ -249,7 +249,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     ```
 
     ```
-#output
+    #output
     --name=shopping --type=NodePort --port=80
     ```
 
@@ -335,7 +335,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```
 
     ```
-#output
+    #output
     NAME: myingress
     STATUS: deployed
     ```
@@ -347,7 +347,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```
 
     ```
-#output
+    #output
     default   myingress-ingress-nginx-controller-xxxxx   1/1   Running   0   20s   controller
     default   myingress-ingress-nginx-controller-yyyyy   1/1   Running   0   20s   worker1
     default   myingress-ingress-nginx-controller-zzzzz   1/1   Running   0   20s   worker2
@@ -360,7 +360,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```
 
     ```
-#output
+    #output
     myingress-ingress-nginx-controller   LoadBalancer   10.104.227.79   <pending>   80:32558/TCP,443:30219/TCP
     ```
 
@@ -411,7 +411,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```
 
     ```
-#output
+    #output
     ingress.networking.k8s.io/ingress-test created
     ```
 
@@ -420,7 +420,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```
 
     ```
-#output
+    #output
     NAME           CLASS   HOSTS             ADDRESS   PORTS   AGE
     ingress-test   nginx   www.example.com             80      5s
     ```
@@ -438,7 +438,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```
 
     ```
-#output
+    #output
     # Without Host header - 404 (ingress has no default backend)
     ```
 
@@ -447,7 +447,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```
 
     ```
-#output
+    #output
     <html><head><title>404 Not Found</title></head>...</html>
 
     # With matching Host header - nginx welcome page
@@ -458,7 +458,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```
 
     ```
-#output
+    #output
     <!DOCTYPE html>
     <html><head><title>Welcome to nginx!</title>...
     ```
@@ -549,7 +549,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```
 
     ```
-#output
+    #output
     <!DOCTYPE html><html><head><title>Third Page</title>...
 
     # Should still show nginx default
@@ -560,7 +560,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```
 
     ```
-#output
+    #output
     <!DOCTYPE html><html><head><title>Welcome to nginx!</title>...
     ```
 

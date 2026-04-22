@@ -51,7 +51,7 @@ In this chapter you will containerize a simple Python application using Podman, 
     ```
 
     ```
-#output
+    #output
     ^CTraceback (most recent call last):
       File "./simple.py", line 24, in <module>
         time.sleep(5)
@@ -65,7 +65,7 @@ In this chapter you will containerize a simple Python application using Podman, 
     ```
 
     ```
-#output
+    #output
     2026-03-18 19:27:50
     controller
     2026-03-18 19:27:55
@@ -103,7 +103,7 @@ In this chapter you will containerize a simple Python application using Podman, 
     ```
 
     ```
-#output
+    #output
     STEP 1/3: FROM docker.io/library/python:3
     Trying to pull docker.io/library/python:3...
     ...
@@ -117,7 +117,7 @@ In this chapter you will containerize a simple Python application using Podman, 
     ```
 
     ```
-#output
+    #output
     REPOSITORY              TAG     IMAGE ID      CREATED        SIZE
     localhost/simpleapp     latest  11d4607c72e0  7 seconds ago  1.04 GB
     docker.io/library/python  3     58a8f3dcd68a  3 days ago     1.04 GB
@@ -130,7 +130,7 @@ In this chapter you will containerize a simple Python application using Podman, 
     ```
 
     ```
-#output
+    #output
     ^CTraceback (most recent call last):
       File "./simple.py", line 24, in <module>
         time.sleep(5)
@@ -144,7 +144,7 @@ In this chapter you will containerize a simple Python application using Podman, 
     ```
 
     ```
-#output
+    #output
     /home/guru/app1/date.out
     /var/lib/containers/storage/overlay/.../diff/date.out
     ```
@@ -156,7 +156,7 @@ In this chapter you will containerize a simple Python application using Podman, 
     ```
 
     ```
-#output
+    #output
     2026-03-18 19:32:20
     b8cec851efca
     2026-03-18 19:32:25
@@ -177,7 +177,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```
 
     ```
-#output
+    #output
     service/nginx created
     service/registry created
     deployment.apps/nginx created
@@ -195,7 +195,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```
 
     ```
-#output
+    #output
     registry   ClusterIP   10.97.40.62   <none>   5000/TCP   5m35s
     ```
 
@@ -209,7 +209,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```
 
     ```
-#output
+    #output
     {"repositories":[]}
     ```
 
@@ -221,7 +221,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```
 
     ```
-#output
+    #output
     Configuring local repo, Please standby
     ...
     Local Repo configured, follow the next steps
@@ -236,7 +236,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```
 
     ```
-#output
+    #output
     Getting image source signatures
     Copying blob b2d5eeeaba3a done
     ...
@@ -251,7 +251,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```
 
     ```
-#output
+    #output
     Trying to pull 10.97.40.62:5000/tagtest:latest...
     ...
     6dbb9cc54074106d46d4ccb330f2a40a682d49dda5f4844962b7dce9fe44aaec
@@ -273,7 +273,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```
 
     ```
-#output
+    #output
     Trying to pull 10.97.40.62:5000/tagtest:latest...
     ...
     ```
@@ -289,7 +289,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```
 
     ```
-#output
+    #output
     Getting image source signatures
     Copying blob 47458fb45d99 done
     ...
@@ -302,7 +302,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```
 
     ```
-#output
+    #output
     {"repositories":["simpleapp","tagtest"]}
     ```
 
@@ -313,7 +313,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```
 
     ```
-#output
+    #output
     deployment.apps/try1 created
     ```
 
@@ -322,7 +322,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```
 
     ```
-#output
+    #output
     deployment.apps/try1 scaled
     ```
 
@@ -331,7 +331,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```
 
     ```
-#output
+    #output
     NAME                   READY  STATUS   RESTARTS  AGE  IP              NODE
     try1-55f675ddd-28vgs   1/1    Running  0         17s  10.244.1.30     worker1
     try1-55f675ddd-4vzt7   1/1    Running  0         17s  10.244.2.100    worker2
@@ -366,7 +366,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```
 
     ```
-#output
+    #output
     deployment.apps "try1" deleted
     ```
 
@@ -375,7 +375,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```
 
     ```
-#output
+    #output
     deployment.apps/try1 created
     ```
 
@@ -384,7 +384,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```
 
     ```
-#output
+    #output
     NAME       READY   UP-TO-DATE   AVAILABLE   AGE
     nginx      1/1     1            1           15m
     registry   1/1     1            1           15m
@@ -432,7 +432,7 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```
 
     ```
-#output
+    #output
     deployment.apps "try1" deleted
     ```
 
@@ -441,7 +441,7 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```
 
     ```
-#output
+    #output
     deployment.apps/try1 created
     ```
 
@@ -452,7 +452,7 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```
 
     ```
-#output
+    #output
     NAME       READY   UP-TO-DATE   AVAILABLE   AGE
     try1       0/6     6            0           15s
     ```
@@ -464,7 +464,7 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```
 
     ```
-#output
+    #output
     NAME                    READY   STATUS    RESTARTS   AGE
     try1-9869bdb88-rtchc    0/1     Running   0          26s
     try1-9869bdb88-2wfnr    0/1     Running   0          26s
@@ -475,11 +475,11 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
 
     ```bash
     kubectl exec -it try1-9869bdb88-rtchc -- /bin/bash
+    root@try1-9869bdb88-rtchc:/# touch /tmp/healthy
     ```
 
     ```
-#output
-    root@try1-9869bdb88-rtchc:/# touch /tmp/healthy
+    #output
     root@try1-9869bdb88-rtchc:/# exit
     ```
 
@@ -490,7 +490,7 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```
 
     ```
-#output
+    #output
     NAME                    READY   STATUS    RESTARTS   AGE
     try1-9869bdb88-rtchc    1/1     Running   0          4m
     try1-9869bdb88-2wfnr    0/1     Running   0          4m
@@ -511,7 +511,7 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```
 
     ```
-#output
+    #output
     NAME                    READY   STATUS    RESTARTS   AGE
     try1-9869bdb88-rtchc    1/1     Running   0          22m
     try1-9869bdb88-2wfnr    1/1     Running   0          22m
@@ -555,7 +555,7 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```
 
     ```
-#output
+    #output
     deployment.apps "try1" deleted
     ```
 
@@ -564,7 +564,7 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```
 
     ```
-#output
+    #output
     deployment.apps/try1 created
     ```
 
@@ -575,7 +575,7 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```
 
     ```
-#output
+    #output
     NAME                      READY   STATUS    RESTARTS   AGE
     try1-76cc5ffcc6-4rjvh     1/2     Running   0          3s
     try1-76cc5ffcc6-bk5f5     1/2     Running   0          3s
@@ -597,7 +597,7 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```
 
     ```
-#output
+    #output
     NAME                      READY   STATUS    RESTARTS   AGE
     try1-76cc5ffcc6-4rjvh     2/2     Running   0          ~1m
     try1-76cc5ffcc6-bk5f5     2/2     Running   0          ~1m
@@ -619,7 +619,7 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```
 
     ```
-#output
+    #output
     State:          Running
     Ready:          True
     State:          Running
@@ -684,7 +684,7 @@ Revisit the CKAD curriculum and locate the topics covered in this chapter:
     You should see a line like:
 
     ```
-#output
+    #output
     192.168.124.0 - - [21/Mar/2026:03:30:31 +0000] "GET / HTTP/1.1" 200 612 "-" "curl/7.58.0"
     ```
 

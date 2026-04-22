@@ -113,7 +113,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
     ```
 
     ```
-#output
+    #output
     job.batch/sleepy created
     ```
 
@@ -124,7 +124,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
     ```
 
     ```
-#output
+    #output
     NAME     COMPLETIONS   DURATION   AGE
     sleepy   0/1           3s         3s
     ```
@@ -134,7 +134,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
     ```
 
     ```
-#output
+    #output
     NAME     COMPLETIONS   DURATION   AGE
     sleepy   1/1           7s         11s
     ```
@@ -158,7 +158,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
     ```
 
     ```
-#output
+    #output
     job.batch "sleepy" deleted
     ```
 
@@ -185,7 +185,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
     ```
 
     ```
-#output
+    #output
     NAME     COMPLETIONS   DURATION   AGE
     sleepy   0/5           5s         5s
     ```
@@ -197,7 +197,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
     ```
 
     ```
-#output
+    #output
     NAME     COMPLETIONS   DURATION   AGE
     sleepy   5/5           26s        10m
     ```
@@ -230,7 +230,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
     ```
 
     ```
-#output
+    #output
     NAME             READY   STATUS    RESTARTS   AGE
     sleepy-8xwpc     1/1     Running   0          5s
     sleepy-xjqnf     1/1     Running   0          5s
@@ -268,7 +268,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
     ```
 
     ```
-#output
+    #output
     NAME     COMPLETIONS   DURATION   AGE
     sleepy   4/5           16s        16s
     ```
@@ -280,7 +280,7 @@ Jobs run a container a set number of times to completion, rather than keeping it
     ```
 
     ```
-#output
+    #output
     status:
       conditions:
       - message: Job was active longer than specified deadline
@@ -337,7 +337,7 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
     ```
 
     ```
-#output
+    #output
     cronjob.batch/sleepy created
     ```
 
@@ -346,7 +346,7 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
     ```
 
     ```
-#output
+    #output
     NAME     SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
     sleepy   */2 * * * *   False     0        <none>          8s
     ```
@@ -358,7 +358,7 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
     ```
 
     ```
-#output
+    #output
     NAME     SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
     sleepy   */2 * * * *   False     0        21s             2m1s
     ```
@@ -368,7 +368,7 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
     ```
 
     ```
-#output
+    #output
     NAME                COMPLETIONS   DURATION   AGE
     sleepy-1539722040   1/1           5s         18s
     ```
@@ -414,7 +414,7 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
     ```
 
     ```
-#output
+    #output
     NAME                COMPLETIONS   DURATION   AGE
     sleepy-1539723240   0/1           61s        61s
     ```
@@ -426,7 +426,7 @@ A CronJob creates Jobs on a recurring schedule using standard Linux cron syntax.
     ```
 
     ```
-#output
+    #output
     cronjob.batch "sleepy" deleted
     ```
 
@@ -443,7 +443,7 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
     ```
 
     ```
-#output
+    #output
     deployment.apps/design2 created
     ```
 
@@ -454,7 +454,7 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
     ```
 
     ```
-#output
+    #output
     NAME      READY   UP-TO-DATE   AVAILABLE   ...   SELECTOR
     design2   1/1     1            1           ...   app=design2
     ```
@@ -466,7 +466,7 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
     ```
 
     ```
-#output
+    #output
     NAME                       READY   STATUS    RESTARTS   AGE
     design2-766d48574f-5w274   1/1     Running   0          3m
     ```
@@ -500,7 +500,7 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
     ```
 
     ```
-#output
+    #output
     design2-766d48574f-5w274   1/1   Running   0   82s
     design2-766d48574f-xttgg   1/1   Running   0   2m12s
     ```
@@ -514,7 +514,7 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
     ```
 
     ```
-#output
+    #output
     deployment.apps "design2" deleted
     ```
 
@@ -525,7 +525,7 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
     ```
 
     ```
-#output
+    #output
     design2-766d48574f-5w274   1/1   Running   0   38m
     ```
 
@@ -536,7 +536,7 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
     ```
 
     ```
-#output
+    #output
     pod "design2-766d48574f-5w274" deleted
     ```
 
@@ -603,7 +603,7 @@ Resource requests tell the scheduler how much CPU/memory a pod needs. Limits cap
     ```
 
     ```
-#output
+    #output
     NAME                           READY   STATUS      RESTARTS   AGE
     stressmeout-7fbbbcc887-v9kvb   0/1     OOMKilled   2          32s
     ```
@@ -644,7 +644,7 @@ Resource requests tell the scheduler how much CPU/memory a pod needs. Limits cap
     ```
 
     ```
-#output
+    #output
     NAME                           READY   STATUS    NODE
     stressmeout-...                1/1     Running   worker1
     ```
@@ -700,7 +700,7 @@ An `initContainer` runs to completion before the main container starts. If it fa
     ```
 
     ```
-#output
+    #output
     NAME           READY   STATUS       RESTARTS   AGE
     init-tester    0/1     Init:Error   2          30s
     ```
@@ -735,7 +735,7 @@ An `initContainer` runs to completion before the main container starts. If it fa
     ```
 
     ```
-#output
+    #output
     NAME           READY   STATUS    RESTARTS   AGE
     init-tester    1/1     Running   0          10s
     ```
@@ -775,7 +775,7 @@ CRDs extend the Kubernetes API with new resource types.
     ```
 
     ```
-#output
+    #output
     No resources found
     ```
 
