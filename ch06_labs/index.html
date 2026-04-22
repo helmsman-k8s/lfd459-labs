@@ -428,6 +428,61 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#exercise-62-create-and-consume-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 6.2: Create and Consume Secrets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise-63-working-with-serviceaccounts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 6.3: Working with ServiceAccounts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise-64-implement-a-networkpolicy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 6.4: Implement a NetworkPolicy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise-65-testing-the-networkpolicy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 6.5: Testing the NetworkPolicy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise-66-domain-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 6.6: Domain Review
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -546,55 +601,52 @@
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>second.yaml
 </code></pre></div>
-<p>```</p>
-<h1 id="output">output<a class="headerlink" href="#output" title="Permanent link">&para;</a></h1>
-<p>pod/secondapp created
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>```bash
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>kubectl get pod secondapp
-</code></pre></div></p>
-<p>```</p>
-<h1 id="output_1">output<a class="headerlink" href="#output_1" title="Permanent link">&para;</a></h1>
-<p>NAME         READY   STATUS    RESTARTS   AGE
-secondapp    1/1     Running   0          21s
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>#output
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>pod/secondapp created
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>secondapp
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>#output
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>NAME         READY   STATUS    RESTARTS   AGE
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>secondapp    1/1     Running   0          21s
+</code></pre></div>
 </li>
 <li>
 <p>Exec into the container and verify the process is running as UID 2000.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>secondapp<span class="w"> </span>--<span class="w"> </span>sh
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>secondapp<span class="w"> </span>--<span class="w"> </span>sh
 </code></pre></div>
 <p>Inside the container:</p>
-<p>```</p>
-<h1 id="output_2">output<a class="headerlink" href="#output_2" title="Permanent link">&para;</a></h1>
-<p>/ $ ps aux
-PID   USER     COMMAND
-1     2000     sleep 3600
-8     2000     sh
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>#output
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>/ $ ps aux
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>PID   USER     COMMAND
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>1     2000     sleep 3600
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>8     2000     sh
+</code></pre></div>
 </li>
 <li>
 <p>Check the current Linux capability bitmask for PID 1.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>/ $ grep Cap /proc/1/status
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>CapBnd: 00000000a80425fb
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>/ $ exit
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>/ $ grep Cap /proc/1/status
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>CapBnd: 00000000a80425fb
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>/ $ exit
 </code></pre></div>
 </li>
 <li>
 <p>Decode the capability bitmask using <code>capsh</code> on the controller.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>capsh<span class="w"> </span>--decode<span class="o">=</span>00000000a80425fb
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>capsh<span class="w"> </span>--decode<span class="o">=</span>00000000a80425fb
 </code></pre></div>
 <p>You should see approximately 14 capabilities including <code>cap_chown</code>, <code>cap_net_bind_service</code>, etc.</p>
 </li>
 <li>
 <p>Delete the pod and edit <code>second.yaml</code> to add two additional Linux capabilities: <code>NET_ADMIN</code> and <code>SYS_TIME</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>secondapp
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>vim<span class="w"> </span>second.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>secondapp
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>vim<span class="w"> </span>second.yaml
 </code></pre></div>
 <p>Add the <code>capabilities</code> block inside the container's <code>securityContext</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="w">    </span><span class="nt">securityContext</span><span class="p">:</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">      </span><span class="nt">runAsUser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2000</span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">      </span><span class="nt">allowPrivilegeEscalation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">      </span><span class="nt">capabilities</span><span class="p">:</span>
-<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">        </span><span class="nt">add</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;NET_ADMIN&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;SYS_TIME&quot;</span><span class="p p-Indicator">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="w">    </span><span class="nt">securityContext</span><span class="p">:</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">      </span><span class="nt">runAsUser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2000</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">      </span><span class="nt">allowPrivilegeEscalation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">      </span><span class="nt">capabilities</span><span class="p">:</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">        </span><span class="nt">add</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;NET_ADMIN&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;SYS_TIME&quot;</span><span class="p p-Indicator">]</span>
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -603,20 +655,19 @@ PID   USER     COMMAND
 </li>
 <li>
 <p>Recreate the pod and check the new capability bitmask.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>second.yaml
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>secondapp<span class="w"> </span>--<span class="w"> </span>sh
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>second.yaml
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>secondapp<span class="w"> </span>--<span class="w"> </span>sh
 </code></pre></div>
 <p>Inside:</p>
-<p>```</p>
-<h1 id="output_3">output<a class="headerlink" href="#output_3" title="Permanent link">&para;</a></h1>
-<p>/ $ grep Cap /proc/1/status
-CapBnd: 00000000aa0435fb
-/ $ exit
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>#output
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>/ $ grep Cap /proc/1/status
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>CapBnd: 00000000aa0435fb
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>/ $ exit
+</code></pre></div>
 </li>
 <li>
 <p>Decode the new bitmask. Confirm <code>cap_net_admin</code> and <code>cap_sys_time</code> are now present (16 capabilities total).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>capsh<span class="w"> </span>--decode<span class="o">=</span>00000000aa0435fb
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>capsh<span class="w"> </span>--decode<span class="o">=</span>00000000aa0435fb
 </code></pre></div>
 </li>
 </ol>
@@ -626,48 +677,46 @@ CapBnd: 00000000aa0435fb
 <ol>
 <li>
 <p>Generate a base64-encoded password.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nb">echo</span><span class="w"> </span>LFTr@1n<span class="w"> </span><span class="p">|</span><span class="w"> </span>base64
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nb">echo</span><span class="w"> </span>LFTr@1n<span class="w"> </span><span class="p">|</span><span class="w"> </span>base64
 </code></pre></div>
-<p>```</p>
-<h1 id="output_4">output<a class="headerlink" href="#output_4" title="Permanent link">&para;</a></h1>
-<p>TEZUckAxbgo=
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>#output
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>TEZUckAxbgo=
+</code></pre></div>
 </li>
 <li>
 <p>Review <code>secret.yaml</code> - it already contains the encoded password.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>cat<span class="w"> </span>secret.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>cat<span class="w"> </span>secret.yaml
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lfsecret</span>
-<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="nt">data</span><span class="p">:</span>
-<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">  </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TEZUckAxbgo=</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lfsecret</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="nt">data</span><span class="p">:</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">  </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TEZUckAxbgo=</span>
 </code></pre></div>
 </li>
 <li>
 <p>Create the secret.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>secret.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>secret.yaml
 </code></pre></div>
-<p>```</p>
-<h1 id="output_5">output<a class="headerlink" href="#output_5" title="Permanent link">&para;</a></h1>
-<p>secret/lfsecret created
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>#output
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>secret/lfsecret created
+</code></pre></div>
 </li>
 <li>
 <p>Edit <code>second.yaml</code> to mount the secret as a volume at <code>/mysqlpassword</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>vim<span class="w"> </span>second.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>vim<span class="w"> </span>second.yaml
 </code></pre></div>
 <p>In the container spec (after the <code>capabilities</code> block):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="w">      </span><span class="nt">volumeMounts</span><span class="p">:</span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mysql</span>
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">        </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/mysqlpassword</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="w">      </span><span class="nt">volumeMounts</span><span class="p">:</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mysql</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">        </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/mysqlpassword</span>
 </code></pre></div>
 <p>At the pod spec level (same depth as <code>containers:</code>):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="w">  </span><span class="nt">volumes</span><span class="p">:</span>
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mysql</span>
-<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">    </span><span class="nt">secret</span><span class="p">:</span>
-<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">      </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lfsecret</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="w">  </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mysql</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">    </span><span class="nt">secret</span><span class="p">:</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">      </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lfsecret</span>
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -676,30 +725,30 @@ CapBnd: 00000000aa0435fb
 </li>
 <li>
 <p>Delete, recreate, and verify the secret is accessible inside the container.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>secondapp
-<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>second.yaml
-<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>secondapp
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>secondapp
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>second.yaml
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>secondapp
 </code></pre></div>
-<p>```</p>
-<h1 id="output_6">output<a class="headerlink" href="#output_6" title="Permanent link">&para;</a></h1>
-<p>NAME         READY   STATUS    RESTARTS   AGE
-secondapp    1/1     Running   0          34s
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>```bash
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>kubectl exec -ti secondapp -- /bin/sh
-</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>#output
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>NAME         READY   STATUS    RESTARTS   AGE
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>secondapp    1/1     Running   0          34s
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-ti<span class="w"> </span>secondapp<span class="w"> </span>--<span class="w"> </span>/bin/sh
+</code></pre></div>
 <p>Inside:</p>
-<p>```</p>
-<h1 id="output_7">output<a class="headerlink" href="#output_7" title="Permanent link">&para;</a></h1>
-<p>/ $ cat /mysqlpassword/password
-LFTr@1n</p>
-<p>/ $ ls -al /mysqlpassword/
-total 4
-drwxrwxrwt  ...  .
-dr-xr-xr-x  ...  ..
-lrwxrwxrwx  ...  ..data -&gt; ..2026_03_19_16_06_41.694089911
-lrwxrwxrwx  ...  password -&gt; ..data/password</p>
-<p>/ $ exit
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>#output
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>/ $ cat /mysqlpassword/password
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>LFTr@1n
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>/ $ ls -al /mysqlpassword/
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>total 4
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a>drwxrwxrwt  ...  .
+<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a>dr-xr-xr-x  ...  ..
+<a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a>lrwxrwxrwx  ...  ..data -&gt; ..2026_03_19_16_06_41.694089911
+<a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a>lrwxrwxrwx  ...  password -&gt; ..data/password
+<a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a>
+<a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a>/ $ exit
+</code></pre></div>
 <p>The mount point uses symlinks - the actual data is in a timestamped directory, and <code>..data</code> is a symlink to it. This allows Kubernetes to atomically update secrets.</p>
 </li>
 </ol>
@@ -709,80 +758,74 @@ lrwxrwxrwx  ...  password -&gt; ..data/password</p>
 <ol>
 <li>
 <p>View existing secrets.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>secrets
-<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>secrets<span class="w"> </span>--all-namespaces
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>secrets
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>secrets<span class="w"> </span>--all-namespaces
 </code></pre></div>
 </li>
 <li>
 <p>Create the ServiceAccount from <code>serviceaccount.yaml</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>serviceaccount.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>serviceaccount.yaml
 </code></pre></div>
-<p>```</p>
-<h1 id="output_8">output<a class="headerlink" href="#output_8" title="Permanent link">&para;</a></h1>
-<p>serviceaccount/secret-access-sa created
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>```bash
-<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>kubectl get serviceaccounts
-</code></pre></div></p>
-<p>```</p>
-<h1 id="output_9">output<a class="headerlink" href="#output_9" title="Permanent link">&para;</a></h1>
-<p>NAME               SECRETS   AGE
-default            0         ...
-secret-access-sa   0         34s
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>#output
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>serviceaccount/secret-access-sa created
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>serviceaccounts
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>#output
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>NAME               SECRETS   AGE
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>default            0         ...
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>secret-access-sa   0         34s
+</code></pre></div>
 </li>
 <li>
 <p>View existing ClusterRoles and compare <code>admin</code> vs <code>cluster-admin</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>clusterroles
-<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>clusterroles<span class="w"> </span>admin<span class="w"> </span>-o<span class="w"> </span>yaml
-<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>kubectl<span class="w"> </span>get<span class="w"> </span>clusterroles<span class="w"> </span>cluster-admin<span class="w"> </span>-o<span class="w"> </span>yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>clusterroles
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>clusterroles<span class="w"> </span>admin<span class="w"> </span>-o<span class="w"> </span>yaml
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>kubectl<span class="w"> </span>get<span class="w"> </span>clusterroles<span class="w"> </span>cluster-admin<span class="w"> </span>-o<span class="w"> </span>yaml
 </code></pre></div>
 <p>Note that <code>cluster-admin</code> uses <code>*</code> (wildcard) for all resources and verbs.</p>
 </li>
 <li>
 <p>Create the <code>secret-access-cr</code> ClusterRole from <code>clusterrole.yaml</code>. It grants only <code>get</code> and <code>list</code> on secrets.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>clusterrole.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>clusterrole.yaml
 </code></pre></div>
-<p>```</p>
-<h1 id="output_10">output<a class="headerlink" href="#output_10" title="Permanent link">&para;</a></h1>
-<p>clusterrole.rbac.authorization.k8s.io/secret-access-cr created
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>```bash
-<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>kubectl get clusterrole secret-access-cr -o yaml
-</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>#output
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>clusterrole.rbac.authorization.k8s.io/secret-access-cr created
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>clusterrole<span class="w"> </span>secret-access-cr<span class="w"> </span>-o<span class="w"> </span>yaml
+</code></pre></div>
 </li>
 <li>
 <p>Bind the ClusterRole to the ServiceAccount using <code>rolebinding.yaml</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>rolebinding.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>rolebinding.yaml
 </code></pre></div>
-<p>```</p>
-<h1 id="output_11">output<a class="headerlink" href="#output_11" title="Permanent link">&para;</a></h1>
-<p>rolebinding.rbac.authorization.k8s.io/secret-rb created
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>```bash
-<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>kubectl get rolebindings
-</code></pre></div></p>
-<p>```</p>
-<h1 id="output_12">output<a class="headerlink" href="#output_12" title="Permanent link">&para;</a></h1>
-<p>NAME        AGE
-secret-rb   17s
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>#output
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>rolebinding.rbac.authorization.k8s.io/secret-rb created
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>rolebindings
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>#output
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>NAME        AGE
+<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a>secret-rb   17s
+</code></pre></div>
 </li>
 <li>
 <p>Verify the current <code>secondapp</code> pod uses the <code>default</code> serviceAccount.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>secondapp<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>serviceAccount
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>secondapp<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>serviceAccount
 </code></pre></div>
-<p>```</p>
-<h1 id="output_13">output<a class="headerlink" href="#output_13" title="Permanent link">&para;</a></h1>
-<p>serviceAccount: default
-serviceAccountName: default
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>#output
+<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a>serviceAccount: default
+<a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a>serviceAccountName: default
+</code></pre></div>
 </li>
 <li>
 <p>Edit <code>~/app2/second.yaml</code> and add <code>serviceAccountName: secret-access-sa</code> to the pod spec.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>vim<span class="w"> </span>second.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>vim<span class="w"> </span>second.yaml
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="w">  </span><span class="nt">serviceAccountName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">secret-access-sa</span><span class="w">   </span><span class="c1"># &lt;-- add this line</span>
-<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="w">  </span><span class="nt">securityContext</span><span class="p">:</span>
-<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="w">    </span><span class="nt">runAsUser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a><span class="w">  </span><span class="nt">serviceAccountName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">secret-access-sa</span><span class="w">   </span><span class="c1"># &lt;-- add this line</span>
+<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a><span class="w">  </span><span class="nt">securityContext</span><span class="p">:</span>
+<a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a><span class="w">    </span><span class="nt">runAsUser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -791,15 +834,14 @@ serviceAccountName: default
 </li>
 <li>
 <p>Delete and recreate. Verify the new serviceAccount is in use.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>secondapp
-<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>~/app2/second.yaml
-<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>secondapp<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>serviceAccount
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>secondapp
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>~/app2/second.yaml
+<a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>secondapp<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>serviceAccount
 </code></pre></div>
-<p>```</p>
-<h1 id="output_14">output<a class="headerlink" href="#output_14" title="Permanent link">&para;</a></h1>
-<p>serviceAccount: secret-access-sa
-serviceAccountName: secret-access-sa
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>#output
+<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a>serviceAccount: secret-access-sa
+<a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a>serviceAccountName: secret-access-sa
+</code></pre></div>
 </li>
 </ol>
 <hr />
@@ -811,92 +853,89 @@ serviceAccountName: secret-access-sa
 <ol>
 <li>
 <p>Review <code>allclosed.yaml</code>. This deny-all policy matches every pod and blocks both ingress and egress.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>cat<span class="w"> </span>allclosed.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>cat<span class="w"> </span>allclosed.yaml
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
-<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NetworkPolicy</span>
-<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deny-default</span>
-<a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a><span class="w">  </span><span class="nt">podSelector</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a><span class="w">  </span><span class="nt">policyTypes</span><span class="p">:</span>
-<a id="__codelineno-34-8" name="__codelineno-34-8" href="#__codelineno-34-8"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<a id="__codelineno-34-9" name="__codelineno-34-9" href="#__codelineno-34-9"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Egress</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NetworkPolicy</span>
+<a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-49-4" name="__codelineno-49-4" href="#__codelineno-49-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deny-default</span>
+<a id="__codelineno-49-5" name="__codelineno-49-5" href="#__codelineno-49-5"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-49-6" name="__codelineno-49-6" href="#__codelineno-49-6"></a><span class="w">  </span><span class="nt">podSelector</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-49-7" name="__codelineno-49-7" href="#__codelineno-49-7"></a><span class="w">  </span><span class="nt">policyTypes</span><span class="p">:</span>
+<a id="__codelineno-49-8" name="__codelineno-49-8" href="#__codelineno-49-8"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<a id="__codelineno-49-9" name="__codelineno-49-9" href="#__codelineno-49-9"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Egress</span>
 </code></pre></div>
 </li>
 <li>
 <p>Delete the existing <code>secondapp</code> pod and rebuild it with a <code>webserver</code> nginx container and a label.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>secondapp
-<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>vim<span class="w"> </span>second.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>secondapp
+<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a>vim<span class="w"> </span>second.yaml
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="w">  </span><span class="nt">serviceAccountName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">secret-access-sa</span>
-<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="c1"># securityContext:        # &lt;-- comment out</span>
-<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="c1">#   runAsUser: 1000       # &lt;-- comment out</span>
-<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a><span class="w">  </span><span class="nt">containers</span><span class="p">:</span>
-<a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webserver</span>
-<a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span><span class="w">          </span><span class="c1"># &lt;-- add this</span>
-<a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">busy</span>
-<a id="__codelineno-36-9" name="__codelineno-36-9" href="#__codelineno-36-9"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">busybox</span>
-<a id="__codelineno-36-10" name="__codelineno-36-10" href="#__codelineno-36-10"></a><span class="w">    </span><span class="nt">command</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a><span class="w">  </span><span class="nt">serviceAccountName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">secret-access-sa</span>
+<a id="__codelineno-51-3" name="__codelineno-51-3" href="#__codelineno-51-3"></a><span class="c1"># securityContext:        # &lt;-- comment out</span>
+<a id="__codelineno-51-4" name="__codelineno-51-4" href="#__codelineno-51-4"></a><span class="c1">#   runAsUser: 1000       # &lt;-- comment out</span>
+<a id="__codelineno-51-5" name="__codelineno-51-5" href="#__codelineno-51-5"></a><span class="w">  </span><span class="nt">containers</span><span class="p">:</span>
+<a id="__codelineno-51-6" name="__codelineno-51-6" href="#__codelineno-51-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webserver</span>
+<a id="__codelineno-51-7" name="__codelineno-51-7" href="#__codelineno-51-7"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span><span class="w">          </span><span class="c1"># &lt;-- add this</span>
+<a id="__codelineno-51-8" name="__codelineno-51-8" href="#__codelineno-51-8"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">busy</span>
+<a id="__codelineno-51-9" name="__codelineno-51-9" href="#__codelineno-51-9"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">busybox</span>
+<a id="__codelineno-51-10" name="__codelineno-51-10" href="#__codelineno-51-10"></a><span class="w">    </span><span class="nt">command</span><span class="p">:</span>
 </code></pre></div>
 <p>Also add <code>labels:</code> in the metadata section:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">secondapp</span>
-<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
-<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="w">    </span><span class="nt">example</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">second</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">secondapp</span>
+<a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
+<a id="__codelineno-52-4" name="__codelineno-52-4" href="#__codelineno-52-4"></a><span class="w">    </span><span class="nt">example</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">second</span>
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>Pre-built version available: <code>kubectl create -f second-v5.yaml</code></p>
 </div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>second.yaml
-<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>second.yaml
+<a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
 </code></pre></div>
-<p>```</p>
-<h1 id="output_15">output<a class="headerlink" href="#output_15" title="Permanent link">&para;</a></h1>
-<p>NAME        READY   STATUS    RESTARTS   AGE
-secondapp   2/2     Running   0          5s
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>#output
+<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a>NAME        READY   STATUS    RESTARTS   AGE
+<a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a>secondapp   2/2     Running   0          5s
+</code></pre></div>
 </li>
 <li>
 <p>Create the NodePort service and set it to port 32000.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>service<span class="w"> </span>nodeport<span class="w"> </span>secondapp<span class="w"> </span>--tcp<span class="o">=</span><span class="m">80</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>service<span class="w"> </span>nodeport<span class="w"> </span>secondapp<span class="w"> </span>--tcp<span class="o">=</span><span class="m">80</span>
 </code></pre></div>
-<p>```</p>
-<h1 id="output_16">output<a class="headerlink" href="#output_16" title="Permanent link">&para;</a></h1>
-<p>service/secondapp created
-<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>Edit the service to change the selector to `example: second` and set the nodePort to `32000`.
-<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>
-<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a>```bash
-<a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a>kubectl edit svc secondapp
-</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>#output
+<a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a>service/secondapp created
+</code></pre></div>
+<p>Edit the service to change the selector to <code>example: second</code> and set the nodePort to <code>32000</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>kubectl<span class="w"> </span>edit<span class="w"> </span>svc<span class="w"> </span>secondapp
+</code></pre></div>
 </li>
 <li>
 <p>Verify the service and test access.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>secondapp
+<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>secondapp
 </code></pre></div>
-<p>```</p>
-<h1 id="output_17">output<a class="headerlink" href="#output_17" title="Permanent link">&para;</a></h1>
-<p>NAME        TYPE       CLUSTER-IP      PORT(S)
-secondapp   NodePort   10.97.96.75     80:32000/TCP
-<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>```bash
-<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a>curl http://10.97.96.75
-</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a>#output
+<a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a>NAME        TYPE       CLUSTER-IP      PORT(S)
+<a id="__codelineno-59-3" name="__codelineno-59-3" href="#__codelineno-59-3"></a>secondapp   NodePort   10.97.96.75     80:32000/TCP
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a>curl<span class="w"> </span>http://10.97.96.75
+</code></pre></div>
 </li>
 <li>
 <p>Test egress from within the container.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>-c<span class="w"> </span>busy<span class="w"> </span>secondapp<span class="w"> </span>--<span class="w"> </span>sh
+<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>-c<span class="w"> </span>busy<span class="w"> </span>secondapp<span class="w"> </span>--<span class="w"> </span>sh
 </code></pre></div>
 <p>Inside:</p>
-<p>```</p>
-<h1 id="output_18">output<a class="headerlink" href="#output_18" title="Permanent link">&para;</a></h1>
-<p>/ $ nc -vz 127.0.0.1 80
-127.0.0.1 (127.0.0.1:80) open</p>
-<p>/ $ nc -vz www.linux.com 80
-www.linux.com (151.101.185.5:80) open</p>
-<p>/ $ exit
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a>#output
+<a id="__codelineno-62-2" name="__codelineno-62-2" href="#__codelineno-62-2"></a>/ $ nc -vz 127.0.0.1 80
+<a id="__codelineno-62-3" name="__codelineno-62-3" href="#__codelineno-62-3"></a>127.0.0.1 (127.0.0.1:80) open
+<a id="__codelineno-62-4" name="__codelineno-62-4" href="#__codelineno-62-4"></a>
+<a id="__codelineno-62-5" name="__codelineno-62-5" href="#__codelineno-62-5"></a>/ $ nc -vz www.linux.com 80
+<a id="__codelineno-62-6" name="__codelineno-62-6" href="#__codelineno-62-6"></a>www.linux.com (151.101.185.5:80) open
+<a id="__codelineno-62-7" name="__codelineno-62-7" href="#__codelineno-62-7"></a>
+<a id="__codelineno-62-8" name="__codelineno-62-8" href="#__codelineno-62-8"></a>/ $ exit
+</code></pre></div>
 </li>
 </ol>
 <hr />
@@ -908,40 +947,37 @@ www.linux.com (151.101.185.5:80) open</p>
 <ol>
 <li>
 <p>Apply the deny-all policy.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>allclosed.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>allclosed.yaml
 </code></pre></div>
-<p>```</p>
-<h1 id="output_19">output<a class="headerlink" href="#output_19" title="Permanent link">&para;</a></h1>
-<p>networkpolicy.networking.k8s.io/deny-default created
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a>#output
+<a id="__codelineno-64-2" name="__codelineno-64-2" href="#__codelineno-64-2"></a>networkpolicy.networking.k8s.io/deny-default created
+</code></pre></div>
 </li>
 <li>
 <p>Test that traffic is now blocked.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>curl<span class="w"> </span>http://10.97.96.75
-<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>-c<span class="w"> </span>busy<span class="w"> </span>secondapp<span class="w"> </span>--<span class="w"> </span>sh
+<div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a>curl<span class="w"> </span>http://10.97.96.75
+<a id="__codelineno-65-2" name="__codelineno-65-2" href="#__codelineno-65-2"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>-c<span class="w"> </span>busy<span class="w"> </span>secondapp<span class="w"> </span>--<span class="w"> </span>sh
 </code></pre></div>
-<p>```</p>
-<h1 id="output_20">output<a class="headerlink" href="#output_20" title="Permanent link">&para;</a></h1>
-<p>/ $ nc -vz www.linux.com 80
-/ $ exit
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a>#output
+<a id="__codelineno-66-2" name="__codelineno-66-2" href="#__codelineno-66-2"></a>/ $ nc -vz www.linux.com 80
+<a id="__codelineno-66-3" name="__codelineno-66-3" href="#__codelineno-66-3"></a>/ $ exit
+</code></pre></div>
 </li>
 <li>
 <p>Update the policy to remove the Egress restriction and replace.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>vim<span class="w"> </span>allclosed.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-67-1" name="__codelineno-67-1" href="#__codelineno-67-1"></a>vim<span class="w"> </span>allclosed.yaml
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="w">  </span><span class="nt">podSelector</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a><span class="w">  </span><span class="nt">policyTypes</span><span class="p">:</span>
-<a id="__codelineno-47-4" name="__codelineno-47-4" href="#__codelineno-47-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<a id="__codelineno-47-5" name="__codelineno-47-5" href="#__codelineno-47-5"></a><span class="c1"># - Egress    # &lt;-- comment out</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-68-1" name="__codelineno-68-1" href="#__codelineno-68-1"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-68-2" name="__codelineno-68-2" href="#__codelineno-68-2"></a><span class="w">  </span><span class="nt">podSelector</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-68-3" name="__codelineno-68-3" href="#__codelineno-68-3"></a><span class="w">  </span><span class="nt">policyTypes</span><span class="p">:</span>
+<a id="__codelineno-68-4" name="__codelineno-68-4" href="#__codelineno-68-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<a id="__codelineno-68-5" name="__codelineno-68-5" href="#__codelineno-68-5"></a><span class="c1"># - Egress    # &lt;-- comment out</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>kubectl<span class="w"> </span>replace<span class="w"> </span>-f<span class="w"> </span>allclosed.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-69-1" name="__codelineno-69-1" href="#__codelineno-69-1"></a>kubectl<span class="w"> </span>replace<span class="w"> </span>-f<span class="w"> </span>allclosed.yaml
 </code></pre></div>
-<p>```</p>
-<h1 id="output_21">output<a class="headerlink" href="#output_21" title="Permanent link">&para;</a></h1>
-<p>networkpolicy.networking.k8s.io/deny-default replaced
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-70-1" name="__codelineno-70-1" href="#__codelineno-70-1"></a>#output
+<a id="__codelineno-70-2" name="__codelineno-70-2" href="#__codelineno-70-2"></a>networkpolicy.networking.k8s.io/deny-default replaced
+</code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>Pre-built version available: <code>kubectl replace -f allclosed-v2.yaml</code></p>
@@ -949,17 +985,17 @@ www.linux.com (151.101.185.5:80) open</p>
 </li>
 <li>
 <p>Get the pod IP, then add an ingress rule to allow traffic from any pod.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>secondapp<span class="w"> </span>-o<span class="w"> </span>wide
+<div class="highlight"><pre><span></span><code><a id="__codelineno-71-1" name="__codelineno-71-1" href="#__codelineno-71-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>secondapp<span class="w"> </span>-o<span class="w"> </span>wide
 </code></pre></div>
 <p>Edit <code>allclosed.yaml</code> to add an ingress rule:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="nt">policyTypes</span><span class="p">:</span>
-<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a><span class="nt">ingress</span><span class="p">:</span>
-<a id="__codelineno-50-4" name="__codelineno-50-4" href="#__codelineno-50-4"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">from</span><span class="p">:</span>
-<a id="__codelineno-50-5" name="__codelineno-50-5" href="#__codelineno-50-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">podSelector</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<a id="__codelineno-50-6" name="__codelineno-50-6" href="#__codelineno-50-6"></a><span class="c1"># - Egress</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-72-1" name="__codelineno-72-1" href="#__codelineno-72-1"></a><span class="nt">policyTypes</span><span class="p">:</span>
+<a id="__codelineno-72-2" name="__codelineno-72-2" href="#__codelineno-72-2"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<a id="__codelineno-72-3" name="__codelineno-72-3" href="#__codelineno-72-3"></a><span class="nt">ingress</span><span class="p">:</span>
+<a id="__codelineno-72-4" name="__codelineno-72-4" href="#__codelineno-72-4"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">from</span><span class="p">:</span>
+<a id="__codelineno-72-5" name="__codelineno-72-5" href="#__codelineno-72-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">podSelector</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-72-6" name="__codelineno-72-6" href="#__codelineno-72-6"></a><span class="c1"># - Egress</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>kubectl<span class="w"> </span>replace<span class="w"> </span>-f<span class="w"> </span>allclosed.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-73-1" name="__codelineno-73-1" href="#__codelineno-73-1"></a>kubectl<span class="w"> </span>replace<span class="w"> </span>-f<span class="w"> </span>allclosed.yaml
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -968,41 +1004,40 @@ www.linux.com (151.101.185.5:80) open</p>
 </li>
 <li>
 <p>Test pod-to-pod ingress with ping using a temporary alpine pod.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>kubectl<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--rm<span class="o">=</span><span class="nb">true</span><span class="w"> </span>--image<span class="w"> </span>alpine<span class="w"> </span>--<span class="w"> </span>ping<span class="w"> </span>-c5<span class="w"> </span>&lt;secondapp-pod-ip&gt;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-74-1" name="__codelineno-74-1" href="#__codelineno-74-1"></a>kubectl<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--rm<span class="o">=</span><span class="nb">true</span><span class="w"> </span>--image<span class="w"> </span>alpine<span class="w"> </span>--<span class="w"> </span>ping<span class="w"> </span>-c5<span class="w"> </span>&lt;secondapp-pod-ip&gt;
 </code></pre></div>
 </li>
 <li>
 <p>Update the policy to only allow TCP port 80, blocking ICMP.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>vim<span class="w"> </span>allclosed.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-75-1" name="__codelineno-75-1" href="#__codelineno-75-1"></a>vim<span class="w"> </span>allclosed.yaml
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a><span class="nt">ingress</span><span class="p">:</span>
-<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">from</span><span class="p">:</span>
-<a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">podSelector</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<a id="__codelineno-54-4" name="__codelineno-54-4" href="#__codelineno-54-4"></a><span class="w">  </span><span class="nt">ports</span><span class="p">:</span>
-<a id="__codelineno-54-5" name="__codelineno-54-5" href="#__codelineno-54-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
-<a id="__codelineno-54-6" name="__codelineno-54-6" href="#__codelineno-54-6"></a><span class="w">    </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TCP</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-76-1" name="__codelineno-76-1" href="#__codelineno-76-1"></a><span class="nt">ingress</span><span class="p">:</span>
+<a id="__codelineno-76-2" name="__codelineno-76-2" href="#__codelineno-76-2"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">from</span><span class="p">:</span>
+<a id="__codelineno-76-3" name="__codelineno-76-3" href="#__codelineno-76-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">podSelector</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-76-4" name="__codelineno-76-4" href="#__codelineno-76-4"></a><span class="w">  </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-76-5" name="__codelineno-76-5" href="#__codelineno-76-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+<a id="__codelineno-76-6" name="__codelineno-76-6" href="#__codelineno-76-6"></a><span class="w">    </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TCP</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>kubectl<span class="w"> </span>replace<span class="w"> </span>-f<span class="w"> </span>allclosed.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-77-1" name="__codelineno-77-1" href="#__codelineno-77-1"></a>kubectl<span class="w"> </span>replace<span class="w"> </span>-f<span class="w"> </span>allclosed.yaml
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>Pre-built version available: <code>kubectl replace -f allclosed-v4.yaml</code></p>
 </div>
 <p>HTTP should be allowed:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>curl<span class="w"> </span>http://10.97.96.75
+<div class="highlight"><pre><span></span><code><a id="__codelineno-78-1" name="__codelineno-78-1" href="#__codelineno-78-1"></a>curl<span class="w"> </span>http://10.97.96.75
 </code></pre></div>
 <p>ICMP should be blocked:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>kubectl<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--rm<span class="o">=</span><span class="nb">true</span><span class="w"> </span>--image<span class="w"> </span>alpine<span class="w"> </span>--<span class="w"> </span>ping<span class="w"> </span>-c5<span class="w"> </span>&lt;secondapp-pod-ip&gt;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-79-1" name="__codelineno-79-1" href="#__codelineno-79-1"></a>kubectl<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--rm<span class="o">=</span><span class="nb">true</span><span class="w"> </span>--image<span class="w"> </span>alpine<span class="w"> </span>--<span class="w"> </span>ping<span class="w"> </span>-c5<span class="w"> </span>&lt;secondapp-pod-ip&gt;
 </code></pre></div>
 </li>
 <li>
 <p>Delete the NetworkPolicy so the registry and other pods remain accessible for future chapters.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>networkpolicies<span class="w"> </span>deny-default
+<div class="highlight"><pre><span></span><code><a id="__codelineno-80-1" name="__codelineno-80-1" href="#__codelineno-80-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>networkpolicies<span class="w"> </span>deny-default
 </code></pre></div>
-<p>```</p>
-<h1 id="output_22">output<a class="headerlink" href="#output_22" title="Permanent link">&para;</a></h1>
-<p>networkpolicy.networking.k8s.io "deny-default" deleted
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-81-1" name="__codelineno-81-1" href="#__codelineno-81-1"></a>#output
+<a id="__codelineno-81-2" name="__codelineno-81-2" href="#__codelineno-81-2"></a>networkpolicy.networking.k8s.io &quot;deny-default&quot; deleted
+</code></pre></div>
 </li>
 </ol>
 <hr />
@@ -1028,14 +1063,14 @@ www.linux.com (151.101.185.5:80) open</p>
 <li>Update <code>netblock</code> to allow ingress traffic on port 80 only. Verify with curl.</li>
 <li>
 <p>Create a pod using <code>security-review1.yaml</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>security-review1.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-82-1" name="__codelineno-82-1" href="#__codelineno-82-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>security-review1.yaml
 </code></pre></div>
 </li>
 <li>
 <p>Check the pod status.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>securityreview
-<a id="__codelineno-60-2" name="__codelineno-60-2" href="#__codelineno-60-2"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>securityreview
-<a id="__codelineno-60-3" name="__codelineno-60-3" href="#__codelineno-60-3"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>securityreview
+<div class="highlight"><pre><span></span><code><a id="__codelineno-83-1" name="__codelineno-83-1" href="#__codelineno-83-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>securityreview
+<a id="__codelineno-83-2" name="__codelineno-83-2" href="#__codelineno-83-2"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>securityreview
+<a id="__codelineno-83-3" name="__codelineno-83-3" href="#__codelineno-83-3"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>securityreview
 </code></pre></div>
 </li>
 <li>
@@ -1044,7 +1079,7 @@ www.linux.com (151.101.185.5:80) open</p>
 <li>Edit <code>security-review1.yaml</code> and set the container <code>runAsUser</code> to the correct nginx UID. Recreate the pod and verify it runs.</li>
 <li>
 <p>Create a new ServiceAccount called <code>securityaccount</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>serviceaccount<span class="w"> </span>securityaccount
+<div class="highlight"><pre><span></span><code><a id="__codelineno-84-1" name="__codelineno-84-1" href="#__codelineno-84-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>serviceaccount<span class="w"> </span>securityaccount
 </code></pre></div>
 </li>
 <li>
@@ -1053,18 +1088,18 @@ www.linux.com (151.101.185.5:80) open</p>
 <li>Bind <code>secrole</code> to <code>securityaccount</code>.</li>
 <li>
 <p>Create a token for <code>securityaccount</code> and save only the token value to <code>/tmp/securitytoken</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>token<span class="w"> </span>securityaccount<span class="w"> </span>&gt;<span class="w"> </span>/tmp/securitytoken
+<div class="highlight"><pre><span></span><code><a id="__codelineno-85-1" name="__codelineno-85-1" href="#__codelineno-85-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>token<span class="w"> </span>securityaccount<span class="w"> </span>&gt;<span class="w"> </span>/tmp/securitytoken
 </code></pre></div>
 </li>
 <li>
 <p>Clean up all resources created during this review.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>nginx<span class="w"> </span>--ignore-not-found
-<a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>svc<span class="w"> </span>nginx<span class="w"> </span>--ignore-not-found
-<a id="__codelineno-63-3" name="__codelineno-63-3" href="#__codelineno-63-3"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>networkpolicy<span class="w"> </span>netblock<span class="w"> </span>--ignore-not-found
-<a id="__codelineno-63-4" name="__codelineno-63-4" href="#__codelineno-63-4"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>securityreview<span class="w"> </span>--ignore-not-found
-<a id="__codelineno-63-5" name="__codelineno-63-5" href="#__codelineno-63-5"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>serviceaccount<span class="w"> </span>securityaccount<span class="w"> </span>--ignore-not-found
-<a id="__codelineno-63-6" name="__codelineno-63-6" href="#__codelineno-63-6"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>clusterrole<span class="w"> </span>secrole<span class="w"> </span>--ignore-not-found
-<a id="__codelineno-63-7" name="__codelineno-63-7" href="#__codelineno-63-7"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>clusterrolebinding<span class="w"> </span>secrole<span class="w"> </span>--ignore-not-found
+<div class="highlight"><pre><span></span><code><a id="__codelineno-86-1" name="__codelineno-86-1" href="#__codelineno-86-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>nginx<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-86-2" name="__codelineno-86-2" href="#__codelineno-86-2"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>svc<span class="w"> </span>nginx<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-86-3" name="__codelineno-86-3" href="#__codelineno-86-3"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>networkpolicy<span class="w"> </span>netblock<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-86-4" name="__codelineno-86-4" href="#__codelineno-86-4"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>securityreview<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-86-5" name="__codelineno-86-5" href="#__codelineno-86-5"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>serviceaccount<span class="w"> </span>securityaccount<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-86-6" name="__codelineno-86-6" href="#__codelineno-86-6"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>clusterrole<span class="w"> </span>secrole<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-86-7" name="__codelineno-86-7" href="#__codelineno-86-7"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>clusterrolebinding<span class="w"> </span>secrole<span class="w"> </span>--ignore-not-found
 </code></pre></div>
 </li>
 </ul>

@@ -364,6 +364,67 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#exercise-32-configure-a-local-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.2: Configure a Local Registry
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise-33-configure-probes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.3: Configure Probes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exercise 3.3: Configure Probes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#readinessprobe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        readinessProbe
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#livenessprobe-and-sidecar-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        livenessProbe and Sidecar Container
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise-34-domain-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.4: Domain Review
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -562,36 +623,34 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>chmod<span class="w"> </span>+x<span class="w"> </span>simple.py
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>./simple.py
 </code></pre></div>
-<p>```</p>
-<h1 id="output">output<a class="headerlink" href="#output" title="Permanent link">&para;</a></h1>
-<p>^CTraceback (most recent call last):
-  File "./simple.py", line 24, in <module>
-    time.sleep(5)
-KeyboardInterrupt
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>#output
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>^CTraceback (most recent call last):
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  File &quot;./simple.py&quot;, line 24, in &lt;module&gt;
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    time.sleep(5)
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>KeyboardInterrupt
+</code></pre></div>
 </li>
 <li>
 <p>Verify the output file was created with hostname and timestamp entries.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cat<span class="w"> </span>date.out
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cat<span class="w"> </span>date.out
 </code></pre></div>
-<p>```</p>
-<h1 id="output_1">output<a class="headerlink" href="#output_1" title="Permanent link">&para;</a></h1>
-<p>2026-03-18 19:27:50
-controller
-2026-03-18 19:27:55
-controller
-...
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>#output
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>2026-03-18 19:27:50
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>controller
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>2026-03-18 19:27:55
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>controller
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>...
+</code></pre></div>
 </li>
 <li>
 <p>Copy the <code>Dockerfile</code> into the app1 directory and review it.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cp<span class="w"> </span>../Dockerfile<span class="w"> </span>.
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>cat<span class="w"> </span>Dockerfile
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>cp<span class="w"> </span>../Dockerfile<span class="w"> </span>.
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>cat<span class="w"> </span>Dockerfile
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">docker.io/library/python:3</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">ADD</span><span class="w"> </span>simple.py<span class="w"> </span>/
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="c">## RUN pip install pystrich</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;python&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;./simple.py&quot;</span><span class="w"> </span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">docker.io/library/python:3</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="k">ADD</span><span class="w"> </span>simple.py<span class="w"> </span>/
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="c">## RUN pip install pystrich</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;python&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;./simple.py&quot;</span><span class="w"> </span><span class="p">]</span>
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -600,65 +659,60 @@ controller
 </li>
 <li>
 <p>Install Podman. Podman is a daemonless container tool compatible with Docker syntax.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>podman
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>podman
 </code></pre></div>
 </li>
 <li>
 <p>Build the container image. The dot (<code>.</code>) at the end means "use the current directory as the build context". When prompted to choose a registry for the <code>python</code> base image, select <code>docker.io</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sudo<span class="w"> </span>podman<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>simpleapp<span class="w"> </span>.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>sudo<span class="w"> </span>podman<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>simpleapp<span class="w"> </span>.
 </code></pre></div>
-<p>```</p>
-<h1 id="output_2">output<a class="headerlink" href="#output_2" title="Permanent link">&para;</a></h1>
-<p>STEP 1/3: FROM docker.io/library/python:3
-Trying to pull docker.io/library/python:3...
-...
-Successfully tagged localhost/simpleapp:latest
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>#output
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>STEP 1/3: FROM docker.io/library/python:3
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>Trying to pull docker.io/library/python:3...
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>...
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>Successfully tagged localhost/simpleapp:latest
+</code></pre></div>
 </li>
 <li>
 <p>Verify the new image appears in the local image list.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sudo<span class="w"> </span>podman<span class="w"> </span>images
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>sudo<span class="w"> </span>podman<span class="w"> </span>images
 </code></pre></div>
-<p>```</p>
-<h1 id="output_3">output<a class="headerlink" href="#output_3" title="Permanent link">&para;</a></h1>
-<p>REPOSITORY              TAG     IMAGE ID      CREATED        SIZE
-localhost/simpleapp     latest  11d4607c72e0  7 seconds ago  1.04 GB
-docker.io/library/python  3     58a8f3dcd68a  3 days ago     1.04 GB
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>#output
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>REPOSITORY              TAG     IMAGE ID      CREATED        SIZE
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>localhost/simpleapp     latest  11d4607c72e0  7 seconds ago  1.04 GB
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>docker.io/library/python  3     58a8f3dcd68a  3 days ago     1.04 GB
+</code></pre></div>
 </li>
 <li>
 <p>Run the container image with Podman. The script will run silently in the foreground. Wait 15 seconds then use <strong>Ctrl-C</strong> to stop it.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>sudo<span class="w"> </span>podman<span class="w"> </span>run<span class="w"> </span>localhost/simpleapp
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>sudo<span class="w"> </span>podman<span class="w"> </span>run<span class="w"> </span>localhost/simpleapp
 </code></pre></div>
-<p>```</p>
-<h1 id="output_4">output<a class="headerlink" href="#output_4" title="Permanent link">&para;</a></h1>
-<p>^CTraceback (most recent call last):
-  File "./simple.py", line 24, in <module>
-    time.sleep(5)
-KeyboardInterrupt
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>#output
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>^CTraceback (most recent call last):
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>  File &quot;./simple.py&quot;, line 24, in &lt;module&gt;
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    time.sleep(5)
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>KeyboardInterrupt
+</code></pre></div>
 </li>
 <li>
 <p>Locate the <code>date.out</code> file that Podman created inside the container's overlay filesystem. Note the container hostname is a random hash, not <code>controller</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>sudo<span class="w"> </span>find<span class="w"> </span>/<span class="w"> </span>-name<span class="w"> </span>date.out
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>sudo<span class="w"> </span>find<span class="w"> </span>/<span class="w"> </span>-name<span class="w"> </span>date.out
 </code></pre></div>
-<p>```</p>
-<h1 id="output_5">output<a class="headerlink" href="#output_5" title="Permanent link">&para;</a></h1>
-<p>/home/guru/app1/date.out
-/var/lib/containers/storage/overlay/.../diff/date.out
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>#output
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>/home/guru/app1/date.out
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>/var/lib/containers/storage/overlay/.../diff/date.out
+</code></pre></div>
 </li>
 <li>
 <p>View the contents of the container's <code>date.out</code> file. Use the full path returned by the find command above.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>sudo<span class="w"> </span>tail<span class="w"> </span>/var/lib/containers/storage/overlay/&lt;hash&gt;/diff/date.out
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>sudo<span class="w"> </span>tail<span class="w"> </span>/var/lib/containers/storage/overlay/&lt;hash&gt;/diff/date.out
 </code></pre></div>
-<p>```</p>
-<h1 id="output_6">output<a class="headerlink" href="#output_6" title="Permanent link">&para;</a></h1>
-<p>2026-03-18 19:32:20
-b8cec851efca
-2026-03-18 19:32:25
-b8cec851efca
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>#output
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>2026-03-18 19:32:20
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>b8cec851efca
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>2026-03-18 19:32:25
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>b8cec851efca
+</code></pre></div>
 </li>
 </ol>
 <hr />
@@ -667,29 +721,27 @@ b8cec851efca
 <ol>
 <li>
 <p>Return to the chapter directory and create the local registry using the provided YAML.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nb">cd</span><span class="w"> </span>~/lfd459/ch03-build
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>easyregistry.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nb">cd</span><span class="w"> </span>~/lfd459/ch03-build
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>easyregistry.yaml
 </code></pre></div>
-<p>```</p>
-<h1 id="output_7">output<a class="headerlink" href="#output_7" title="Permanent link">&para;</a></h1>
-<p>service/nginx created
-service/registry created
-deployment.apps/nginx created
-persistentvolumeclaim/nginx-claim0 created
-deployment.apps/registry created
-persistentvolumeclaim/registry-claim0 created
-persistentvolume/vol1 created
-persistentvolume/vol2 created
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>#output
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>service/nginx created
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>service/registry created
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>deployment.apps/nginx created
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>persistentvolumeclaim/nginx-claim0 created
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>deployment.apps/registry created
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>persistentvolumeclaim/registry-claim0 created
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>persistentvolume/vol1 created
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a>persistentvolume/vol2 created
+</code></pre></div>
 </li>
 <li>
 <p>Note the ClusterIP assigned to the registry service. In this setup it is expected to be <code>10.97.40.62</code> - verify this matches.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>registry
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>registry
 </code></pre></div>
-<p>```</p>
-<h1 id="output_8">output<a class="headerlink" href="#output_8" title="Permanent link">&para;</a></h1>
-<p>registry   ClusterIP   10.97.40.62   <none>   5000/TCP   5m35s
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>#output
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>registry   ClusterIP   10.97.40.62   &lt;none&gt;   5000/TCP   5m35s
+</code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">If the ClusterIP is different</p>
 <p>The <code>easyregistry.yaml</code> hardcodes <code>clusterIP: 10.97.40.62</code>. If a different IP was assigned, delete the service, edit the YAML to match the actual IP, and recreate it. The <code>local-repo-setup.sh</code> script also uses this same IP - edit it before running if needed.</p>
@@ -697,153 +749,140 @@ persistentvolume/vol2 created
 </li>
 <li>
 <p>Verify the registry is responding.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>curl<span class="w"> </span><span class="m">10</span>.97.40.62:5000/v2/_catalog
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>curl<span class="w"> </span><span class="m">10</span>.97.40.62:5000/v2/_catalog
 </code></pre></div>
-<p>```</p>
-<h1 id="output_9">output<a class="headerlink" href="#output_9" title="Permanent link">&para;</a></h1>
-<p>{"repositories":[]}
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>#output
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>{&quot;repositories&quot;:[]}
+</code></pre></div>
 </li>
 <li>
 <p>Configure containerd and Podman on the <strong>controller</strong> to use the local registry over HTTP. Run the setup script (note the dot-space to source it and export the <code>$repo</code> variable into your shell).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>chmod<span class="w"> </span>+x<span class="w"> </span>local-repo-setup.sh
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>.<span class="w"> </span>./local-repo-setup.sh
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>chmod<span class="w"> </span>+x<span class="w"> </span>local-repo-setup.sh
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>.<span class="w"> </span>./local-repo-setup.sh
 </code></pre></div>
-<p>```</p>
-<h1 id="output_10">output<a class="headerlink" href="#output_10" title="Permanent link">&para;</a></h1>
-<p>Configuring local repo, Please standby
-...
-Local Repo configured, follow the next steps
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>#output
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>Configuring local repo, Please standby
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>...
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>Local Repo configured, follow the next steps
+</code></pre></div>
 </li>
 <li>
 <p>Pull a small test image from Docker Hub, tag it for the local registry, and push it.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>sudo<span class="w"> </span>podman<span class="w"> </span>pull<span class="w"> </span>docker.io/library/alpine
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>sudo<span class="w"> </span>podman<span class="w"> </span>tag<span class="w"> </span>alpine<span class="w"> </span><span class="nv">$repo</span>/tagtest
-<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>sudo<span class="w"> </span>podman<span class="w"> </span>push<span class="w"> </span><span class="nv">$repo</span>/tagtest
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>sudo<span class="w"> </span>podman<span class="w"> </span>pull<span class="w"> </span>docker.io/library/alpine
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>sudo<span class="w"> </span>podman<span class="w"> </span>tag<span class="w"> </span>alpine<span class="w"> </span><span class="nv">$repo</span>/tagtest
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>sudo<span class="w"> </span>podman<span class="w"> </span>push<span class="w"> </span><span class="nv">$repo</span>/tagtest
 </code></pre></div>
-<p>```</p>
-<h1 id="output_11">output<a class="headerlink" href="#output_11" title="Permanent link">&para;</a></h1>
-<p>Getting image source signatures
-Copying blob b2d5eeeaba3a done
-...
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>#output
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>Getting image source signatures
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>Copying blob b2d5eeeaba3a done
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>...
+</code></pre></div>
 </li>
 <li>
 <p>Remove the local cached copies of the images, then pull from your local registry to verify it works end-to-end.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>sudo<span class="w"> </span>podman<span class="w"> </span>image<span class="w"> </span>rm<span class="w"> </span>alpine
-<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>sudo<span class="w"> </span>podman<span class="w"> </span>image<span class="w"> </span>rm<span class="w"> </span><span class="nv">$repo</span>/tagtest
-<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>sudo<span class="w"> </span>podman<span class="w"> </span>pull<span class="w"> </span><span class="nv">$repo</span>/tagtest
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>sudo<span class="w"> </span>podman<span class="w"> </span>image<span class="w"> </span>rm<span class="w"> </span>alpine
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>sudo<span class="w"> </span>podman<span class="w"> </span>image<span class="w"> </span>rm<span class="w"> </span><span class="nv">$repo</span>/tagtest
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>sudo<span class="w"> </span>podman<span class="w"> </span>pull<span class="w"> </span><span class="nv">$repo</span>/tagtest
 </code></pre></div>
-<p>```</p>
-<h1 id="output_12">output<a class="headerlink" href="#output_12" title="Permanent link">&para;</a></h1>
-<p>Trying to pull 10.97.40.62:5000/tagtest:latest...
-...
-6dbb9cc54074106d46d4ccb330f2a40a682d49dda5f4844962b7dce9fe44aaec
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>#output
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>Trying to pull 10.97.40.62:5000/tagtest:latest...
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>...
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>6dbb9cc54074106d46d4ccb330f2a40a682d49dda5f4844962b7dce9fe44aaec
+</code></pre></div>
 </li>
 <li>
 <p>Connect to <strong>worker1</strong> in a separate terminal. Install Podman and configure the local registry on the worker node the same way.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>podman
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>scp<span class="w"> </span>guru@controller:~/lfd459/ch03-build/local-repo-setup.sh<span class="w"> </span>~/
-<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>chmod<span class="w"> </span>+x<span class="w"> </span>~/local-repo-setup.sh
-<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>.<span class="w"> </span>~/local-repo-setup.sh
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>podman
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>scp<span class="w"> </span>guru@controller:~/lfd459/ch03-build/local-repo-setup.sh<span class="w"> </span>~/
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>chmod<span class="w"> </span>+x<span class="w"> </span>~/local-repo-setup.sh
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>.<span class="w"> </span>~/local-repo-setup.sh
 </code></pre></div>
 <p>Verify the worker can pull from the registry.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>sudo<span class="w"> </span>podman<span class="w"> </span>pull<span class="w"> </span><span class="nv">$repo</span>/tagtest
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>sudo<span class="w"> </span>podman<span class="w"> </span>pull<span class="w"> </span><span class="nv">$repo</span>/tagtest
 </code></pre></div>
-<p>```</p>
-<h1 id="output_13">output<a class="headerlink" href="#output_13" title="Permanent link">&para;</a></h1>
-<p>Trying to pull 10.97.40.62:5000/tagtest:latest...
-...
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>#output
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>Trying to pull 10.97.40.62:5000/tagtest:latest...
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>...
+</code></pre></div>
 <p>Repeat on <strong>worker2</strong>.</p>
 </li>
 <li>
 <p>Return to the <strong>controller</strong>. Tag and push the <code>simpleapp</code> image to the local registry.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nb">cd</span><span class="w"> </span>app1
-<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>sudo<span class="w"> </span>podman<span class="w"> </span>tag<span class="w"> </span>simpleapp<span class="w"> </span><span class="nv">$repo</span>/simpleapp
-<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>sudo<span class="w"> </span>podman<span class="w"> </span>push<span class="w"> </span><span class="nv">$repo</span>/simpleapp
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="nb">cd</span><span class="w"> </span>app1
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>sudo<span class="w"> </span>podman<span class="w"> </span>tag<span class="w"> </span>simpleapp<span class="w"> </span><span class="nv">$repo</span>/simpleapp
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>sudo<span class="w"> </span>podman<span class="w"> </span>push<span class="w"> </span><span class="nv">$repo</span>/simpleapp
 </code></pre></div>
-<p>```</p>
-<h1 id="output_14">output<a class="headerlink" href="#output_14" title="Permanent link">&para;</a></h1>
-<p>Getting image source signatures
-Copying blob 47458fb45d99 done
-...
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>#output
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>Getting image source signatures
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>Copying blob 47458fb45d99 done
+<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a>...
+</code></pre></div>
 </li>
 <li>
 <p>Verify both images appear in the registry catalog from the controller.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>curl<span class="w"> </span><span class="nv">$repo</span>/v2/_catalog
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>curl<span class="w"> </span><span class="nv">$repo</span>/v2/_catalog
 </code></pre></div>
-<p>```</p>
-<h1 id="output_15">output<a class="headerlink" href="#output_15" title="Permanent link">&para;</a></h1>
-<p>{"repositories":["simpleapp","tagtest"]}
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>#output
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>{&quot;repositories&quot;:[&quot;simpleapp&quot;,&quot;tagtest&quot;]}
+</code></pre></div>
 </li>
 <li>
 <p>Deploy the simpleapp from the local registry and scale it to 6 replicas.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>deployment<span class="w"> </span>try1<span class="w"> </span>--image<span class="o">=</span><span class="nv">$repo</span>/simpleapp
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>deployment<span class="w"> </span>try1<span class="w"> </span>--image<span class="o">=</span><span class="nv">$repo</span>/simpleapp
 </code></pre></div>
-<p>```</p>
-<h1 id="output_16">output<a class="headerlink" href="#output_16" title="Permanent link">&para;</a></h1>
-<p>deployment.apps/try1 created
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>```bash
-<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>kubectl scale deployment try1 --replicas=6
-</code></pre></div></p>
-<p>```</p>
-<h1 id="output_17">output<a class="headerlink" href="#output_17" title="Permanent link">&para;</a></h1>
-<p>deployment.apps/try1 scaled
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>```bash
-<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>kubectl get pod -o wide
-</code></pre></div></p>
-<p>```</p>
-<h1 id="output_18">output<a class="headerlink" href="#output_18" title="Permanent link">&para;</a></h1>
-<p>NAME                   READY  STATUS   RESTARTS  AGE  IP              NODE
-try1-55f675ddd-28vgs   1/1    Running  0         17s  10.244.1.30     worker1
-try1-55f675ddd-4vzt7   1/1    Running  0         17s  10.244.2.100    worker2
-try1-55f675ddd-2nrsj   1/1    Running  0         17s  10.244.0.26     controller
-...
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>#output
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>deployment.apps/try1 created
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>kubectl<span class="w"> </span>scale<span class="w"> </span>deployment<span class="w"> </span>try1<span class="w"> </span>--replicas<span class="o">=</span><span class="m">6</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>#output
+<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a>deployment.apps/try1 scaled
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-o<span class="w"> </span>wide
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>#output
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>NAME                   READY  STATUS   RESTARTS  AGE  IP              NODE
+<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a>try1-55f675ddd-28vgs   1/1    Running  0         17s  10.244.1.30     worker1
+<a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a>try1-55f675ddd-4vzt7   1/1    Running  0         17s  10.244.2.100    worker2
+<a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a>try1-55f675ddd-2nrsj   1/1    Running  0         17s  10.244.0.26     controller
+<a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a>...
+</code></pre></div>
 <p>Pods should spread across all three nodes.</p>
 </li>
 <li>
 <p>On <strong>worker1</strong>, verify the simpleapp containers are running via crictl.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>sudo<span class="w"> </span>crictl<span class="w"> </span>config<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>--set<span class="w"> </span>runtime-endpoint<span class="o">=</span>unix:///run/containerd/containerd.sock<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>--set<span class="w"> </span>image-endpoint<span class="o">=</span>unix:///run/containerd/containerd.sock
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>sudo<span class="w"> </span>crictl<span class="w"> </span>config<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a>--set<span class="w"> </span>runtime-endpoint<span class="o">=</span>unix:///run/containerd/containerd.sock<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a>--set<span class="w"> </span>image-endpoint<span class="o">=</span>unix:///run/containerd/containerd.sock
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>sudo<span class="w"> </span>crictl<span class="w"> </span>ps<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>simple
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>sudo<span class="w"> </span>crictl<span class="w"> </span>ps<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>simple
 </code></pre></div>
 </li>
 <li>
 <p>Return to the <strong>controller</strong>. Save the try1 deployment as a YAML file.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deployment<span class="w"> </span>try1<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span>&gt;<span class="w"> </span>simpleapp.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deployment<span class="w"> </span>try1<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span>&gt;<span class="w"> </span>simpleapp.yaml
 </code></pre></div>
 </li>
 <li>
 <p>Delete and recreate the deployment from the saved YAML. Verify 6/6 replicas are running.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1
 </code></pre></div>
-<p>```</p>
-<h1 id="output_19">output<a class="headerlink" href="#output_19" title="Permanent link">&para;</a></h1>
-<p>deployment.apps "try1" deleted
-<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>```bash
-<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>kubectl create -f simpleapp.yaml
-</code></pre></div></p>
-<p>```</p>
-<h1 id="output_20">output<a class="headerlink" href="#output_20" title="Permanent link">&para;</a></h1>
-<p>deployment.apps/try1 created
-<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>```bash
-<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>kubectl get deployment
-</code></pre></div></p>
-<p>```</p>
-<h1 id="output_21">output<a class="headerlink" href="#output_21" title="Permanent link">&para;</a></h1>
-<p>NAME       READY   UP-TO-DATE   AVAILABLE   AGE
-nginx      1/1     1            1           15m
-registry   1/1     1            1           15m
-try1       6/6     6            6           5s
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>#output
+<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a>deployment.apps &quot;try1&quot; deleted
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>simpleapp.yaml
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>#output
+<a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a>deployment.apps/try1 created
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deployment
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>#output
+<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a>NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+<a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a>nginx      1/1     1            1           15m
+<a id="__codelineno-54-4" name="__codelineno-54-4" href="#__codelineno-54-4"></a>registry   1/1     1            1           15m
+<a id="__codelineno-54-5" name="__codelineno-54-5" href="#__codelineno-54-5"></a>try1       6/6     6            6           5s
+</code></pre></div>
 </li>
 </ol>
 <hr />
@@ -853,21 +892,21 @@ try1       6/6     6            6           5s
 <ol>
 <li>
 <p>Edit <code>simpleapp.yaml</code> and add a <code>readinessProbe</code> to the <code>simpleapp</code> container. The probe runs <code>cat /tmp/healthy</code> - the container is not considered ready until that file exists.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>vim<span class="w"> </span>simpleapp.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>vim<span class="w"> </span>simpleapp.yaml
 </code></pre></div>
 <p>Find the <code>containers:</code> section for the simpleapp container and add the <code>readinessProbe</code> block after the <code>imagePullPolicy</code> line:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="w">  </span><span class="nt">containers</span><span class="p">:</span>
-<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.97.40.62:5000/simpleapp</span>
-<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="w">    </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Always</span>
-<a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simpleapp</span>
-<a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a><span class="w">    </span><span class="nt">readinessProbe</span><span class="p">:</span>
-<a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a><span class="w">      </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
-<a id="__codelineno-34-8" name="__codelineno-34-8" href="#__codelineno-34-8"></a><span class="w">      </span><span class="nt">exec</span><span class="p">:</span>
-<a id="__codelineno-34-9" name="__codelineno-34-9" href="#__codelineno-34-9"></a><span class="w">        </span><span class="nt">command</span><span class="p">:</span>
-<a id="__codelineno-34-10" name="__codelineno-34-10" href="#__codelineno-34-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cat</span>
-<a id="__codelineno-34-11" name="__codelineno-34-11" href="#__codelineno-34-11"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/tmp/healthy</span>
-<a id="__codelineno-34-12" name="__codelineno-34-12" href="#__codelineno-34-12"></a><span class="w">    </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a><span class="w">  </span><span class="nt">containers</span><span class="p">:</span>
+<a id="__codelineno-56-3" name="__codelineno-56-3" href="#__codelineno-56-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.97.40.62:5000/simpleapp</span>
+<a id="__codelineno-56-4" name="__codelineno-56-4" href="#__codelineno-56-4"></a><span class="w">    </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Always</span>
+<a id="__codelineno-56-5" name="__codelineno-56-5" href="#__codelineno-56-5"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simpleapp</span>
+<a id="__codelineno-56-6" name="__codelineno-56-6" href="#__codelineno-56-6"></a><span class="w">    </span><span class="nt">readinessProbe</span><span class="p">:</span>
+<a id="__codelineno-56-7" name="__codelineno-56-7" href="#__codelineno-56-7"></a><span class="w">      </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<a id="__codelineno-56-8" name="__codelineno-56-8" href="#__codelineno-56-8"></a><span class="w">      </span><span class="nt">exec</span><span class="p">:</span>
+<a id="__codelineno-56-9" name="__codelineno-56-9" href="#__codelineno-56-9"></a><span class="w">        </span><span class="nt">command</span><span class="p">:</span>
+<a id="__codelineno-56-10" name="__codelineno-56-10" href="#__codelineno-56-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cat</span>
+<a id="__codelineno-56-11" name="__codelineno-56-11" href="#__codelineno-56-11"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/tmp/healthy</span>
+<a id="__codelineno-56-12" name="__codelineno-56-12" href="#__codelineno-56-12"></a><span class="w">    </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -876,103 +915,96 @@ try1       6/6     6            6           5s
 </li>
 <li>
 <p>Delete and recreate the deployment.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1
 </code></pre></div>
-<p>```</p>
-<h1 id="output_22">output<a class="headerlink" href="#output_22" title="Permanent link">&para;</a></h1>
-<p>deployment.apps "try1" deleted
-<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>```bash
-<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>kubectl create -f simpleapp.yaml
-</code></pre></div></p>
-<p>```</p>
-<h1 id="output_23">output<a class="headerlink" href="#output_23" title="Permanent link">&para;</a></h1>
-<p>deployment.apps/try1 created
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>#output
+<a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a>deployment.apps &quot;try1&quot; deleted
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>simpleapp.yaml
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a>#output
+<a id="__codelineno-60-2" name="__codelineno-60-2" href="#__codelineno-60-2"></a>deployment.apps/try1 created
+</code></pre></div>
 </li>
 <li>
 <p>The deployment shows 6 pods but <strong>0 available</strong> - all are waiting for <code>/tmp/healthy</code> to exist.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deployment
+<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deployment
 </code></pre></div>
-<p>```</p>
-<h1 id="output_24">output<a class="headerlink" href="#output_24" title="Permanent link">&para;</a></h1>
-<p>NAME       READY   UP-TO-DATE   AVAILABLE   AGE
-try1       0/6     6            0           15s
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a>#output
+<a id="__codelineno-62-2" name="__codelineno-62-2" href="#__codelineno-62-2"></a>NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+<a id="__codelineno-62-3" name="__codelineno-62-3" href="#__codelineno-62-3"></a>try1       0/6     6            0           15s
+</code></pre></div>
 </li>
 <li>
 <p>Check the pods. Each try1 pod shows <code>0/1</code> in READY - the readinessProbe is failing.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
+<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
 </code></pre></div>
-<p>```</p>
-<h1 id="output_25">output<a class="headerlink" href="#output_25" title="Permanent link">&para;</a></h1>
-<p>NAME                    READY   STATUS    RESTARTS   AGE
-try1-9869bdb88-rtchc    0/1     Running   0          26s
-try1-9869bdb88-2wfnr    0/1     Running   0          26s
-...
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a>#output
+<a id="__codelineno-64-2" name="__codelineno-64-2" href="#__codelineno-64-2"></a>NAME                    READY   STATUS    RESTARTS   AGE
+<a id="__codelineno-64-3" name="__codelineno-64-3" href="#__codelineno-64-3"></a>try1-9869bdb88-rtchc    0/1     Running   0          26s
+<a id="__codelineno-64-4" name="__codelineno-64-4" href="#__codelineno-64-4"></a>try1-9869bdb88-2wfnr    0/1     Running   0          26s
+<a id="__codelineno-64-5" name="__codelineno-64-5" href="#__codelineno-64-5"></a>...
+</code></pre></div>
 </li>
 <li>
 <p>Exec into one pod and create the health check file.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>try1-9869bdb88-rtchc<span class="w"> </span>--<span class="w"> </span>/bin/bash
+<div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>try1-9869bdb88-rtchc<span class="w"> </span>--<span class="w"> </span>/bin/bash
+<a id="__codelineno-65-2" name="__codelineno-65-2" href="#__codelineno-65-2"></a>root@try1-9869bdb88-rtchc:/#<span class="w"> </span>touch<span class="w"> </span>/tmp/healthy
 </code></pre></div>
-<p>```</p>
-<h1 id="output_26">output<a class="headerlink" href="#output_26" title="Permanent link">&para;</a></h1>
-<p>root@try1-9869bdb88-rtchc:/# touch /tmp/healthy
-root@try1-9869bdb88-rtchc:/# exit
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a>#output
+<a id="__codelineno-66-2" name="__codelineno-66-2" href="#__codelineno-66-2"></a>root@try1-9869bdb88-rtchc:/# exit
+</code></pre></div>
 </li>
 <li>
 <p>Wait at least 5 seconds (the <code>periodSeconds</code>), then check pods again. The pod you touched should now show <code>1/1</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
+<div class="highlight"><pre><span></span><code><a id="__codelineno-67-1" name="__codelineno-67-1" href="#__codelineno-67-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
 </code></pre></div>
-<p>```</p>
-<h1 id="output_27">output<a class="headerlink" href="#output_27" title="Permanent link">&para;</a></h1>
-<p>NAME                    READY   STATUS    RESTARTS   AGE
-try1-9869bdb88-rtchc    1/1     Running   0          4m
-try1-9869bdb88-2wfnr    0/1     Running   0          4m
-...
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-68-1" name="__codelineno-68-1" href="#__codelineno-68-1"></a>#output
+<a id="__codelineno-68-2" name="__codelineno-68-2" href="#__codelineno-68-2"></a>NAME                    READY   STATUS    RESTARTS   AGE
+<a id="__codelineno-68-3" name="__codelineno-68-3" href="#__codelineno-68-3"></a>try1-9869bdb88-rtchc    1/1     Running   0          4m
+<a id="__codelineno-68-4" name="__codelineno-68-4" href="#__codelineno-68-4"></a>try1-9869bdb88-2wfnr    0/1     Running   0          4m
+<a id="__codelineno-68-5" name="__codelineno-68-5" href="#__codelineno-68-5"></a>...
+</code></pre></div>
 </li>
 <li>
 <p>Use a <code>for</code> loop to touch <code>/tmp/healthy</code> in all remaining pods at once.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="k">for</span><span class="w"> </span>name<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>try1<span class="w"> </span>-o<span class="w"> </span>name<span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="k">do</span><span class="w"> </span>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span><span class="nv">$name</span><span class="w"> </span>--<span class="w"> </span>touch<span class="w"> </span>/tmp/healthy<span class="p">;</span><span class="w"> </span><span class="k">done</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-69-1" name="__codelineno-69-1" href="#__codelineno-69-1"></a><span class="k">for</span><span class="w"> </span>name<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>try1<span class="w"> </span>-o<span class="w"> </span>name<span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-69-2" name="__codelineno-69-2" href="#__codelineno-69-2"></a><span class="k">do</span><span class="w"> </span>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span><span class="nv">$name</span><span class="w"> </span>--<span class="w"> </span>touch<span class="w"> </span>/tmp/healthy<span class="p">;</span><span class="w"> </span><span class="k">done</span>
 </code></pre></div>
 </li>
 <li>
 <p>Wait a few seconds, then verify all 6 pods are now <code>1/1 Ready</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
+<div class="highlight"><pre><span></span><code><a id="__codelineno-70-1" name="__codelineno-70-1" href="#__codelineno-70-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
 </code></pre></div>
-<p>```</p>
-<h1 id="output_28">output<a class="headerlink" href="#output_28" title="Permanent link">&para;</a></h1>
-<p>NAME                    READY   STATUS    RESTARTS   AGE
-try1-9869bdb88-rtchc    1/1     Running   0          22m
-try1-9869bdb88-2wfnr    1/1     Running   0          22m
-...
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-71-1" name="__codelineno-71-1" href="#__codelineno-71-1"></a>#output
+<a id="__codelineno-71-2" name="__codelineno-71-2" href="#__codelineno-71-2"></a>NAME                    READY   STATUS    RESTARTS   AGE
+<a id="__codelineno-71-3" name="__codelineno-71-3" href="#__codelineno-71-3"></a>try1-9869bdb88-rtchc    1/1     Running   0          22m
+<a id="__codelineno-71-4" name="__codelineno-71-4" href="#__codelineno-71-4"></a>try1-9869bdb88-2wfnr    1/1     Running   0          22m
+<a id="__codelineno-71-5" name="__codelineno-71-5" href="#__codelineno-71-5"></a>...
+</code></pre></div>
 </li>
 </ol>
 <h3 id="livenessprobe-and-sidecar-container">livenessProbe and Sidecar Container<a class="headerlink" href="#livenessprobe-and-sidecar-container" title="Permanent link">&para;</a></h3>
 <ol>
 <li>
 <p>Edit <code>simpleapp.yaml</code> again to add a <code>livenessProbe</code> and a second sidecar container (<code>goproxy</code>). Find the end of the simpleapp container definition and add the goproxy container after it.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>vim<span class="w"> </span>simpleapp.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-72-1" name="__codelineno-72-1" href="#__codelineno-72-1"></a>vim<span class="w"> </span>simpleapp.yaml
 </code></pre></div>
 <p>Add after <code>terminationMessagePolicy: File</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">goproxy</span>
-<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a><span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">registry.k8s.io/goproxy:0.1</span>
-<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a><span class="w">      </span><span class="nt">ports</span><span class="p">:</span>
-<a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
-<a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a><span class="w">      </span><span class="nt">readinessProbe</span><span class="p">:</span>
-<a id="__codelineno-44-6" name="__codelineno-44-6" href="#__codelineno-44-6"></a><span class="w">        </span><span class="nt">tcpSocket</span><span class="p">:</span>
-<a id="__codelineno-44-7" name="__codelineno-44-7" href="#__codelineno-44-7"></a><span class="w">          </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
-<a id="__codelineno-44-8" name="__codelineno-44-8" href="#__codelineno-44-8"></a><span class="w">        </span><span class="nt">initialDelaySeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
-<a id="__codelineno-44-9" name="__codelineno-44-9" href="#__codelineno-44-9"></a><span class="w">        </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
-<a id="__codelineno-44-10" name="__codelineno-44-10" href="#__codelineno-44-10"></a><span class="w">      </span><span class="nt">livenessProbe</span><span class="p">:</span>
-<a id="__codelineno-44-11" name="__codelineno-44-11" href="#__codelineno-44-11"></a><span class="w">        </span><span class="nt">tcpSocket</span><span class="p">:</span>
-<a id="__codelineno-44-12" name="__codelineno-44-12" href="#__codelineno-44-12"></a><span class="w">          </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
-<a id="__codelineno-44-13" name="__codelineno-44-13" href="#__codelineno-44-13"></a><span class="w">        </span><span class="nt">initialDelaySeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span>
-<a id="__codelineno-44-14" name="__codelineno-44-14" href="#__codelineno-44-14"></a><span class="w">        </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-73-1" name="__codelineno-73-1" href="#__codelineno-73-1"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">goproxy</span>
+<a id="__codelineno-73-2" name="__codelineno-73-2" href="#__codelineno-73-2"></a><span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">registry.k8s.io/goproxy:0.1</span>
+<a id="__codelineno-73-3" name="__codelineno-73-3" href="#__codelineno-73-3"></a><span class="w">      </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-73-4" name="__codelineno-73-4" href="#__codelineno-73-4"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+<a id="__codelineno-73-5" name="__codelineno-73-5" href="#__codelineno-73-5"></a><span class="w">      </span><span class="nt">readinessProbe</span><span class="p">:</span>
+<a id="__codelineno-73-6" name="__codelineno-73-6" href="#__codelineno-73-6"></a><span class="w">        </span><span class="nt">tcpSocket</span><span class="p">:</span>
+<a id="__codelineno-73-7" name="__codelineno-73-7" href="#__codelineno-73-7"></a><span class="w">          </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+<a id="__codelineno-73-8" name="__codelineno-73-8" href="#__codelineno-73-8"></a><span class="w">        </span><span class="nt">initialDelaySeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<a id="__codelineno-73-9" name="__codelineno-73-9" href="#__codelineno-73-9"></a><span class="w">        </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<a id="__codelineno-73-10" name="__codelineno-73-10" href="#__codelineno-73-10"></a><span class="w">      </span><span class="nt">livenessProbe</span><span class="p">:</span>
+<a id="__codelineno-73-11" name="__codelineno-73-11" href="#__codelineno-73-11"></a><span class="w">        </span><span class="nt">tcpSocket</span><span class="p">:</span>
+<a id="__codelineno-73-12" name="__codelineno-73-12" href="#__codelineno-73-12"></a><span class="w">          </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+<a id="__codelineno-73-13" name="__codelineno-73-13" href="#__codelineno-73-13"></a><span class="w">        </span><span class="nt">initialDelaySeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span>
+<a id="__codelineno-73-14" name="__codelineno-73-14" href="#__codelineno-73-14"></a><span class="w">        </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -981,77 +1013,72 @@ try1-9869bdb88-2wfnr    1/1     Running   0          22m
 </li>
 <li>
 <p>Delete and recreate the deployment.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1
+<div class="highlight"><pre><span></span><code><a id="__codelineno-74-1" name="__codelineno-74-1" href="#__codelineno-74-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1
 </code></pre></div>
-<p>```</p>
-<h1 id="output_29">output<a class="headerlink" href="#output_29" title="Permanent link">&para;</a></h1>
-<p>deployment.apps "try1" deleted
-<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>```bash
-<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a>kubectl create -f simpleapp.yaml
-</code></pre></div></p>
-<p>```</p>
-<h1 id="output_30">output<a class="headerlink" href="#output_30" title="Permanent link">&para;</a></h1>
-<p>deployment.apps/try1 created
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-75-1" name="__codelineno-75-1" href="#__codelineno-75-1"></a>#output
+<a id="__codelineno-75-2" name="__codelineno-75-2" href="#__codelineno-75-2"></a>deployment.apps &quot;try1&quot; deleted
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-76-1" name="__codelineno-76-1" href="#__codelineno-76-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>simpleapp.yaml
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-77-1" name="__codelineno-77-1" href="#__codelineno-77-1"></a>#output
+<a id="__codelineno-77-2" name="__codelineno-77-2" href="#__codelineno-77-2"></a>deployment.apps/try1 created
+</code></pre></div>
 </li>
 <li>
 <p>Check the pods. Each pod now has two containers (<code>READY 1/2</code> or <code>0/2</code>). The goproxy container starts, but simpleapp is not ready again because <code>/tmp/healthy</code> is missing.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
+<div class="highlight"><pre><span></span><code><a id="__codelineno-78-1" name="__codelineno-78-1" href="#__codelineno-78-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
 </code></pre></div>
-<p>```</p>
-<h1 id="output_31">output<a class="headerlink" href="#output_31" title="Permanent link">&para;</a></h1>
-<p>NAME                      READY   STATUS    RESTARTS   AGE
-try1-76cc5ffcc6-4rjvh     1/2     Running   0          3s
-try1-76cc5ffcc6-bk5f5     1/2     Running   0          3s
-try1-76cc5ffcc6-d8n5q     0/2     Running   0          3s
-...
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-79-1" name="__codelineno-79-1" href="#__codelineno-79-1"></a>#output
+<a id="__codelineno-79-2" name="__codelineno-79-2" href="#__codelineno-79-2"></a>NAME                      READY   STATUS    RESTARTS   AGE
+<a id="__codelineno-79-3" name="__codelineno-79-3" href="#__codelineno-79-3"></a>try1-76cc5ffcc6-4rjvh     1/2     Running   0          3s
+<a id="__codelineno-79-4" name="__codelineno-79-4" href="#__codelineno-79-4"></a>try1-76cc5ffcc6-bk5f5     1/2     Running   0          3s
+<a id="__codelineno-79-5" name="__codelineno-79-5" href="#__codelineno-79-5"></a>try1-76cc5ffcc6-d8n5q     0/2     Running   0          3s
+<a id="__codelineno-79-6" name="__codelineno-79-6" href="#__codelineno-79-6"></a>...
+</code></pre></div>
 </li>
 <li>
 <p>Create the health check file in all pods. Specify the <code>-c simpleapp</code> flag to target the correct container.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="k">for</span><span class="w"> </span>name<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>try1<span class="w"> </span>-o<span class="w"> </span>name<span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a><span class="k">do</span><span class="w"> </span>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span><span class="nv">$name</span><span class="w"> </span>-c<span class="w"> </span>simpleapp<span class="w"> </span>--<span class="w"> </span>touch<span class="w"> </span>/tmp/healthy<span class="p">;</span><span class="w"> </span><span class="k">done</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-80-1" name="__codelineno-80-1" href="#__codelineno-80-1"></a><span class="k">for</span><span class="w"> </span>name<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>try1<span class="w"> </span>-o<span class="w"> </span>name<span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-80-2" name="__codelineno-80-2" href="#__codelineno-80-2"></a><span class="k">do</span><span class="w"> </span>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span><span class="nv">$name</span><span class="w"> </span>-c<span class="w"> </span>simpleapp<span class="w"> </span>--<span class="w"> </span>touch<span class="w"> </span>/tmp/healthy<span class="p">;</span><span class="w"> </span><span class="k">done</span>
 </code></pre></div>
 </li>
 <li>
 <p>Wait a minute and verify all pods show <code>2/2 Running</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
+<div class="highlight"><pre><span></span><code><a id="__codelineno-81-1" name="__codelineno-81-1" href="#__codelineno-81-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods
 </code></pre></div>
-<p>```</p>
-<h1 id="output_32">output<a class="headerlink" href="#output_32" title="Permanent link">&para;</a></h1>
-<p>NAME                      READY   STATUS    RESTARTS   AGE
-try1-76cc5ffcc6-4rjvh     2/2     Running   0          ~1m
-try1-76cc5ffcc6-bk5f5     2/2     Running   0          ~1m
-...
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-82-1" name="__codelineno-82-1" href="#__codelineno-82-1"></a>#output
+<a id="__codelineno-82-2" name="__codelineno-82-2" href="#__codelineno-82-2"></a>NAME                      READY   STATUS    RESTARTS   AGE
+<a id="__codelineno-82-3" name="__codelineno-82-3" href="#__codelineno-82-3"></a>try1-76cc5ffcc6-4rjvh     2/2     Running   0          ~1m
+<a id="__codelineno-82-4" name="__codelineno-82-4" href="#__codelineno-82-4"></a>try1-76cc5ffcc6-bk5f5     2/2     Running   0          ~1m
+<a id="__codelineno-82-5" name="__codelineno-82-5" href="#__codelineno-82-5"></a>...
+</code></pre></div>
 </li>
 <li>
 <p>Examine the events for one of the pods. Note the <code>Readiness probe failed</code> warnings from before the file was created.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>try1-76cc5ffcc6-4rjvh<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-20
+<div class="highlight"><pre><span></span><code><a id="__codelineno-83-1" name="__codelineno-83-1" href="#__codelineno-83-1"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>try1-76cc5ffcc6-4rjvh<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-20
 </code></pre></div>
 <p>Look for <code>Warning Unhealthy</code> events showing <code>cat: /tmp/healthy: No such file or directory</code>.</p>
 </li>
 <li>
 <p>Confirm both containers in the pod show <code>State: Running</code> and <code>Ready: True</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>try1-76cc5ffcc6-4rjvh<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;State|Ready&#39;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-84-1" name="__codelineno-84-1" href="#__codelineno-84-1"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>try1-76cc5ffcc6-4rjvh<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;State|Ready&#39;</span>
 </code></pre></div>
-<p>```</p>
-<h1 id="output_33">output<a class="headerlink" href="#output_33" title="Permanent link">&para;</a></h1>
-<p>State:          Running
-Ready:          True
-State:          Running
-Ready:          True
-Ready:          True
-ContainersReady: True
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-85-1" name="__codelineno-85-1" href="#__codelineno-85-1"></a>#output
+<a id="__codelineno-85-2" name="__codelineno-85-2" href="#__codelineno-85-2"></a>State:          Running
+<a id="__codelineno-85-3" name="__codelineno-85-3" href="#__codelineno-85-3"></a>Ready:          True
+<a id="__codelineno-85-4" name="__codelineno-85-4" href="#__codelineno-85-4"></a>State:          Running
+<a id="__codelineno-85-5" name="__codelineno-85-5" href="#__codelineno-85-5"></a>Ready:          True
+<a id="__codelineno-85-6" name="__codelineno-85-6" href="#__codelineno-85-6"></a>Ready:          True
+<a id="__codelineno-85-7" name="__codelineno-85-7" href="#__codelineno-85-7"></a>ContainersReady: True
+</code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Troubleshooting</p>
 <p>If the try1 deployment seems stuck, check the registry catalog and re-push if needed, then scale down to 0 and back to 6:</p>
-<p><code>bash
-curl $repo/v2/_catalog
-sudo podman push $repo/simpleapp
-kubectl scale deployment try1 --replicas 0
-kubectl scale deployment try1 --replicas 6</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-86-1" name="__codelineno-86-1" href="#__codelineno-86-1"></a>curl<span class="w"> </span><span class="nv">$repo</span>/v2/_catalog
+<a id="__codelineno-86-2" name="__codelineno-86-2" href="#__codelineno-86-2"></a>sudo<span class="w"> </span>podman<span class="w"> </span>push<span class="w"> </span><span class="nv">$repo</span>/simpleapp
+<a id="__codelineno-86-3" name="__codelineno-86-3" href="#__codelineno-86-3"></a>kubectl<span class="w"> </span>scale<span class="w"> </span>deployment<span class="w"> </span>try1<span class="w"> </span>--replicas<span class="w"> </span><span class="m">0</span>
+<a id="__codelineno-86-4" name="__codelineno-86-4" href="#__codelineno-86-4"></a>kubectl<span class="w"> </span>scale<span class="w"> </span>deployment<span class="w"> </span>try1<span class="w"> </span>--replicas<span class="w"> </span><span class="m">6</span>
+</code></pre></div>
 </div>
 </li>
 </ol>
@@ -1088,24 +1115,23 @@ kubectl scale deployment try1 --replicas 6</code></p>
 <li>
 <p>Once fixed, access the default nginx page and verify the GET request appears in the container log.</p>
 <p>Get the pod IP:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>break2<span class="w"> </span>-o<span class="w"> </span>wide
+<div class="highlight"><pre><span></span><code><a id="__codelineno-87-1" name="__codelineno-87-1" href="#__codelineno-87-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>break2<span class="w"> </span>-o<span class="w"> </span>wide
 </code></pre></div>
 <p>Then curl the pod IP and check the log:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>curl<span class="w"> </span>http://&lt;pod-ip<span class="w"> </span>from<span class="w"> </span>above&gt;
-<a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-c<span class="w"> </span>brokenapp
+<div class="highlight"><pre><span></span><code><a id="__codelineno-88-1" name="__codelineno-88-1" href="#__codelineno-88-1"></a>curl<span class="w"> </span>http://&lt;pod-ip<span class="w"> </span>from<span class="w"> </span>above&gt;
+<a id="__codelineno-88-2" name="__codelineno-88-2" href="#__codelineno-88-2"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-c<span class="w"> </span>brokenapp
 </code></pre></div>
 <p>You should see a line like:</p>
-<p>```</p>
-<h1 id="output_34">output<a class="headerlink" href="#output_34" title="Permanent link">&para;</a></h1>
-<p>192.168.124.0 - - [21/Mar/2026:03:30:31 +0000] "GET / HTTP/1.1" 200 612 "-" "curl/7.58.0"
-```</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-89-1" name="__codelineno-89-1" href="#__codelineno-89-1"></a>#output
+<a id="__codelineno-89-2" name="__codelineno-89-2" href="#__codelineno-89-2"></a>192.168.124.0 - - [21/Mar/2026:03:30:31 +0000] &quot;GET / HTTP/1.1&quot; 200 612 &quot;-&quot; &quot;curl/7.58.0&quot;
+</code></pre></div>
 </li>
 <li>
 <p>Clean up all resources created in this review before moving on.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1<span class="w"> </span>nginx<span class="w"> </span>registry<span class="w"> </span>break2<span class="w"> </span>--ignore-not-found
-<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>svc<span class="w"> </span>nginx<span class="w"> </span>registry<span class="w"> </span>--ignore-not-found
-<a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pvc<span class="w"> </span>nginx-claim0<span class="w"> </span>registry-claim0<span class="w"> </span>--ignore-not-found
-<a id="__codelineno-54-4" name="__codelineno-54-4" href="#__codelineno-54-4"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pv<span class="w"> </span>vol1<span class="w"> </span>vol2<span class="w"> </span>--ignore-not-found
+<div class="highlight"><pre><span></span><code><a id="__codelineno-90-1" name="__codelineno-90-1" href="#__codelineno-90-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1<span class="w"> </span>nginx<span class="w"> </span>registry<span class="w"> </span>break2<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-90-2" name="__codelineno-90-2" href="#__codelineno-90-2"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>svc<span class="w"> </span>nginx<span class="w"> </span>registry<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-90-3" name="__codelineno-90-3" href="#__codelineno-90-3"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pvc<span class="w"> </span>nginx-claim0<span class="w"> </span>registry-claim0<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-90-4" name="__codelineno-90-4" href="#__codelineno-90-4"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pv<span class="w"> </span>vol1<span class="w"> </span>vol2<span class="w"> </span>--ignore-not-found
 </code></pre></div>
 </li>
 </ul>
