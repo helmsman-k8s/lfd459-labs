@@ -15,13 +15,12 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
     ```bash
     kubectl get pods secondapp
     ```
-    # output
 
     ```
+#output
     NAME        READY   STATUS    RESTARTS   AGE
     secondapp   2/2     Running   49         2d
     ```
-    # output
 
     The pod is running. `busy` has many restarts - expected, as `sleep 3600` completes every hour. `webserver` (nginx) should have 0 restarts.
 
@@ -42,16 +41,15 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
     ```bash
     kubectl describe pod secondapp | grep -A8 "Conditions:"
     ```
-    # output
 
     ```
+#output
     Conditions:
       Type              Status
       Initialized       True
       Ready             True
       PodScheduled      True
     ```
-    # output
 
 4. Scan the Events section for any `Warning` entries.
 
@@ -65,7 +63,6 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
     kubectl logs secondapp webserver
     kubectl logs secondapp busy
     ```
-    # output
 
 6. Exec into `busy` and test DNS and external connectivity.
 
@@ -76,7 +73,7 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
     Inside:
 
     ```
-    # output
+#output
     / $ nslookup www.linuxfoundation.org
     Server:     10.96.0.10
     Name:       www.linuxfoundation.org
@@ -95,7 +92,6 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
     kubectl get svc
     kubectl get svc secondapp -o yaml | grep -A5 "selector:"
     ```
-    # output
 
     Confirm `selector.example: second` matches the pod label `example=second`.
 
@@ -106,7 +102,7 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
     ```
 
     ```
-    # output
+#output
     NAME         ENDPOINTS
     secondapp    192.168.x.y:80
     ...
@@ -115,7 +111,6 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
     ```bash
     kubectl get ep secondapp -o yaml
     ```
-    # output
 
 9. Check kube-proxy logs.
 
@@ -129,7 +124,6 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
     ```bash
     sudo iptables-save | grep secondapp
     ```
-    # output
 
     You should see rules referencing port `32000` (NodePort) and the service ClusterIP.
 
@@ -151,7 +145,6 @@ The Kubernetes API evolves. YAML that worked on older clusters may fail on newer
     cd ~/lfd459/ch08-troubleshooting
     kubectl create -f brokendeploy.yaml
     ```
-    # output
 
     The command will fail immediately. Read the error carefully.
 
@@ -175,7 +168,6 @@ The Kubernetes API evolves. YAML that worked on older clusters may fail on newer
     ```bash
     vim brokendeploy.yaml
     ```
-    # output
 
 5. Create the deployment and verify the pod starts successfully.
 
@@ -190,7 +182,6 @@ The Kubernetes API evolves. YAML that worked on older clusters may fail on newer
     ```bash
     kubectl delete deployment broken
     ```
-    # output
 
 ??? success "Fixes revealed"
     1. `apiVersion: extensions/v1beta1` -> `apiVersion: apps/v1` (removed in Kubernetes 1.16)
@@ -210,7 +201,7 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
     ```
 
     ```
-    # output
+#output
     pod/nginx-debug-pod created
     service/nginx-debug-svc created
     ```
@@ -220,16 +211,15 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
     ```bash
     kubectl get all
     ```
-    # output
 
     ```
+#output
     NAME                   READY   STATUS    RESTARTS   AGE
     pod/nginx-debug-pod    0/1     Running   0          5s
 
     NAME                     TYPE        CLUSTER-IP       PORT(S)   AGE
     service/nginx-debug-svc  ClusterIP   10.111.195.30    80/TCP    5s
     ```
-    # output
 
 3. Try to connect to the service - it will fail as the pod has no endpoints yet.
 
@@ -238,7 +228,7 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
     ```
 
     ```
-    # output
+#output
     NAME              ENDPOINTS   AGE
     nginx-debug-svc   <none>      10s
     ```
@@ -248,14 +238,13 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
     ```bash
     kubectl get svc nginx-debug-svc
     ```
-    # output
 
     ```bash
     curl <CLUSTER-IP>
     ```
 
     ```
-    # output
+#output
     curl: (7) Failed to connect to <CLUSTER-IP> port 80
     ```
 
@@ -264,7 +253,6 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
     ```bash
     cat brokenapp.yaml
     ```
-    # output
 
     Two things are happening:
 
@@ -278,7 +266,7 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
     ```
 
     ```
-    # output
+#output
     error: Internal error occurred: exec: "bash": executable file not found in $PATH
     ```
 
@@ -288,18 +276,17 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
     kubectl debug pod/nginx-debug-pod -it \
     --image=busybox --target=nginx -- /bin/sh
     ```
-    # output
 
 7. Inside the debug container, verify nginx is running as PID 1.
 
     ```
+#output
     # ps aux
     PID   USER   COMMAND
     1     root   nginx: master process nginx -g daemon off;
     29    root   nginx: worker process
     30    root   sh
     ```
-    # output
 
 8. Confirm you are inside the same pod namespace.
 
@@ -307,7 +294,6 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
     # hostname
     nginx-debug-pod
     ```
-    # output
 
 9. Create the missing `/tmp/app.log` file by writing through `/proc/1/root`.
 
@@ -319,7 +305,6 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
     hello from debug
     # exit
     ```
-    # output
 
 10. The readiness probe succeeds within the next `periodSeconds`. Verify the pod is now Ready.
 
@@ -328,7 +313,7 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
     ```
 
     ```
-    # output
+#output
     NAME                   READY   STATUS    RESTARTS   AGE
     pod/nginx-debug-pod    1/1     Running   0          2m
 
@@ -341,13 +326,12 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
     ```bash
     curl <CLUSTER-IP>
     ```
-    # output
 
     ```
+#output
     <!DOCTYPE html>
     <html><head><title>Welcome to nginx!</title></head>...
     ```
-    # output
 
 12. Clean up.
 
@@ -405,7 +389,6 @@ Revisit the CKAD curriculum for topics covered in this chapter:
     ```bash
     kubectl create -f troubleshoot-review1.yaml
     ```
-    # output
 
 - Read the error carefully. Then inspect the file and identify **all** the problems. There are at least four distinct issues.
 
@@ -421,13 +404,12 @@ Revisit the CKAD curriculum for topics covered in this chapter:
     ```bash
     kubectl get deploy igottrouble
     ```
-    # output
 
     ```
+#output
     NAME          READY   UP-TO-DATE   AVAILABLE   AGE
     igottrouble   1/1     1            1           5m13s
     ```
-    # output
 
 - Clean up.
 

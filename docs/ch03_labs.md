@@ -15,7 +15,6 @@ In this chapter you will containerize a simple Python application using Podman, 
     ```bash
     sudo apt-get -y install python3
     ```
-    # output
 
     It should report already installed on Ubuntu 22.04.
 
@@ -34,7 +33,6 @@ In this chapter you will containerize a simple Python application using Podman, 
     mkdir app1
     cd app1
     ```
-    # output
 
 4. Copy `simple.py` into the app1 directory and review it.
 
@@ -49,17 +47,16 @@ In this chapter you will containerize a simple Python application using Podman, 
 
     ```bash
     chmod +x simple.py
+    ./simple.py
     ```
-    # output
 
     ```
-    ./simple.py
+#output
     ^CTraceback (most recent call last):
       File "./simple.py", line 24, in <module>
         time.sleep(5)
     KeyboardInterrupt
     ```
-    # output
 
 6. Verify the output file was created with hostname and timestamp entries.
 
@@ -68,7 +65,7 @@ In this chapter you will containerize a simple Python application using Podman, 
     ```
 
     ```
-    # output
+#output
     2026-03-18 19:27:50
     controller
     2026-03-18 19:27:55
@@ -82,7 +79,6 @@ In this chapter you will containerize a simple Python application using Podman, 
     cp ../Dockerfile .
     cat Dockerfile
     ```
-    # output
 
     ```dockerfile
     FROM docker.io/library/python:3
@@ -99,7 +95,6 @@ In this chapter you will containerize a simple Python application using Podman, 
     ```bash
     sudo apt-get install -y podman
     ```
-    # output
 
 9. Build the container image. The dot (`.`) at the end means "use the current directory as the build context". When prompted to choose a registry for the `python` base image, select `docker.io`.
 
@@ -108,7 +103,7 @@ In this chapter you will containerize a simple Python application using Podman, 
     ```
 
     ```
-    # output
+#output
     STEP 1/3: FROM docker.io/library/python:3
     Trying to pull docker.io/library/python:3...
     ...
@@ -120,14 +115,13 @@ In this chapter you will containerize a simple Python application using Podman, 
     ```bash
     sudo podman images
     ```
-    # output
 
     ```
+#output
     REPOSITORY              TAG     IMAGE ID      CREATED        SIZE
     localhost/simpleapp     latest  11d4607c72e0  7 seconds ago  1.04 GB
     docker.io/library/python  3     58a8f3dcd68a  3 days ago     1.04 GB
     ```
-    # output
 
 11. Run the container image with Podman. The script will run silently in the foreground. Wait 15 seconds then use **Ctrl-C** to stop it.
 
@@ -136,7 +130,7 @@ In this chapter you will containerize a simple Python application using Podman, 
     ```
 
     ```
-    # output
+#output
     ^CTraceback (most recent call last):
       File "./simple.py", line 24, in <module>
         time.sleep(5)
@@ -148,13 +142,12 @@ In this chapter you will containerize a simple Python application using Podman, 
     ```bash
     sudo find / -name date.out
     ```
-    # output
 
     ```
+#output
     /home/guru/app1/date.out
     /var/lib/containers/storage/overlay/.../diff/date.out
     ```
-    # output
 
 13. View the contents of the container's `date.out` file. Use the full path returned by the find command above.
 
@@ -163,7 +156,7 @@ In this chapter you will containerize a simple Python application using Podman, 
     ```
 
     ```
-    # output
+#output
     2026-03-18 19:32:20
     b8cec851efca
     2026-03-18 19:32:25
@@ -182,9 +175,9 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     cd ~/lfd459/ch03-build
     kubectl create -f easyregistry.yaml
     ```
-    # output
 
     ```
+#output
     service/nginx created
     service/registry created
     deployment.apps/nginx created
@@ -194,7 +187,6 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     persistentvolume/vol1 created
     persistentvolume/vol2 created
     ```
-    # output
 
 2. Note the ClusterIP assigned to the registry service. In this setup it is expected to be `10.97.40.62` - verify this matches.
 
@@ -203,7 +195,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```
 
     ```
-    # output
+#output
     registry   ClusterIP   10.97.40.62   <none>   5000/TCP   5m35s
     ```
 
@@ -215,12 +207,11 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```bash
     curl 10.97.40.62:5000/v2/_catalog
     ```
-    # output
 
     ```
+#output
     {"repositories":[]}
     ```
-    # output
 
 4. Configure containerd and Podman on the **controller** to use the local registry over HTTP. Run the setup script (note the dot-space to source it and export the `$repo` variable into your shell).
 
@@ -230,7 +221,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```
 
     ```
-    # output
+#output
     Configuring local repo, Please standby
     ...
     Local Repo configured, follow the next steps
@@ -243,14 +234,13 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     sudo podman tag alpine $repo/tagtest
     sudo podman push $repo/tagtest
     ```
-    # output
 
     ```
+#output
     Getting image source signatures
     Copying blob b2d5eeeaba3a done
     ...
     ```
-    # output
 
 6. Remove the local cached copies of the images, then pull from your local registry to verify it works end-to-end.
 
@@ -261,7 +251,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```
 
     ```
-    # output
+#output
     Trying to pull 10.97.40.62:5000/tagtest:latest...
     ...
     6dbb9cc54074106d46d4ccb330f2a40a682d49dda5f4844962b7dce9fe44aaec
@@ -275,7 +265,6 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     chmod +x ~/local-repo-setup.sh
     . ~/local-repo-setup.sh
     ```
-    # output
 
     Verify the worker can pull from the registry.
 
@@ -284,7 +273,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```
 
     ```
-    # output
+#output
     Trying to pull 10.97.40.62:5000/tagtest:latest...
     ...
     ```
@@ -298,14 +287,13 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     sudo podman tag simpleapp $repo/simpleapp
     sudo podman push $repo/simpleapp
     ```
-    # output
 
     ```
+#output
     Getting image source signatures
     Copying blob 47458fb45d99 done
     ...
     ```
-    # output
 
 9. Verify both images appear in the registry catalog from the controller.
 
@@ -314,7 +302,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```
 
     ```
-    # output
+#output
     {"repositories":["simpleapp","tagtest"]}
     ```
 
@@ -323,35 +311,33 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```bash
     kubectl create deployment try1 --image=$repo/simpleapp
     ```
-    # output
 
     ```
+#output
     deployment.apps/try1 created
     ```
-    # output
 
     ```bash
     kubectl scale deployment try1 --replicas=6
     ```
 
     ```
-    # output
+#output
     deployment.apps/try1 scaled
     ```
 
     ```bash
     kubectl get pod -o wide
     ```
-    # output
 
     ```
+#output
     NAME                   READY  STATUS   RESTARTS  AGE  IP              NODE
     try1-55f675ddd-28vgs   1/1    Running  0         17s  10.244.1.30     worker1
     try1-55f675ddd-4vzt7   1/1    Running  0         17s  10.244.2.100    worker2
     try1-55f675ddd-2nrsj   1/1    Running  0         17s  10.244.0.26     controller
     ...
     ```
-    # output
 
     Pods should spread across all three nodes.
 
@@ -366,7 +352,6 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```bash
     sudo crictl ps | grep simple
     ```
-    # output
 
 12. Return to the **controller**. Save the try1 deployment as a YAML file.
 
@@ -379,34 +364,32 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     ```bash
     kubectl delete deployment try1
     ```
-    # output
 
     ```
+#output
     deployment.apps "try1" deleted
     ```
-    # output
 
     ```bash
     kubectl create -f simpleapp.yaml
     ```
 
     ```
-    # output
+#output
     deployment.apps/try1 created
     ```
 
     ```bash
     kubectl get deployment
     ```
-    # output
 
     ```
+#output
     NAME       READY   UP-TO-DATE   AVAILABLE   AGE
     nginx      1/1     1            1           15m
     registry   1/1     1            1           15m
     try1       6/6     6            6           5s
     ```
-    # output
 
 ---
 
@@ -438,7 +421,6 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
             - /tmp/healthy
         resources: {}
     ```
-    # output
 
     !!! tip
         The `edited-simpleapp.yaml` file in your working directory already has this probe added. You can reference it for the correct indentation, but remember to verify the registry IP matches your environment.
@@ -450,19 +432,18 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```
 
     ```
-    # output
+#output
     deployment.apps "try1" deleted
     ```
 
     ```bash
     kubectl create -f simpleapp.yaml
     ```
-    # output
 
     ```
+#output
     deployment.apps/try1 created
     ```
-    # output
 
 3. The deployment shows 6 pods but **0 available** - all are waiting for `/tmp/healthy` to exist.
 
@@ -471,7 +452,7 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```
 
     ```
-    # output
+#output
     NAME       READY   UP-TO-DATE   AVAILABLE   AGE
     try1       0/6     6            0           15s
     ```
@@ -481,15 +462,14 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```bash
     kubectl get pods
     ```
-    # output
 
     ```
+#output
     NAME                    READY   STATUS    RESTARTS   AGE
     try1-9869bdb88-rtchc    0/1     Running   0          26s
     try1-9869bdb88-2wfnr    0/1     Running   0          26s
     ...
     ```
-    # output
 
 5. Exec into one pod and create the health check file.
 
@@ -498,7 +478,7 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```
 
     ```
-    # output
+#output
     root@try1-9869bdb88-rtchc:/# touch /tmp/healthy
     root@try1-9869bdb88-rtchc:/# exit
     ```
@@ -508,15 +488,14 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```bash
     kubectl get pods
     ```
-    # output
 
     ```
+#output
     NAME                    READY   STATUS    RESTARTS   AGE
     try1-9869bdb88-rtchc    1/1     Running   0          4m
     try1-9869bdb88-2wfnr    0/1     Running   0          4m
     ...
     ```
-    # output
 
 7. Use a `for` loop to touch `/tmp/healthy` in all remaining pods at once.
 
@@ -530,15 +509,14 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```bash
     kubectl get pods
     ```
-    # output
 
     ```
+#output
     NAME                    READY   STATUS    RESTARTS   AGE
     try1-9869bdb88-rtchc    1/1     Running   0          22m
     try1-9869bdb88-2wfnr    1/1     Running   0          22m
     ...
     ```
-    # output
 
 ### livenessProbe and Sidecar Container
 
@@ -566,7 +544,6 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
             initialDelaySeconds: 15
             periodSeconds: 20
     ```
-    # output
 
     !!! tip
         The `edited-later-simpleapp.yaml` file shows the complete deployment with both containers configured. Use it as a reference for indentation.
@@ -578,19 +555,18 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```
 
     ```
-    # output
+#output
     deployment.apps "try1" deleted
     ```
 
     ```bash
     kubectl create -f simpleapp.yaml
     ```
-    # output
 
     ```
+#output
     deployment.apps/try1 created
     ```
-    # output
 
 3. Check the pods. Each pod now has two containers (`READY 1/2` or `0/2`). The goproxy container starts, but simpleapp is not ready again because `/tmp/healthy` is missing.
 
@@ -599,7 +575,7 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```
 
     ```
-    # output
+#output
     NAME                      READY   STATUS    RESTARTS   AGE
     try1-76cc5ffcc6-4rjvh     1/2     Running   0          3s
     try1-76cc5ffcc6-bk5f5     1/2     Running   0          3s
@@ -613,7 +589,6 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     for name in $(kubectl get pods -l app=try1 -o name); \
     do kubectl exec $name -c simpleapp -- touch /tmp/healthy; done
     ```
-    # output
 
 5. Wait a minute and verify all pods show `2/2 Running`.
 
@@ -622,7 +597,7 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```
 
     ```
-    # output
+#output
     NAME                      READY   STATUS    RESTARTS   AGE
     try1-76cc5ffcc6-4rjvh     2/2     Running   0          ~1m
     try1-76cc5ffcc6-bk5f5     2/2     Running   0          ~1m
@@ -634,7 +609,6 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```bash
     kubectl describe pod try1-76cc5ffcc6-4rjvh | tail -20
     ```
-    # output
 
     Look for `Warning Unhealthy` events showing `cat: /tmp/healthy: No such file or directory`.
 
@@ -645,7 +619,7 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```
 
     ```
-    # output
+#output
     State:          Running
     Ready:          True
     State:          Running
@@ -699,7 +673,6 @@ Revisit the CKAD curriculum and locate the topics covered in this chapter:
     ```bash
     kubectl get pod -l app=break2 -o wide
     ```
-    # output
 
     Then curl the pod IP and check the log:
 
@@ -711,7 +684,7 @@ Revisit the CKAD curriculum and locate the topics covered in this chapter:
     You should see a line like:
 
     ```
-    # output
+#output
     192.168.124.0 - - [21/Mar/2026:03:30:31 +0000] "GET / HTTP/1.1" 200 612 "-" "curl/7.58.0"
     ```
 
@@ -723,4 +696,3 @@ Revisit the CKAD curriculum and locate the topics covered in this chapter:
     kubectl delete pvc nginx-claim0 registry-claim0 --ignore-not-found
     kubectl delete pv vol1 vol2 --ignore-not-found
     ```
-    # output
