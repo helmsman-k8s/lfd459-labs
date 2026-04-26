@@ -27,10 +27,9 @@ In this chapter you will containerize a simple Python application using Podman, 
 
     You should see: `simple.py`, `Dockerfile`, `easyregistry.yaml`, `local-repo-setup.sh`, `edited-simpleapp.yaml`, `edited-later-simpleapp.yaml`, `build-review1.yaml`
 
-3. Create a working directory for the application and move into it.
+3. Move into the prepared working directory for the application.
 
     ```bash
-    mkdir app1
     cd app1
     ```
 
@@ -140,7 +139,7 @@ In this chapter you will containerize a simple Python application using Podman, 
 12. Locate the `date.out` file that Podman created inside the container's overlay filesystem. Note the container hostname is a random hash, not `controller`.
 
     ```bash
-    sudo find / -name date.out
+    sudo find / -name date.out 2>/dev/null
     ```
 
     ```
