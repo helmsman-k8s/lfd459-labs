@@ -27,9 +27,10 @@ In this chapter you will containerize a simple Python application using Podman, 
 
     You should see: `simple.py`, `Dockerfile`, `easyregistry.yaml`, `local-repo-setup.sh`, `edited-simpleapp.yaml`, `edited-later-simpleapp.yaml`, `build-review1.yaml`
 
-3. Move into the prepared working directory for the application.
+3. Create a working directory for the application and move into it.
 
     ```bash
+    mkdir app1
     cd app1
     ```
 

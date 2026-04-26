@@ -10,15 +10,8 @@ This chapter builds directly on Chapter 3. You will configure your existing `sim
     **Save a backup of your simpleapp.yaml before starting:**
 
     ```bash
-    cp ~/lfd459/ch03-build/app1/simpleapp.yaml ~/beforeLab5.yaml
+    cp ~/app1/simpleapp.yaml ~/beforeLab5.yaml
     ```
-
-    !!! tip "If Chapter 3 did not fully complete"
-        If `~/lfd459/ch03-build/app1/simpleapp.yaml` is missing, recreate it from the fallback file:
-
-        ```bash
-        cp ~/lfd459/ch05-deployment-config/simpleapp-v1.yaml ~/lfd459/ch03-build/app1/simpleapp.yaml
-        ```
 
 ---
 
