@@ -212,7 +212,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../index.md" class="md-nav__link">
         
   
   
@@ -606,9 +606,8 @@
 <p>You should see: <code>simple.py</code>, <code>Dockerfile</code>, <code>easyregistry.yaml</code>, <code>local-repo-setup.sh</code>, <code>edited-simpleapp.yaml</code>, <code>edited-later-simpleapp.yaml</code>, <code>build-review1.yaml</code></p>
 </li>
 <li>
-<p>Create a working directory for the application and move into it.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>mkdir<span class="w"> </span>app1
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">cd</span><span class="w"> </span>app1
+<p>Move into the prepared working directory for the application.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">cd</span><span class="w"> </span>app1
 </code></pre></div>
 </li>
 <li>
@@ -696,7 +695,7 @@
 </li>
 <li>
 <p>Locate the <code>date.out</code> file that Podman created inside the container's overlay filesystem. Note the container hostname is a random hash, not <code>controller</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>sudo<span class="w"> </span>find<span class="w"> </span>/<span class="w"> </span>-name<span class="w"> </span>date.out
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>sudo<span class="w"> </span>find<span class="w"> </span>/<span class="w"> </span>-name<span class="w"> </span>date.out<span class="w"> </span><span class="m">2</span>&gt;/dev/null
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>#output
 <a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>/home/guru/app1/date.out
