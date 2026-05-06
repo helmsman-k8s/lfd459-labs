@@ -606,9 +606,8 @@
 <p>You should see: <code>simple.py</code>, <code>Dockerfile</code>, <code>easyregistry.yaml</code>, <code>local-repo-setup.sh</code>, <code>edited-simpleapp.yaml</code>, <code>edited-later-simpleapp.yaml</code>, <code>build-review1.yaml</code></p>
 </li>
 <li>
-<p>Create a working directory for the application and move into it.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>mkdir<span class="w"> </span>app1
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">cd</span><span class="w"> </span>app1
+<p>Move into the prepared working directory for the application.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">cd</span><span class="w"> </span>app1
 </code></pre></div>
 </li>
 <li>
@@ -948,11 +947,12 @@
 </li>
 <li>
 <p>Exec into one pod and create the health check file.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>try1-9869bdb88-rtchc<span class="w"> </span>--<span class="w"> </span>/bin/bash
-<a id="__codelineno-65-2" name="__codelineno-65-2" href="#__codelineno-65-2"></a>root@try1-9869bdb88-rtchc:/#<span class="w"> </span>touch<span class="w"> </span>/tmp/healthy
+<div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a><span class="nv">POD</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>try1<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[0].metadata.name}&#39;</span><span class="k">)</span>
+<a id="__codelineno-65-2" name="__codelineno-65-2" href="#__codelineno-65-2"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$POD</span><span class="s2">&quot;</span><span class="w"> </span>--<span class="w"> </span>/bin/bash
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a>#output
-<a id="__codelineno-66-2" name="__codelineno-66-2" href="#__codelineno-66-2"></a>root@try1-9869bdb88-rtchc:/# exit
+<p>Inside the container:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a>root@try1:/#<span class="w"> </span>touch<span class="w"> </span>/tmp/healthy
+<a id="__codelineno-66-2" name="__codelineno-66-2" href="#__codelineno-66-2"></a>root@try1:/#<span class="w"> </span><span class="nb">exit</span>
 </code></pre></div>
 </li>
 <li>
@@ -1055,13 +1055,15 @@
 </li>
 <li>
 <p>Examine the events for one of the pods. Note the <code>Readiness probe failed</code> warnings from before the file was created.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-83-1" name="__codelineno-83-1" href="#__codelineno-83-1"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>try1-76cc5ffcc6-4rjvh<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-20
+<div class="highlight"><pre><span></span><code><a id="__codelineno-83-1" name="__codelineno-83-1" href="#__codelineno-83-1"></a><span class="nv">POD</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>try1<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[0].metadata.name}&#39;</span><span class="k">)</span>
+<a id="__codelineno-83-2" name="__codelineno-83-2" href="#__codelineno-83-2"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$POD</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-20
 </code></pre></div>
 <p>Look for <code>Warning Unhealthy</code> events showing <code>cat: /tmp/healthy: No such file or directory</code>.</p>
 </li>
 <li>
 <p>Confirm both containers in the pod show <code>State: Running</code> and <code>Ready: True</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-84-1" name="__codelineno-84-1" href="#__codelineno-84-1"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>try1-76cc5ffcc6-4rjvh<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;State|Ready&#39;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-84-1" name="__codelineno-84-1" href="#__codelineno-84-1"></a><span class="nv">POD</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>try1<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[0].metadata.name}&#39;</span><span class="k">)</span>
+<a id="__codelineno-84-2" name="__codelineno-84-2" href="#__codelineno-84-2"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$POD</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;State|Ready&#39;</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-85-1" name="__codelineno-85-1" href="#__codelineno-85-1"></a>#output
 <a id="__codelineno-85-2" name="__codelineno-85-2" href="#__codelineno-85-2"></a>State:          Running
@@ -1102,11 +1104,8 @@
 <li>Deploy a new nginx webserver. Add both a <code>livenessProbe</code> and a <code>readinessProbe</code> on port 80. Test that both probes and the webserver are working.</li>
 <li>
 <p>Use <code>build-review1.yaml</code> to create a broken deployment. Fix it so both containers are running and in a <code>READY</code> state.</p>
-<p><code>bash</code></p>
-<div class="highlight"><pre><span></span><code>```bash
+<div class="highlight"><pre><span></span><code><a id="__codelineno-87-1" name="__codelineno-87-1" href="#__codelineno-87-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>build-review1.yaml
 </code></pre></div>
-<p>kubectl create -f build-review1.yaml
-    ```</p>
 <div class="admonition hint">
 <p class="admonition-title">Hint</p>
 <p>The web server (<code>nginx</code>) listens on port 80. The proxy (<code>goproxy</code>) listens on port 8080. Examine the probe configurations carefully - one of the port numbers is wrong.</p>
@@ -1115,23 +1114,23 @@
 <li>
 <p>Once fixed, access the default nginx page and verify the GET request appears in the container log.</p>
 <p>Get the pod IP:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-87-1" name="__codelineno-87-1" href="#__codelineno-87-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>break2<span class="w"> </span>-o<span class="w"> </span>wide
+<div class="highlight"><pre><span></span><code><a id="__codelineno-88-1" name="__codelineno-88-1" href="#__codelineno-88-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>break2<span class="w"> </span>-o<span class="w"> </span>wide
 </code></pre></div>
 <p>Then curl the pod IP and check the log:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-88-1" name="__codelineno-88-1" href="#__codelineno-88-1"></a>curl<span class="w"> </span>http://&lt;pod-ip<span class="w"> </span>from<span class="w"> </span>above&gt;
-<a id="__codelineno-88-2" name="__codelineno-88-2" href="#__codelineno-88-2"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-c<span class="w"> </span>brokenapp
+<div class="highlight"><pre><span></span><code><a id="__codelineno-89-1" name="__codelineno-89-1" href="#__codelineno-89-1"></a>curl<span class="w"> </span>http://&lt;pod-ip<span class="w"> </span>from<span class="w"> </span>above&gt;
+<a id="__codelineno-89-2" name="__codelineno-89-2" href="#__codelineno-89-2"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-c<span class="w"> </span>brokenapp
 </code></pre></div>
 <p>You should see a line like:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-89-1" name="__codelineno-89-1" href="#__codelineno-89-1"></a>#output
-<a id="__codelineno-89-2" name="__codelineno-89-2" href="#__codelineno-89-2"></a>192.168.124.0 - - [21/Mar/2026:03:30:31 +0000] &quot;GET / HTTP/1.1&quot; 200 612 &quot;-&quot; &quot;curl/7.58.0&quot;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-90-1" name="__codelineno-90-1" href="#__codelineno-90-1"></a>#output
+<a id="__codelineno-90-2" name="__codelineno-90-2" href="#__codelineno-90-2"></a>192.168.124.0 - - [21/Mar/2026:03:30:31 +0000] &quot;GET / HTTP/1.1&quot; 200 612 &quot;-&quot; &quot;curl/7.58.0&quot;
 </code></pre></div>
 </li>
 <li>
 <p>Clean up all resources created in this review before moving on.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-90-1" name="__codelineno-90-1" href="#__codelineno-90-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1<span class="w"> </span>nginx<span class="w"> </span>registry<span class="w"> </span>break2<span class="w"> </span>--ignore-not-found
-<a id="__codelineno-90-2" name="__codelineno-90-2" href="#__codelineno-90-2"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>svc<span class="w"> </span>nginx<span class="w"> </span>registry<span class="w"> </span>--ignore-not-found
-<a id="__codelineno-90-3" name="__codelineno-90-3" href="#__codelineno-90-3"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pvc<span class="w"> </span>nginx-claim0<span class="w"> </span>registry-claim0<span class="w"> </span>--ignore-not-found
-<a id="__codelineno-90-4" name="__codelineno-90-4" href="#__codelineno-90-4"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pv<span class="w"> </span>vol1<span class="w"> </span>vol2<span class="w"> </span>--ignore-not-found
+<div class="highlight"><pre><span></span><code><a id="__codelineno-91-1" name="__codelineno-91-1" href="#__codelineno-91-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>try1<span class="w"> </span>nginx<span class="w"> </span>registry<span class="w"> </span>break2<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-91-2" name="__codelineno-91-2" href="#__codelineno-91-2"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>svc<span class="w"> </span>nginx<span class="w"> </span>registry<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-91-3" name="__codelineno-91-3" href="#__codelineno-91-3"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pvc<span class="w"> </span>nginx-claim0<span class="w"> </span>registry-claim0<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-91-4" name="__codelineno-91-4" href="#__codelineno-91-4"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pv<span class="w"> </span>vol1<span class="w"> </span>vol2<span class="w"> </span>--ignore-not-found
 </code></pre></div>
 </li>
 </ul>

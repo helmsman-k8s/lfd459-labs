@@ -1,0 +1,58 @@
+/* =========================================================
+   PDF-friendly fixes for MkDocs Material + mkdocs-with-pdf
+   ========================================================= */
+
+/* Reduce huge empty pages caused by forced page breaks */
+h1, h2, h3, h4 {
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+p, ul, ol, li {
+  orphans: 3;
+  widows: 3;
+}
+
+/* Keep blocks together when possible */
+pre,
+table,
+.admonition,
+.highlight {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Remove/neutralize Material admonition icons in PDF */
+.admonition-title::before,
+.admonition-title:before,
+.admonition-title svg,
+.admonition-title .twemoji {
+  display: none !important;
+}
+
+/* Fix note/title alignment */
+.admonition-title {
+  padding-left: 0.8rem !important;
+  margin-left: 0 !important;
+}
+
+/* Give admonitions cleaner PDF spacing */
+.admonition {
+  margin: 1em 0 !important;
+  padding: 0.7em 1em !important;
+}
+
+/* Avoid code blocks being too tall/wide in PDF */
+pre code {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Slightly reduce excessive vertical spacing */
+.md-typeset {
+  line-height: 1.45;
+}
+
+.md-typeset h2 {
+  margin-top: 1.2em;
+}

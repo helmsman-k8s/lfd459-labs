@@ -700,7 +700,8 @@
 </li>
 <li>
 <p>Test access to the ClusterIP. You should see the nginx welcome page.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>curl<span class="w"> </span>http://10.98.148.52
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nv">SVC_IP</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>secondapp<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.clusterIP}&#39;</span><span class="k">)</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>curl<span class="w"> </span>http://<span class="nv">$SVC_IP</span>
 </code></pre></div>
 </li>
 </ol>
@@ -728,7 +729,8 @@
 </li>
 <li>
 <p>Test - traffic should now show the httpd default page instead of nginx.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>curl<span class="w"> </span>http://10.98.148.52
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nv">SVC_IP</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>secondapp<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.clusterIP}&#39;</span><span class="k">)</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>curl<span class="w"> </span>http://<span class="nv">$SVC_IP</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>#output
 <a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>&lt;html&gt;&lt;body&gt;&lt;h1&gt;It works!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;
@@ -774,9 +776,11 @@
 </li>
 <li>
 <p>Test via the ClusterIP (internal) and via any node IP on port 32000 (external).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>curl<span class="w"> </span>http://10.109.134.221
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>curl<span class="w"> </span>http://worker1:32000
-<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>curl<span class="w"> </span>http://worker2:32000
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nv">SVC_IP</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>secondapp<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.clusterIP}&#39;</span><span class="k">)</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="nv">NODE_PORT</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>secondapp<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.ports[0].nodePort}&#39;</span><span class="k">)</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>curl<span class="w"> </span>http://<span class="nv">$SVC_IP</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>curl<span class="w"> </span>http://worker1:<span class="nv">$NODE_PORT</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>curl<span class="w"> </span>http://worker2:<span class="nv">$NODE_PORT</span>
 </code></pre></div>
 </li>
 </ol>
@@ -805,7 +809,8 @@
 <a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>secondapp   LoadBalancer   10.109.26.21    &lt;pending&gt;     80:32000/TCP
 </code></pre></div>
 <p>Access still works via the NodePort.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>curl<span class="w"> </span>http://worker1:32000
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nv">NODE_PORT</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>secondapp<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.ports[0].nodePort}&#39;</span><span class="k">)</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>curl<span class="w"> </span>http://worker1:<span class="nv">$NODE_PORT</span>
 </code></pre></div>
 </li>
 </ol>
@@ -930,13 +935,12 @@
 </code></pre></div>
 </li>
 <li>
-<p>Verify the controller pods are running - one per node (DaemonSet).</p>
+<p>Verify the controller pods are running - one per eligible worker node (DaemonSet).</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>--all-namespaces<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>myingress
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>#output
-<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>default   myingress-ingress-nginx-controller-xxxxx   1/1   Running   0   20s   controller
-<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a>default   myingress-ingress-nginx-controller-yyyyy   1/1   Running   0   20s   worker1
-<a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a>default   myingress-ingress-nginx-controller-zzzzz   1/1   Running   0   20s   worker2
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>default   myingress-ingress-nginx-controller-yyyyy   1/1   Running   0   20s   worker1
+<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a>default   myingress-ingress-nginx-controller-zzzzz   1/1   Running   0   20s   worker2
 </code></pre></div>
 </li>
 <li>
@@ -1007,26 +1011,23 @@
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="nb">echo</span><span class="w"> </span><span class="nv">$INGRESS_IP</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>#output
-<a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a># Without Host header - 404 (ingress has no default backend)
+<p>Without the <code>Host</code> header, you should receive a 404 because the ingress has no default backend.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>curl<span class="w"> </span><span class="nv">$INGRESS_IP</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>curl<span class="w"> </span><span class="nv">$INGRESS_IP</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>#output
+<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a>&lt;html&gt;&lt;head&gt;&lt;title&gt;404 Not Found&lt;/title&gt;&lt;/head&gt;...&lt;/html&gt;
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>#output
-<a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a>&lt;html&gt;&lt;head&gt;&lt;title&gt;404 Not Found&lt;/title&gt;&lt;/head&gt;...&lt;/html&gt;
-<a id="__codelineno-55-3" name="__codelineno-55-3" href="#__codelineno-55-3"></a>
-<a id="__codelineno-55-4" name="__codelineno-55-4" href="#__codelineno-55-4"></a># With matching Host header - nginx welcome page
+<p>With the matching <code>Host</code> header, you should receive the nginx welcome page.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: www.example.com&quot;</span><span class="w"> </span>http://<span class="nv">$INGRESS_IP</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: www.example.com&quot;</span><span class="w"> </span>http://<span class="nv">$INGRESS_IP</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>#output
-<a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a>&lt;!DOCTYPE html&gt;
-<a id="__codelineno-57-3" name="__codelineno-57-3" href="#__codelineno-57-3"></a>&lt;html&gt;&lt;head&gt;&lt;title&gt;Welcome to nginx!&lt;/title&gt;...
+<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>#output
+<a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a>&lt;!DOCTYPE html&gt;
+<a id="__codelineno-56-3" name="__codelineno-56-3" href="#__codelineno-56-3"></a>&lt;html&gt;&lt;head&gt;&lt;title&gt;Welcome to nginx!&lt;/title&gt;...
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Using ClusterIP instead</p>
 <p>You can also use the ingress controller's ClusterIP with the Host header:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: www.example.com&quot;</span><span class="w"> </span>http://10.104.227.79
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: www.example.com&quot;</span><span class="w"> </span>http://10.104.227.79
 </code></pre></div></p>
 </div>
 </li>
@@ -1035,21 +1036,20 @@
 <ol>
 <li>
 <p>Deploy a third web server and customise its default page.</p>
-<p><code>bash</code></p>
-<div class="highlight"><pre><span></span><code>```bash
+<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>deployment<span class="w"> </span>thirdpage<span class="w"> </span>--image<span class="o">=</span>nginx
+<a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a>kubectl<span class="w"> </span>expose<span class="w"> </span>deployment<span class="w"> </span>thirdpage<span class="w"> </span>--port<span class="o">=</span><span class="m">80</span><span class="w"> </span>--type<span class="o">=</span>NodePort
 </code></pre></div>
-<p>kubectl create deployment thirdpage --image=nginx
-kubectl expose deployment thirdpage --port=80 --type=NodePort
-    ```</p>
 </li>
 <li>
 <p>Label the pod so it can be targeted (use Tab completion for the pod name).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a>kubectl<span class="w"> </span>label<span class="w"> </span>pod<span class="w"> </span>thirdpage-&lt;Tab&gt;<span class="w"> </span><span class="nv">example</span><span class="o">=</span>third
+<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a><span class="nv">POD</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>thirdpage<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[0].metadata.name}&#39;</span><span class="k">)</span>
+<a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a>kubectl<span class="w"> </span>label<span class="w"> </span>pod<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$POD</span><span class="s2">&quot;</span><span class="w"> </span><span class="nv">example</span><span class="o">=</span>third
 </code></pre></div>
 </li>
 <li>
 <p>Exec into the pod and edit the nginx default page to say "Third Page".</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>thirdpage-&lt;Tab&gt;<span class="w"> </span>--<span class="w"> </span>/bin/bash
+<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a><span class="nv">POD</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>thirdpage<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[0].metadata.name}&#39;</span><span class="k">)</span>
+<a id="__codelineno-60-2" name="__codelineno-60-2" href="#__codelineno-60-2"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$POD</span><span class="s2">&quot;</span><span class="w"> </span>--<span class="w"> </span>/bin/bash
 </code></pre></div>
 <p>Inside:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a>root@thirdpage:/#<span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span>-qq<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>vim<span class="w"> </span>-y<span class="w"> </span>-qq
@@ -1098,9 +1098,8 @@ kubectl expose deployment thirdpage --port=80 --type=NodePort
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a>#output
 <a id="__codelineno-66-2" name="__codelineno-66-2" href="#__codelineno-66-2"></a>&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;Third Page&lt;/title&gt;...
-<a id="__codelineno-66-3" name="__codelineno-66-3" href="#__codelineno-66-3"></a>
-<a id="__codelineno-66-4" name="__codelineno-66-4" href="#__codelineno-66-4"></a># Should still show nginx default
 </code></pre></div>
+<p>This should still show the nginx default page.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-67-1" name="__codelineno-67-1" href="#__codelineno-67-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: www.example.com&quot;</span><span class="w"> </span>http://<span class="nv">$INGRESS_IP</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-68-1" name="__codelineno-68-1" href="#__codelineno-68-1"></a>#output
