@@ -10,8 +10,15 @@ This chapter builds directly on Chapter 3. You will configure your existing `sim
     **Save a backup of your simpleapp.yaml before starting:**
 
     ```bash
-    cp ~/app1/simpleapp.yaml ~/beforeLab5.yaml
+    cp ~/lfd459/ch03-build/app1/simpleapp.yaml ~/beforeLab5.yaml
     ```
+
+    !!! tip "If Chapter 3 did not fully complete"
+        If `~/lfd459/ch03-build/app1/simpleapp.yaml` is missing, recreate it from the fallback file:
+
+        ```bash
+        cp ~/lfd459/ch05-deployment-config/simpleapp-v1.yaml ~/lfd459/ch03-build/app1/simpleapp.yaml
+        ```
 
 ---
 
@@ -94,7 +101,8 @@ ConfigMaps decouple configuration from container images. They can be created fro
     ```
 
     ```bash
-    kubectl exec -c simpleapp -it <try1-pod-name> -- /bin/bash -c 'echo $ilike'
+    POD=$(kubectl get pods -l app=try1 -o jsonpath='{.items[0].metadata.name}')
+    kubectl exec -c simpleapp -it "$POD" -- /bin/bash -c 'echo $ilike'
     ```
 
     ```
@@ -214,7 +222,8 @@ ConfigMaps decouple configuration from container images. They can be created fro
 15. Verify the ConfigMap data is visible inside the container as a file.
 
     ```bash
-    kubectl exec -c simpleapp -it <try1-pod-name> -- /bin/bash -c 'cat /etc/cars/car.trim'
+    POD=$(kubectl get pods -l app=try1 -o jsonpath='{.items[0].metadata.name}')
+    kubectl exec -c simpleapp -it "$POD" -- /bin/bash -c 'cat /etc/cars/car.trim'
     ```
 
     ```
@@ -375,7 +384,8 @@ We will configure an NFS server on the controller node, create a PersistentVolum
 11. Verify the NFS volume is mounted under `/opt` in a pod.
 
     ```bash
-    kubectl describe pod <try1-pod-name> | grep -A5 "Mounts:"
+    POD=$(kubectl get pods -l app=try1 -o jsonpath='{.items[0].metadata.name}')
+    kubectl describe pod "$POD" | grep -A5 "Mounts:"
     ```
 
     ```
@@ -395,7 +405,6 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
 1. We will work with a copy of `basic.yaml` in the chapter directory. Copy it now if not already present.
 
     ```bash
-    cp ~/lfd459/ch02-architecture/basic.yaml .
     cat basic.yaml
     ```
 
@@ -497,13 +506,20 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
 
     ```bash
     kubectl exec -c webcont -it basicpod -- /bin/bash
+    ```
+
+    Inside the container:
+
+    ```bash
     root@basicpod:/# ls -l /var/log/nginx/access.log
     ```
 
     ```
     #output
     -rw-r--r-- 1 root root 0 ... /var/log/nginx/access.log
+    ```
 
+    ```bash
     root@basicpod:/# tail -f /var/log/nginx/access.log
     ```
 
@@ -520,7 +536,8 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
     ```
 
     ```bash
-    curl http://10.244.1.23
+    POD_IP=$(kubectl get pod basicpod -o jsonpath='{.status.podIP}')
+    curl http://$POD_IP
     ```
 
     You should see a new log entry appear in the tail window in your first terminal. Use `Ctrl-C` and `exit` to return to the host.
@@ -593,8 +610,9 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
 12. Curl the nginx page a few times, then check the `fdlogger` logs.
 
     ```bash
-    curl http://<basicpod-ip>
-    curl http://<basicpod-ip>
+    POD_IP=$(kubectl get pod basicpod -o jsonpath='{.status.podIP}')
+    curl http://$POD_IP
+    curl http://$POD_IP
     kubectl logs basicpod fdlogger | tail -10
     ```
 

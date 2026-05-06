@@ -39,9 +39,9 @@ The cluster is already installed and ready. Your first task is to confirm everyt
 3. Verify all system pods are running.
 
 
-      ```bash
-      kubectl get pods -n kube-system
-      ```
+        ```bash
+        kubectl get pods -n kube-system
+        ```
 
     You should see Calico, CoreDNS, etcd, kube-apiserver, kube-controller-manager, kube-proxy and kube-scheduler all in `Running` state.
 
@@ -231,7 +231,8 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     ```
 
     ```bash
-    curl http://10.244.1.23
+    POD_IP=$(kubectl get pod basicpod -o jsonpath='{.status.podIP}')
+    curl http://$POD_IP
     ```
 
     ```
@@ -338,7 +339,8 @@ The cluster is already installed and ready. Your first task is to confirm everyt
 11. Test access to the webserver via the service `CLUSTER-IP`.
 
     ```bash
-    curl http://10.96.112.50
+    SVC_IP=$(kubectl get svc basicservice -o jsonpath='{.spec.clusterIP}')
+    curl http://$SVC_IP
     ```
 
     ```
@@ -406,7 +408,8 @@ The cluster is already installed and ready. Your first task is to confirm everyt
 13. Note the high-numbered NodePort (e.g. `31514`). Test access from the controller node using any node's IP.
 
     ```bash
-    curl http://worker1:31514
+    NODE_PORT=$(kubectl get svc basicservice -o jsonpath='{.spec.ports[0].nodePort}')
+    curl http://worker1:$NODE_PORT
     ```
 
     ```

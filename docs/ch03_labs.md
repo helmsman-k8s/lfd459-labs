@@ -27,10 +27,9 @@ In this chapter you will containerize a simple Python application using Podman, 
 
     You should see: `simple.py`, `Dockerfile`, `easyregistry.yaml`, `local-repo-setup.sh`, `edited-simpleapp.yaml`, `edited-later-simpleapp.yaml`, `build-review1.yaml`
 
-3. Create a working directory for the application and move into it.
+3. Move into the prepared working directory for the application.
 
     ```bash
-    mkdir app1
     cd app1
     ```
 
@@ -474,13 +473,15 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
 5. Exec into one pod and create the health check file.
 
     ```bash
-    kubectl exec -it try1-9869bdb88-rtchc -- /bin/bash
-    root@try1-9869bdb88-rtchc:/# touch /tmp/healthy
+    POD=$(kubectl get pods -l app=try1 -o jsonpath='{.items[0].metadata.name}')
+    kubectl exec -it "$POD" -- /bin/bash
     ```
 
-    ```
-    #output
-    root@try1-9869bdb88-rtchc:/# exit
+    Inside the container:
+
+    ```bash
+    root@try1:/# touch /tmp/healthy
+    root@try1:/# exit
     ```
 
 6. Wait at least 5 seconds (the `periodSeconds`), then check pods again. The pod you touched should now show `1/1`.
@@ -607,7 +608,8 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
 6. Examine the events for one of the pods. Note the `Readiness probe failed` warnings from before the file was created.
 
     ```bash
-    kubectl describe pod try1-76cc5ffcc6-4rjvh | tail -20
+    POD=$(kubectl get pods -l app=try1 -o jsonpath='{.items[0].metadata.name}')
+    kubectl describe pod "$POD" | tail -20
     ```
 
     Look for `Warning Unhealthy` events showing `cat: /tmp/healthy: No such file or directory`.
@@ -615,7 +617,8 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
 7. Confirm both containers in the pod show `State: Running` and `Ready: True`.
 
     ```bash
-    kubectl describe pod try1-76cc5ffcc6-4rjvh | grep -E 'State|Ready'
+    POD=$(kubectl get pods -l app=try1 -o jsonpath='{.items[0].metadata.name}')
+    kubectl describe pod "$POD" | grep -E 'State|Ready'
     ```
 
     ```
@@ -657,11 +660,8 @@ Revisit the CKAD curriculum and locate the topics covered in this chapter:
 - Use `build-review1.yaml` to create a broken deployment. Fix it so both containers are running and in a `READY` state.
 
     ```bash
-        ```
-
-        ```bash
     kubectl create -f build-review1.yaml
-        ```
+    ```
 
     !!! hint
         The web server (`nginx`) listens on port 80. The proxy (`goproxy`) listens on port 8080. Examine the probe configurations carefully - one of the port numbers is wrong.

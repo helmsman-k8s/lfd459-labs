@@ -65,7 +65,8 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
 4. Test access to the ClusterIP. You should see the nginx welcome page.
 
     ```bash
-    curl http://10.98.148.52
+    SVC_IP=$(kubectl get svc secondapp -o jsonpath='{.spec.clusterIP}')
+    curl http://$SVC_IP
     ```
 
 ### Service Update Pattern
@@ -100,7 +101,8 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
 4. Test - traffic should now show the httpd default page instead of nginx.
 
     ```bash
-    curl http://10.98.148.52
+    SVC_IP=$(kubectl get svc secondapp -o jsonpath='{.spec.clusterIP}')
+    curl http://$SVC_IP
     ```
 
     ```
@@ -155,9 +157,11 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
 3. Test via the ClusterIP (internal) and via any node IP on port 32000 (external).
 
     ```bash
-    curl http://10.109.134.221
-    curl http://worker1:32000
-    curl http://worker2:32000
+    SVC_IP=$(kubectl get svc secondapp -o jsonpath='{.spec.clusterIP}')
+    NODE_PORT=$(kubectl get svc secondapp -o jsonpath='{.spec.ports[0].nodePort}')
+    curl http://$SVC_IP
+    curl http://worker1:$NODE_PORT
+    curl http://worker2:$NODE_PORT
     ```
 
 ### LoadBalancer
@@ -195,7 +199,8 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     Access still works via the NodePort.
 
     ```bash
-    curl http://worker1:32000
+    NODE_PORT=$(kubectl get svc secondapp -o jsonpath='{.spec.ports[0].nodePort}')
+    curl http://worker1:$NODE_PORT
     ```
 
 ### CoreDNS Service Discovery
@@ -340,7 +345,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     STATUS: deployed
     ```
 
-5. Verify the controller pods are running - one per node (DaemonSet).
+5. Verify the controller pods are running - one per eligible worker node (DaemonSet).
 
     ```bash
     kubectl get pods --all-namespaces | grep myingress
@@ -348,7 +353,6 @@ An ingress controller allows you to route traffic to multiple services using a s
 
     ```
     #output
-    default   myingress-ingress-nginx-controller-xxxxx   1/1   Running   0   20s   controller
     default   myingress-ingress-nginx-controller-yyyyy   1/1   Running   0   20s   worker1
     default   myingress-ingress-nginx-controller-zzzzz   1/1   Running   0   20s   worker2
     ```
@@ -437,10 +441,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     echo $INGRESS_IP
     ```
 
-    ```
-    #output
-    # Without Host header - 404 (ingress has no default backend)
-    ```
+    Without the `Host` header, you should receive a 404 because the ingress has no default backend.
 
     ```bash
     curl $INGRESS_IP
@@ -449,9 +450,9 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```
     #output
     <html><head><title>404 Not Found</title></head>...</html>
-
-    # With matching Host header - nginx welcome page
     ```
+
+    With the matching `Host` header, you should receive the nginx welcome page.
 
     ```bash
     curl -H "Host: www.example.com" http://$INGRESS_IP
@@ -474,23 +475,22 @@ An ingress controller allows you to route traffic to multiple services using a s
 1. Deploy a third web server and customise its default page.
 
     ```bash
-        ```
-
-        ```bash
     kubectl create deployment thirdpage --image=nginx
     kubectl expose deployment thirdpage --port=80 --type=NodePort
-        ```
+    ```
 
 2. Label the pod so it can be targeted (use Tab completion for the pod name).
 
     ```bash
-    kubectl label pod thirdpage-<Tab> example=third
+    POD=$(kubectl get pods -l app=thirdpage -o jsonpath='{.items[0].metadata.name}')
+    kubectl label pod "$POD" example=third
     ```
 
 3. Exec into the pod and edit the nginx default page to say "Third Page".
 
     ```bash
-    kubectl exec -it thirdpage-<Tab> -- /bin/bash
+    POD=$(kubectl get pods -l app=thirdpage -o jsonpath='{.items[0].metadata.name}')
+    kubectl exec -it "$POD" -- /bin/bash
     ```
 
     Inside:
@@ -551,9 +551,9 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```
     #output
     <!DOCTYPE html><html><head><title>Third Page</title>...
-
-    # Should still show nginx default
     ```
+
+    This should still show the nginx default page.
 
     ```bash
     curl -H "Host: www.example.com" http://$INGRESS_IP

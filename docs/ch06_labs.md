@@ -71,9 +71,12 @@ A SecurityContext restricts what a container process can do - which UID it runs 
 
     Inside the container:
 
+    ```bash
+    / $ ps aux
+    ```
+
     ```
     #output
-    / $ ps aux
     PID   USER     COMMAND
     1     2000     sleep 3600
     8     2000     sh
@@ -124,10 +127,16 @@ A SecurityContext restricts what a container process can do - which UID it runs 
 
     Inside:
 
+    ```bash
+    / $ grep Cap /proc/1/status
+    ```
+
     ```
     #output
-    / $ grep Cap /proc/1/status
     CapBnd: 00000000aa0435fb
+    ```
+
+    ```bash
     / $ exit
     ```
 
@@ -226,18 +235,29 @@ Secrets store sensitive data in base64-encoded form. They are consumed like Conf
 
     Inside:
 
+    ```bash
+    / $ cat /mysqlpassword/password
+    ```
+
     ```
     #output
-    / $ cat /mysqlpassword/password
     LFTr@1n
+    ```
 
+    ```bash
     / $ ls -al /mysqlpassword/
+    ```
+
+    ```
+    #output
     total 4
     drwxrwxrwt  ...  .
     dr-xr-xr-x  ...  ..
     lrwxrwxrwx  ...  ..data -> ..2026_03_19_16_06_41.694089911
     lrwxrwxrwx  ...  password -> ..data/password
+    ```
 
+    ```bash
     / $ exit
     ```
 
@@ -475,14 +495,25 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
 
     Inside:
 
+    ```bash
+    / $ nc -vz 127.0.0.1 80
+    ```
+
     ```
     #output
-    / $ nc -vz 127.0.0.1 80
     127.0.0.1 (127.0.0.1:80) open
+    ```
 
-    / $ nc -vz www.linux.com 80
-    www.linux.com (151.101.185.5:80) open
+    ```bash
+    / $ nc -vz linux.com 80
+    ```
 
+    ```
+    #output
+    linux.com (...) open
+    ```
+
+    ```bash
     / $ exit
     ```
 
@@ -511,9 +542,13 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     kubectl exec -it -c busy secondapp -- sh
     ```
 
+    ```bash
+    / $ nc -vz linux.com 80
     ```
-    #output
-    / $ nc -vz www.linux.com 80
+
+    This should time out or fail because egress is blocked.
+
+    ```bash
     / $ exit
     ```
 

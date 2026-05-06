@@ -72,17 +72,28 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
 
     Inside:
 
+    ```bash
+    / $ nslookup www.linuxfoundation.org
+    ```
+
     ```
     #output
-    / $ nslookup www.linuxfoundation.org
     Server:     10.96.0.10
     Name:       www.linuxfoundation.org
     Address: 23.185.0.2
+    ```
 
+    ```bash
     / $ cat /etc/resolv.conf
+    ```
+
+    ```
+    #output
     nameserver 10.96.0.10
     search default.svc.cluster.local svc.cluster.local cluster.local
+    ```
 
+    ```bash
     / $ exit
     ```
 
@@ -279,9 +290,12 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
 
 7. Inside the debug container, verify nginx is running as PID 1.
 
+    ```bash
+    # ps aux
+    ```
+
     ```
     #output
-    # ps aux
     PID   USER   COMMAND
     1     root   nginx: master process nginx -g daemon off;
     29    root   nginx: worker process

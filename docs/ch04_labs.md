@@ -482,7 +482,8 @@ Labels are key-value pairs attached to objects. Selectors use them to filter and
 5. Edit the pod's `app` label and change it to your favourite colour (e.g. `orange`).
 
     ```bash
-    kubectl edit pod design2-766d48574f-5w274
+    POD=$(kubectl get pods -l app=design2 -o jsonpath='{.items[0].metadata.name}')
+    kubectl edit pod "$POD"
     ```
 
     Find and change:
