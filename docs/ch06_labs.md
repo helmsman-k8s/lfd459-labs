@@ -484,7 +484,8 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     ```
 
     ```bash
-    curl http://10.97.96.75
+    SVC_IP=$(kubectl get svc secondapp -o jsonpath='{.spec.clusterIP}')
+    curl http://$SVC_IP
     ```
 
 5. Test egress from within the container.
@@ -538,7 +539,8 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
 2. Test that traffic is now blocked.
 
     ```bash
-    curl http://10.97.96.75
+    SVC_IP=$(kubectl get svc secondapp -o jsonpath='{.spec.clusterIP}')
+    curl http://$SVC_IP
     kubectl exec -it -c busy secondapp -- sh
     ```
 
@@ -633,7 +635,8 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     HTTP should be allowed:
 
     ```bash
-    curl http://10.97.96.75
+    SVC_IP=$(kubectl get svc secondapp -o jsonpath='{.spec.clusterIP}')
+    curl http://$SVC_IP
     ```
 
     ICMP should be blocked:
@@ -708,8 +711,4 @@ Revisit the CKAD curriculum for topics covered in this chapter:
     kubectl delete deployment nginx --ignore-not-found
     kubectl delete svc nginx --ignore-not-found
     kubectl delete networkpolicy netblock --ignore-not-found
-    kubectl delete pod securityreview --ignore-not-found
-    kubectl delete serviceaccount securityaccount --ignore-not-found
-    kubectl delete clusterrole secrole --ignore-not-found
-    kubectl delete clusterrolebinding secrole --ignore-not-found
-    ```
+    kubectl delete pod securityreview --ignore-not-fo

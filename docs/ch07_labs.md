@@ -251,11 +251,7 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     kubectl create ns multitenant
     kubectl -n multitenant create deployment mainapp --image=nginx
     kubectl -n multitenant expose deployment mainapp \
-    ```
-
-    ```
-    #output
-    --name=shopping --type=NodePort --port=80
+      --name=shopping --type=NodePort --port=80
     ```
 
 2. Log back into the `busy` container and test cross-namespace DNS.
@@ -467,7 +463,8 @@ An ingress controller allows you to route traffic to multiple services using a s
     !!! tip "Using ClusterIP instead"
         You can also use the ingress controller's ClusterIP with the Host header:
         ```bash
-        curl -H "Host: www.example.com" http://10.104.227.79
+        INGRESS_CIP=$(kubectl get svc myingress-ingress-nginx-controller -o jsonpath='{.spec.clusterIP}')
+        curl -H "Host: www.example.com" http://$INGRESS_CIP
         ```
 
 ### Adding a Second Virtual Host
@@ -536,7 +533,7 @@ An ingress controller allows you to route traffic to multiple services using a s
     ```
 
     !!! tip
-        Pre-built version available: `kubectl replace -f ingress-v2.yaml`
+        Pre-built version available: `kubectl replace -f ingress-after.yaml`
 
 5. Test both virtual hosts.
 
@@ -612,3 +609,4 @@ Revisit the CKAD curriculum for topics covered in this chapter:
     kubectl delete svc webone-svc webtwo-svc --ignore-not-found
     kubectl delete ingress --all --ignore-not-found
     ```
+                           

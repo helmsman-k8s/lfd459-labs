@@ -76,7 +76,7 @@ ConfigMaps decouple configuration from container images. They can be created fro
     Find the simpleapp container section and add:
 
     ```yaml
-    - image: 10.97.40.62:5000/simpleapp
+    - image: REGISTRY_IP:5000/simpleapp   # use your $repo value
       imagePullPolicy: Always
       name: simpleapp
       env:
@@ -131,7 +131,8 @@ ConfigMaps decouple configuration from container images. They can be created fro
     ```bash
     kubectl delete deployment try1
     kubectl create -f ~/lfd459/ch03-build/app1/simpleapp.yaml
-    kubectl exec -it <try1-pod-name> -- /bin/bash -c 'env' | grep -E 'ilike|cyan|magenta|yellow|black|text'
+    POD=$(kubectl get pods -l app=try1 -o jsonpath='{.items[0].metadata.name}')
+    kubectl exec -it "$POD" -- /bin/bash -c 'env' | grep -E 'ilike|cyan|magenta|yellow|black|text'
     ```
 
 10. Create the `fast-car` ConfigMap from the provided YAML file.
@@ -579,7 +580,6 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
     !!! tip
         Pre-built version available: `basic-v3.yaml` in `~/lfd459/ch05-deployment-config/`
 
-
     ```yaml
       - name: fdlogger
         image: fluent/fluentd:v1.16
@@ -685,17 +685,7 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
     kubectl edit deployment try1
     ```
 
-    Change:
-
-    ```yaml
-    - image: 10.97.40.62:5000/simpleapp
-    ```
-
-    To:
-
-    ```yaml
-    - image: 10.97.40.62:5000/simpleapp:v2
-    ```
+    Change the image line from `$repo/simpleapp` to `$repo/simpleapp:v2`. The value of `$repo` is shown by `echo $repo`.
 
 8. Watch the rolling update.
 
@@ -707,12 +697,13 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
 9. Verify the new pods are using `v2`.
 
     ```bash
-    kubectl describe pod <try1-pod-name> | grep Image:
+    POD=$(kubectl get pods -l app=try1 -o jsonpath='{.items[0].metadata.name}')
+    kubectl describe pod "$POD" | grep Image:
     ```
 
     ```
     #output
-    Image:    10.97.40.62:5000/simpleapp:v2
+    Image:    <your-repo>/simpleapp:v2
     Image:    registry.k8s.io/goproxy:0.1
     ```
 
@@ -758,12 +749,13 @@ Now we return to the `basicpod` from Chapter 2 and fully configure the fluentd l
 
     ```bash
     kubectl get pods
-    kubectl describe pod <try1-pod-name> | grep Image:
+    POD=$(kubectl get pods -l app=try1 -o jsonpath='{.items[0].metadata.name}')
+    kubectl describe pod "$POD" | grep Image:
     ```
 
     ```
     #output
-    Image:    10.97.40.62:5000/simpleapp
+    Image:    <your-repo>/simpleapp
     ```
 
 ---
@@ -797,3 +789,4 @@ Revisit the CKAD curriculum for topics covered in this chapter:
     kubectl delete pvc reviewpvc --ignore-not-found
     kubectl delete pv reviewvol --ignore-not-found
     ```
+ 

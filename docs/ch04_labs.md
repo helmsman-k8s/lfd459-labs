@@ -286,9 +286,12 @@ Jobs run a container a set number of times to completion, rather than keeping it
       - message: Job was active longer than specified deadline
         reason: DeadlineExceeded
         status: "True"
-        type: Failed
+        type: FailureTarget
       succeeded: 4
     ```
+
+    !!! note "Kubernetes 1.34 change"
+        In Kubernetes 1.34 the condition type `Failed` was renamed to `FailureTarget`. On 1.33 you will see `type: Failed` instead. The `reason: DeadlineExceeded` and `succeeded` count are the same.
 
 15. Delete the job.
 
@@ -830,10 +833,4 @@ Revisit the CKAD curriculum and locate topics covered in this chapter:
 
 - Create a new CronJob that runs `busybox` with the `sleep 30` command every 3 minutes. Verify it runs correctly. Then update the schedule so it runs at a specific time 10 minutes from now, every week (e.g. if it's 14:14, set it to run at `24 14 * * 1`).
 
-- Delete all objects created during this review.
-
-    ```bash
-    kubectl delete pod design-pod1 label-pod3 label-pod4 --ignore-not-found
-    kubectl delete cronjobs.batch sleepy --ignore-not-found
-    kubectl delete deploy stressmeout --ignore-not-found
-    ```
+- Delete all objec
