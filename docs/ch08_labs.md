@@ -199,6 +199,8 @@ The Kubernetes API evolves. YAML that worked on older clusters may fail on newer
     2. Add `selector.matchLabels: {app: broken}` under `spec:` - mandatory for `apps/v1`
     3. Change pod template label from `app: thirdpage` to `app: broken` so the selector matches
 
+    A pre-built corrected file is available: `kubectl create -f brokendeploy-fixed.yaml`
+
 ---
 
 ## Exercise 8.3: Troubleshooting with Ephemeral Containers
@@ -247,16 +249,13 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
     Get the ClusterIP first:
 
     ```bash
-    kubectl get svc nginx-debug-svc
-    ```
-
-    ```bash
-    curl <CLUSTER-IP>
+    SVC_IP=$(kubectl get svc nginx-debug-svc -o jsonpath='{.spec.clusterIP}')
+    curl http://$SVC_IP
     ```
 
     ```
     #output
-    curl: (7) Failed to connect to <CLUSTER-IP> port 80
+    curl: (7) Failed to connect to 10.111.195.30 port 80
     ```
 
 4. Review the pod's probes.
@@ -338,7 +337,8 @@ Ephemeral containers allow you to attach a debugging shell to a running pod - ev
 11. Test service access.
 
     ```bash
-    curl <CLUSTER-IP>
+    SVC_IP=$(kubectl get svc nginx-debug-svc -o jsonpath='{.spec.clusterIP}')
+    curl http://$SVC_IP
     ```
 
     ```
@@ -437,6 +437,8 @@ Revisit the CKAD curriculum for topics covered in this chapter:
     3. `selector.matchLabels: run: ugottrouble` -> `run: igottrouble` (typo)
     4. CPU `requests: 2.5` exceeds `limits: 1` - fix: `requests.cpu: "0.5"`
 
+    A pre-built corrected file is available: `kubectl create -f troubleshoot-review1-fixed.yaml`
+
 ---
 
 ## Course Complete
@@ -445,7 +447,4 @@ Congratulations on completing all LFD459 lab chapters. Before sitting the CKAD e
 
 - Can create, edit, and troubleshoot all object types covered without referencing notes
 - Are familiar with the three documentation sources allowed during the exam
-- Have practised the domain review exercises at speed
-- Have reviewed the current CKAD curriculum at <https://www.cncf.io/certification/ckad/>
-
-Good luck!
+- Have practised the domain review exercises at spe

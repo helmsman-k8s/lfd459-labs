@@ -187,7 +187,7 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
     persistentvolume/vol2 created
     ```
 
-2. Note the ClusterIP assigned to the registry service. In this setup it is expected to be `10.97.40.62` - verify this matches.
+2. Verify the registry service is running.
 
     ```bash
     kubectl get svc | grep registry
@@ -195,16 +195,17 @@ Rather than pushing to Docker Hub, we will deploy a private registry inside the 
 
     ```
     #output
-    registry   ClusterIP   10.97.40.62   <none>   5000/TCP   5m35s
+    registry   ClusterIP   <dynamic-ip>   <none>   5000/TCP   5m35s
     ```
 
-    !!! warning "If the ClusterIP is different"
-        The `easyregistry.yaml` hardcodes `clusterIP: 10.97.40.62`. If a different IP was assigned, delete the service, edit the YAML to match the actual IP, and recreate it. The `local-repo-setup.sh` script also uses this same IP - edit it before running if needed.
+    > **Note:** The registry ClusterIP is assigned dynamically.
+    > The `local-repo-setup.sh` script exports `$repo` with the correct address.
+    > All subsequent commands use `$repo` — you do not need to know the IP.
 
 3. Verify the registry is responding.
 
     ```bash
-    curl 10.97.40.62:5000/v2/_catalog
+    curl $repo/v2/_catalog
     ```
 
     ```
@@ -409,7 +410,7 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```yaml
     spec:
       containers:
-      - image: 10.97.40.62:5000/simpleapp
+      - image: REGISTRY_IP:5000/simpleapp   # use your $repo value
         imagePullPolicy: Always
         name: simpleapp
         readinessProbe:
@@ -422,7 +423,7 @@ A `readinessProbe` tells Kubernetes when a container is ready to accept traffic.
     ```
 
     !!! tip
-        The `edited-simpleapp.yaml` file in your working directory already has this probe added. You can reference it for the correct indentation, but remember to verify the registry IP matches your environment.
+        The `edited-simpleapp.yaml` file in your working directory already has this probe added. Replace `REGISTRY_IP:5000` with your `$repo` value (`echo $repo`).
 
 2. Delete and recreate the deployment.
 
@@ -668,17 +669,13 @@ Revisit the CKAD curriculum and locate the topics covered in this chapter:
 
 - Once fixed, access the default nginx page and verify the GET request appears in the container log.
 
-    Get the pod IP:
+    Get the pod IP and check the log:
 
     ```bash
-    kubectl get pod -l app=break2 -o wide
-    ```
-
-    Then curl the pod IP and check the log:
-
-    ```bash
-    curl http://<pod-ip from above>
-    kubectl logs <pod-name> -c brokenapp
+    POD_IP=$(kubectl get pod -l app=break2 -o jsonpath='{.items[0].status.podIP}')
+    curl http://$POD_IP
+    POD=$(kubectl get pod -l app=break2 -o jsonpath='{.items[0].metadata.name}')
+    kubectl logs $POD -c brokenapp
     ```
 
     You should see a line like:

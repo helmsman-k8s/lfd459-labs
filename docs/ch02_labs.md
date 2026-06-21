@@ -38,10 +38,9 @@ The cluster is already installed and ready. Your first task is to confirm everyt
 
 3. Verify all system pods are running.
 
-
-        ```bash
-        kubectl get pods -n kube-system
-        ```
+    ```bash
+    kubectl get pods -n kube-system
+    ```
 
     You should see Calico, CoreDNS, etcd, kube-apiserver, kube-controller-manager, kube-proxy and kube-scheduler all in `Running` state.
 
@@ -649,3 +648,4 @@ The cluster is already installed and ready. Your first task is to confirm everyt
     kubectl delete pod basicpod --ignore-not-found
     kubectl delete svc basicservice --ignore-not-found
     ```
+             
