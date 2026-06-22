@@ -1127,20 +1127,34 @@
 </li>
 <li>
 <p>Create a ClusterRole named <code>secrole</code> that allows <code>create</code>, <code>delete</code>, and <code>list</code> of pods in all apiGroups.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-98-1" name="__codelineno-98-1" href="#__codelineno-98-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>clusterrole<span class="w"> </span>secrole<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-98-2" name="__codelineno-98-2" href="#__codelineno-98-2"></a><span class="w">  </span>--verb<span class="o">=</span>create,delete,list<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-98-3" name="__codelineno-98-3" href="#__codelineno-98-3"></a><span class="w">  </span>--resource<span class="o">=</span>pods
+</code></pre></div>
 </li>
-<li>Bind <code>secrole</code> to <code>securityaccount</code>.</li>
+<li>
+<p>Bind <code>secrole</code> to <code>securityaccount</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-99-1" name="__codelineno-99-1" href="#__codelineno-99-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>clusterrolebinding<span class="w"> </span>secrole-binding<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-99-2" name="__codelineno-99-2" href="#__codelineno-99-2"></a><span class="w">  </span>--clusterrole<span class="o">=</span>secrole<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-99-3" name="__codelineno-99-3" href="#__codelineno-99-3"></a><span class="w">  </span>--serviceaccount<span class="o">=</span>default:securityaccount
+</code></pre></div>
+</li>
 <li>
 <p>Create a token for <code>securityaccount</code> and save only the token value to <code>/tmp/securitytoken</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-98-1" name="__codelineno-98-1" href="#__codelineno-98-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>token<span class="w"> </span>securityaccount<span class="w"> </span>&gt;<span class="w"> </span>/tmp/securitytoken
+<div class="highlight"><pre><span></span><code><a id="__codelineno-100-1" name="__codelineno-100-1" href="#__codelineno-100-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>token<span class="w"> </span>securityaccount<span class="w"> </span>&gt;<span class="w"> </span>/tmp/securitytoken
+<a id="__codelineno-100-2" name="__codelineno-100-2" href="#__codelineno-100-2"></a>cat<span class="w"> </span>/tmp/securitytoken
 </code></pre></div>
 </li>
 <li>
 <p>Clean up all resources created during this review.</p>
-<p>```bash
-kubectl delete deployment nginx --ignore-not-found
-kubectl delete svc nginx --ignore-not-found
-kubectl delete networkpolicy netblock --ignore-not-found
-kubectl delete pod securityreview --ignore-not-fo</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-101-1" name="__codelineno-101-1" href="#__codelineno-101-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deployment<span class="w"> </span>nginx<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-101-2" name="__codelineno-101-2" href="#__codelineno-101-2"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>svc<span class="w"> </span>nginx<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-101-3" name="__codelineno-101-3" href="#__codelineno-101-3"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>networkpolicy<span class="w"> </span>netblock<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-101-4" name="__codelineno-101-4" href="#__codelineno-101-4"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>securityreview<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-101-5" name="__codelineno-101-5" href="#__codelineno-101-5"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>serviceaccount<span class="w"> </span>securityaccount<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-101-6" name="__codelineno-101-6" href="#__codelineno-101-6"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>clusterrole<span class="w"> </span>secrole<span class="w"> </span>--ignore-not-found
+<a id="__codelineno-101-7" name="__codelineno-101-7" href="#__codelineno-101-7"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>clusterrolebinding<span class="w"> </span>secrole-binding<span class="w"> </span>--ignore-not-found
+</code></pre></div>
 </li>
 </ul>
 
