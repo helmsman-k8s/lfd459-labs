@@ -5,7 +5,17 @@
 In this chapter you will work with all four service types (ClusterIP, NodePort, LoadBalancer, ExternalName), explore CoreDNS service discovery across namespaces, deploy an NGINX ingress controller via Helm, configure ingress rules for multiple virtual hosts, and optionally install Linkerd as a service mesh.
 
 !!! note "Prerequisites"
-    This chapter continues from Chapter 6. The `secondapp` pod (with `webserver` nginx and `busy` busybox containers, label `example: second`) should be running. If not, recreate it from `~/app2/second.yaml`.
+    This chapter continues from Chapter 6. The `secondapp` pod (with `webserver` nginx and `busy` busybox containers, label `example: second`) should be running. If not, recreate it:
+
+    ```bash
+    kubectl create -f ~/lfd459/ch06-security/second-v5.yaml
+    ```
+
+    Also delete any NetworkPolicy from Chapter 6 that might block traffic:
+
+    ```bash
+    kubectl delete netpol deny-default --ignore-not-found
+    ```
 
 ---
 
@@ -602,11 +612,22 @@ Revisit the CKAD curriculum for topics covered in this chapter:
 - Change the service type so it is only accessible from within the cluster. Verify external access no longer works but internal curl does.
 - Deploy another pod called `webtwo` running the `wlniao/website` image. Create a service `webtwo-svc` accessible only from within the cluster. Verify the default pages for each server are different.
 - Install and configure an ingress controller so that requests for `webone.com` show the nginx default page and requests for `webtwo.org` show the `wlniao/website` default page.
-- Clean up all resources created in this review.
+- Clean up all resources created in this review and the exercises.
 
     ```bash
+    # Domain review resources
     kubectl delete pod webone webtwo --ignore-not-found
     kubectl delete svc webone-svc webtwo-svc --ignore-not-found
     kubectl delete ingress --all --ignore-not-found
+
+    # Ingress controller (if still installed)
+    helm uninstall myingress 2>/dev/null || true
+
+    # Exercise 7.2 resources
+    kubectl delete deployment thirdpage --ignore-not-found
+    kubectl delete svc thirdpage --ignore-not-found
+
+    # Multitenant namespace from Exercise 7.1
+    kubectl delete ns multitenant --ignore-not-found
     ```
                            

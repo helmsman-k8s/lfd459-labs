@@ -4,6 +4,31 @@
 
 This final chapter covers the troubleshooting flow for Kubernetes applications - from pod inspection to service endpoints to kube-proxy. You will work with API deprecations, use `kubectl debug` with ephemeral containers, and tackle a multi-bug deployment as a domain review.
 
+!!! note "Prerequisites"
+    This chapter continues from Chapters 6 and 7. The following must be running:
+
+    - `secondapp` pod (two containers: `webserver` nginx + `busy` busybox, label `example: second`)
+    - `secondapp` service as **NodePort** on port **32000**
+
+    If the pod is missing, recreate it:
+
+    ```bash
+    kubectl create -f ~/lfd459/ch06-security/second-v5.yaml
+    ```
+
+    If the service is missing or the wrong type, recreate it:
+
+    ```bash
+    kubectl delete svc secondapp --ignore-not-found
+    kubectl create -f ~/lfd459/ch07-exposing-apps/newservice-v2.yaml
+    ```
+
+    Delete any leftover NetworkPolicy that would block traffic:
+
+    ```bash
+    kubectl delete netpol deny-default --ignore-not-found
+    ```
+
 ---
 
 ## Exercise 8.1: Monitor Applications
@@ -447,4 +472,5 @@ Congratulations on completing all LFD459 lab chapters. Before sitting the CKAD e
 
 - Can create, edit, and troubleshoot all object types covered without referencing notes
 - Are familiar with the three documentation sources allowed during the exam
-- Have practised the domain review exercises at spe
+- Have practised the domain review exercises at speed, without notes, under time pressure — aim for each domain review in under 20 minutes
+- Know where to find answers in the Kubernetes documentation (kubernetes.io/docs) during the exam

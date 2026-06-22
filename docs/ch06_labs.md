@@ -730,11 +730,26 @@ Revisit the CKAD curriculum for topics covered in this chapter:
     ```
 
 - Create a ClusterRole named `secrole` that allows `create`, `delete`, and `list` of pods in all apiGroups.
+
+    ```bash
+    kubectl create clusterrole secrole \
+      --verb=create,delete,list \
+      --resource=pods
+    ```
+
 - Bind `secrole` to `securityaccount`.
+
+    ```bash
+    kubectl create clusterrolebinding secrole-binding \
+      --clusterrole=secrole \
+      --serviceaccount=default:securityaccount
+    ```
+
 - Create a token for `securityaccount` and save only the token value to `/tmp/securitytoken`.
 
     ```bash
     kubectl create token securityaccount > /tmp/securitytoken
+    cat /tmp/securitytoken
     ```
 
 - Clean up all resources created during this review.
@@ -743,4 +758,8 @@ Revisit the CKAD curriculum for topics covered in this chapter:
     kubectl delete deployment nginx --ignore-not-found
     kubectl delete svc nginx --ignore-not-found
     kubectl delete networkpolicy netblock --ignore-not-found
-    kubectl delete pod securityreview --ignore-not-fo
+    kubectl delete pod securityreview --ignore-not-found
+    kubectl delete serviceaccount securityaccount --ignore-not-found
+    kubectl delete clusterrole secrole --ignore-not-found
+    kubectl delete clusterrolebinding secrole-binding --ignore-not-found
+    ```
