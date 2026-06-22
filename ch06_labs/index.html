@@ -1029,8 +1029,12 @@
 </div>
 </li>
 <li>
-<p>Test pod-to-pod ingress with ping using a temporary alpine pod.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-87-1" name="__codelineno-87-1" href="#__codelineno-87-1"></a>kubectl<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--rm<span class="o">=</span><span class="nb">true</span><span class="w"> </span>--image<span class="w"> </span>alpine<span class="w"> </span>--<span class="w"> </span>ping<span class="w"> </span>-c5<span class="w"> </span>&lt;secondapp-pod-ip&gt;
+<p>Test pod-to-pod ingress with ping using a temporary busybox pod.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-87-1" name="__codelineno-87-1" href="#__codelineno-87-1"></a><span class="nv">POD_IP</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>secondapp<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.podIP}&#39;</span><span class="k">)</span>
+<a id="__codelineno-87-2" name="__codelineno-87-2" href="#__codelineno-87-2"></a>kubectl<span class="w"> </span>run<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--image<span class="o">=</span>busybox<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>ping<span class="w"> </span>-c5<span class="w"> </span><span class="nv">$POD_IP</span>
+<a id="__codelineno-87-3" name="__codelineno-87-3" href="#__codelineno-87-3"></a>sleep<span class="w"> </span><span class="m">15</span>
+<a id="__codelineno-87-4" name="__codelineno-87-4" href="#__codelineno-87-4"></a>kubectl<span class="w"> </span>logs<span class="w"> </span><span class="nb">test</span>
+<a id="__codelineno-87-5" name="__codelineno-87-5" href="#__codelineno-87-5"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span><span class="nb">test</span>
 </code></pre></div>
 </li>
 <li>
@@ -1050,12 +1054,24 @@
 <p class="admonition-title">Tip</p>
 <p>Pre-built version available: <code>kubectl replace -f allclosed-v4.yaml</code></p>
 </div>
-<p>HTTP should be allowed:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-91-1" name="__codelineno-91-1" href="#__codelineno-91-1"></a><span class="nv">SVC_IP</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>secondapp<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.clusterIP}&#39;</span><span class="k">)</span>
-<a id="__codelineno-91-2" name="__codelineno-91-2" href="#__codelineno-91-2"></a>curl<span class="w"> </span>http://<span class="nv">$SVC_IP</span>
+<div class="admonition note">
+<p class="admonition-title">Test from a pod, not the node</p>
+<p><code>podSelector: {}</code> only allows traffic from <strong>pods</strong>. Curling from the controller terminal uses the node's network and will still be blocked. Run tests from inside a temporary pod instead.</p>
+<p>Also use <code>--restart=Never</code> without <code>-it</code> — fast-completing pods cause <code>kubectl run -it --rm</code> to time out before capturing output. Check results with <code>kubectl logs</code>.</p>
+</div>
+<p>HTTP should be allowed (run from a pod):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-91-1" name="__codelineno-91-1" href="#__codelineno-91-1"></a><span class="nv">POD_IP</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>secondapp<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.podIP}&#39;</span><span class="k">)</span>
+<a id="__codelineno-91-2" name="__codelineno-91-2" href="#__codelineno-91-2"></a>kubectl<span class="w"> </span>run<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--image<span class="o">=</span>busybox<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>wget<span class="w"> </span>-qO-<span class="w"> </span>http://<span class="nv">$POD_IP</span>
+<a id="__codelineno-91-3" name="__codelineno-91-3" href="#__codelineno-91-3"></a>sleep<span class="w"> </span><span class="m">5</span>
+<a id="__codelineno-91-4" name="__codelineno-91-4" href="#__codelineno-91-4"></a>kubectl<span class="w"> </span>logs<span class="w"> </span><span class="nb">test</span>
+<a id="__codelineno-91-5" name="__codelineno-91-5" href="#__codelineno-91-5"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span><span class="nb">test</span>
 </code></pre></div>
-<p>ICMP should be blocked:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-92-1" name="__codelineno-92-1" href="#__codelineno-92-1"></a>kubectl<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--rm<span class="o">=</span><span class="nb">true</span><span class="w"> </span>--image<span class="w"> </span>alpine<span class="w"> </span>--<span class="w"> </span>ping<span class="w"> </span>-c5<span class="w"> </span>&lt;secondapp-pod-ip&gt;
+<p>ICMP should be blocked (pod stays in Error/OOMKilled with no output):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-92-1" name="__codelineno-92-1" href="#__codelineno-92-1"></a><span class="nv">POD_IP</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>secondapp<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.podIP}&#39;</span><span class="k">)</span>
+<a id="__codelineno-92-2" name="__codelineno-92-2" href="#__codelineno-92-2"></a>kubectl<span class="w"> </span>run<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--image<span class="o">=</span>busybox<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>ping<span class="w"> </span>-c3<span class="w"> </span><span class="nv">$POD_IP</span>
+<a id="__codelineno-92-3" name="__codelineno-92-3" href="#__codelineno-92-3"></a>sleep<span class="w"> </span><span class="m">10</span>
+<a id="__codelineno-92-4" name="__codelineno-92-4" href="#__codelineno-92-4"></a>kubectl<span class="w"> </span>logs<span class="w"> </span><span class="nb">test</span>
+<a id="__codelineno-92-5" name="__codelineno-92-5" href="#__codelineno-92-5"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span><span class="nb">test</span>
 </code></pre></div>
 </li>
 <li>
