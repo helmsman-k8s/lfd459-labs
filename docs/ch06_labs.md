@@ -465,10 +465,26 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     service/secondapp created
     ```
 
-    Edit the service to change the selector to `example: second` and set the nodePort to `32000`.
+    !!! warning "The selector must be changed"
+        `kubectl create service nodeport` automatically sets `selector: app: secondapp`, but the pod has label `example: second`. The curl will fail with `Connection refused` until you fix this.
+
+    Edit the service and make two changes:
 
     ```bash
     kubectl edit svc secondapp
+    ```
+
+    Change `selector` from `app: secondapp` to `example: second`, and set `nodePort: 32000`:
+
+    ```yaml
+    spec:
+      selector:
+        example: second      # ← change from "app: secondapp"
+      type: NodePort
+      ports:
+      - port: 80
+        protocol: TCP
+        nodePort: 32000      # ← add this
     ```
 
 4. Verify the service and test access.
