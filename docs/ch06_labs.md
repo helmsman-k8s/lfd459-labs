@@ -620,10 +620,14 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     !!! tip
         Pre-built version available: `kubectl replace -f allclosed-v3.yaml`
 
-5. Test pod-to-pod ingress with ping using a temporary alpine pod.
+5. Test pod-to-pod ingress with ping using a temporary busybox pod.
 
     ```bash
-    kubectl run -it test --rm=true --image alpine -- ping -c5 <secondapp-pod-ip>
+    POD_IP=$(kubectl get pod secondapp -o jsonpath='{.status.podIP}')
+    kubectl run test --image=busybox --restart=Never -- ping -c5 $POD_IP
+    sleep 15
+    kubectl logs test
+    kubectl delete pod test
     ```
 
 6. Update the policy to only allow TCP port 80, blocking ICMP.
@@ -648,17 +652,29 @@ ServiceAccounts provide an identity for pod processes to interact with the Kuber
     !!! tip
         Pre-built version available: `kubectl replace -f allclosed-v4.yaml`
 
-    HTTP should be allowed:
+    !!! note "Test from a pod, not the node"
+        `podSelector: {}` only allows traffic from **pods**. Curling from the controller terminal uses the node's network and will still be blocked. Run tests from inside a temporary pod instead.
+
+        Also use `--restart=Never` without `-it` — fast-completing pods cause `kubectl run -it --rm` to time out before capturing output. Check results with `kubectl logs`.
+
+    HTTP should be allowed (run from a pod):
 
     ```bash
-    SVC_IP=$(kubectl get svc secondapp -o jsonpath='{.spec.clusterIP}')
-    curl http://$SVC_IP
+    POD_IP=$(kubectl get pod secondapp -o jsonpath='{.status.podIP}')
+    kubectl run test --image=busybox --restart=Never -- wget -qO- http://$POD_IP
+    sleep 5
+    kubectl logs test
+    kubectl delete pod test
     ```
 
-    ICMP should be blocked:
+    ICMP should be blocked (pod stays in Error/OOMKilled with no output):
 
     ```bash
-    kubectl run -it test --rm=true --image alpine -- ping -c5 <secondapp-pod-ip>
+    POD_IP=$(kubectl get pod secondapp -o jsonpath='{.status.podIP}')
+    kubectl run test --image=busybox --restart=Never -- ping -c3 $POD_IP
+    sleep 10
+    kubectl logs test
+    kubectl delete pod test
     ```
 
 7. Delete the NetworkPolicy so the registry and other pods remain accessible for future chapters.
