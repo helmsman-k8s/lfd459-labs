@@ -1148,10 +1148,11 @@
 <li>Install and configure an ingress controller so that requests for <code>webone.com</code> show the nginx default page and requests for <code>webtwo.org</code> show the <code>wlniao/website</code> default page.</li>
 <li>
 <p>Clean up all resources created in this review.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-68-1" name="__codelineno-68-1" href="#__codelineno-68-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>webone<span class="w"> </span>webtwo<span class="w"> </span>--ignore-not-found
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-68-1" name="__codelineno-68-1" href="#__codelineno-68-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>webone<span class="w"> </span>webtwo<span class="w"> </span>--ignore-not-found
 <a id="__codelineno-68-2" name="__codelineno-68-2" href="#__codelineno-68-2"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>svc<span class="w"> </span>webone-svc<span class="w"> </span>webtwo-svc<span class="w"> </span>--ignore-not-found
 <a id="__codelineno-68-3" name="__codelineno-68-3" href="#__codelineno-68-3"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>ingress<span class="w"> </span>--all<span class="w"> </span>--ignore-not-found
 </code></pre></div>
+                           </p>
 </li>
 </ul>
 

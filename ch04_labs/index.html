@@ -1298,11 +1298,7 @@
 <p>Create a new CronJob that runs <code>busybox</code> with the <code>sleep 30</code> command every 3 minutes. Verify it runs correctly. Then update the schedule so it runs at a specific time 10 minutes from now, every week (e.g. if it's 14:14, set it to run at <code>24 14 * * 1</code>).</p>
 </li>
 <li>
-<p>Delete all objects created during this review.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-100-1" name="__codelineno-100-1" href="#__codelineno-100-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>design-pod1<span class="w"> </span>label-pod3<span class="w"> </span>label-pod4<span class="w"> </span>--ignore-not-found
-<a id="__codelineno-100-2" name="__codelineno-100-2" href="#__codelineno-100-2"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>cronjobs.batch<span class="w"> </span>sleepy<span class="w"> </span>--ignore-not-found
-<a id="__codelineno-100-3" name="__codelineno-100-3" href="#__codelineno-100-3"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>deploy<span class="w"> </span>stressmeout<span class="w"> </span>--ignore-not-found
-</code></pre></div>
+<p>Delete all objec</p>
 </li>
 </ul>
 
