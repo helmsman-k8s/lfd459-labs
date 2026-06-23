@@ -662,9 +662,10 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>ep
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>#output
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>NAME         ENDPOINTS
-<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>secondapp    192.168.x.y:80
-<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>...
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>Warning: v1 Endpoints is deprecated in v1.33+; use discovery.k8s.io/v1 EndpointSlice
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>NAME         ENDPOINTS            AGE
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>kubernetes   192.168.2.36:6443    11h
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>secondapp    10.244.235.173:80    2m
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>ep<span class="w"> </span>secondapp<span class="w"> </span>-o<span class="w"> </span>yaml
 </code></pre></div>
