@@ -139,9 +139,10 @@ A systematic troubleshooting flow is more valuable than memorising specific erro
 
     ```
     #output
-    NAME         ENDPOINTS
-    secondapp    192.168.x.y:80
-    ...
+    Warning: v1 Endpoints is deprecated in v1.33+; use discovery.k8s.io/v1 EndpointSlice
+    NAME         ENDPOINTS            AGE
+    kubernetes   192.168.2.36:6443    11h
+    secondapp    10.244.235.173:80    2m
     ```
 
     ```bash

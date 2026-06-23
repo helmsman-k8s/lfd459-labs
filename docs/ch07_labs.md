@@ -5,15 +5,17 @@
 In this chapter you will work with all four service types (ClusterIP, NodePort, LoadBalancer, ExternalName), explore CoreDNS service discovery across namespaces, deploy an NGINX ingress controller via Helm, configure ingress rules for multiple virtual hosts, and optionally install Linkerd as a service mesh.
 
 !!! note "Prerequisites"
-    This chapter continues from Chapter 6. The `secondapp` pod (with `webserver` nginx and `busy` busybox containers, label `example: second`) should be running. If not, recreate it:
+    This chapter continues from Chapter 6. The `secondapp` pod and its NodePort service must exist. Run these commands to ensure a clean starting state:
 
     ```bash
-    kubectl create -f ~/lfd459/ch06-security/second-v5.yaml
-    ```
+    # Recreate the pod if missing
+    kubectl create -f ~/lfd459/ch06-security/second-v5.yaml 2>/dev/null || true
 
-    Also delete any NetworkPolicy from Chapter 6 that might block traffic:
+    # Recreate the NodePort service (step 1 expects it to already exist)
+    kubectl delete svc secondapp --ignore-not-found
+    kubectl create -f ~/lfd459/ch07-exposing-apps/newservice-v2.yaml
 
-    ```bash
+    # Remove any NetworkPolicy from Chapter 6 that might block traffic
     kubectl delete netpol deny-default --ignore-not-found
     ```
 
@@ -106,7 +108,21 @@ In this chapter you will work with all four service types (ClusterIP, NodePort, 
     kubectl edit svc secondapp
     ```
 
-    Change `selector.example: second` to `selector.app: newserver`.
+    Find the `selector:` section near the bottom of the file (not inside `matchLabels` — that's the Deployment's selector, not the Service's). It currently looks like this:
+
+    ```yaml
+    selector:
+      example: second
+    ```
+
+    Replace it with:
+
+    ```yaml
+    selector:
+      app: newserver
+    ```
+
+    Save and exit (`:wq` in vim). The service now forwards traffic to `newserver`'s pods instead of `secondapp`'s.
 
 4. Test - traffic should now show the httpd default page instead of nginx.
 
